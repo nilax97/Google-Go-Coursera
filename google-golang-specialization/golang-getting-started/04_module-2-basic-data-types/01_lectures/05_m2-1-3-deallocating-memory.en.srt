@@ -1,0 +1,359 @@
+1
+00:00:10,880 --> 00:00:12,540
+So, we've been talking
+
+2
+00:00:12,540 --> 00:00:15,105
+about variables and how they're referenced.
+
+3
+00:00:15,105 --> 00:00:20,330
+Variables, they're all referring to some data that somewhere in memory.
+
+4
+00:00:20,330 --> 00:00:24,995
+So, the variables eventually have to be deallocated in memory.
+
+5
+00:00:24,995 --> 00:00:27,090
+So allocated and deallocated.
+
+6
+00:00:27,090 --> 00:00:31,550
+So what I mean is once you declare a variable and your code
+
+7
+00:00:31,550 --> 00:00:35,630
+is running your space needs to be allocated somewhere in memory for that variable.
+
+8
+00:00:35,630 --> 00:00:39,200
+If it's an integer, there has to be some allocated space dedicated to holding
+
+9
+00:00:39,200 --> 00:00:43,790
+that integer and at some point that space has to be deallocated.
+
+10
+00:00:43,790 --> 00:00:45,490
+When you're done using it all right.
+
+11
+00:00:45,490 --> 00:00:47,790
+So, when you're done using your variable X,
+
+12
+00:00:47,790 --> 00:00:49,460
+you want to be able to say "Oh that space is now
+
+13
+00:00:49,460 --> 00:00:51,930
+free and it can be used for other purposes."
+
+14
+00:00:51,930 --> 00:00:57,625
+So, that's deallocation, when you make memory space available for other purposes.
+
+15
+00:00:57,625 --> 00:01:00,535
+You have to do this in a timely fashion.
+
+16
+00:01:00,535 --> 00:01:04,595
+So, otherwise you eventually will run out of memory and your machine.
+
+17
+00:01:04,595 --> 00:01:05,960
+So for an example,
+
+18
+00:01:05,960 --> 00:01:09,140
+you look at this piece of code it declares a variable X,
+
+19
+00:01:09,140 --> 00:01:12,410
+var X equals 1, so the process when it
+
+20
+00:01:12,410 --> 00:01:16,435
+runs it has to allocate a memory location just for X to hold it.
+
+21
+00:01:16,435 --> 00:01:21,860
+Now say you call in your program you call this function f 100 times right,
+
+22
+00:01:21,860 --> 00:01:26,310
+then it's going to allocate 100 different spaces for this variable X right,
+
+23
+00:01:26,310 --> 00:01:29,660
+because the X goes away after the function completes the X goes away
+
+24
+00:01:29,660 --> 00:01:33,190
+it's going to allocate it again it should go away, you want it to go away.
+
+25
+00:01:33,190 --> 00:01:36,440
+But every time if you don't deallocate it, you'll execute,
+
+26
+00:01:36,440 --> 00:01:41,750
+every time you execute this function f you will get a new variable X allocated and
+
+27
+00:01:41,750 --> 00:01:43,699
+so you'll have all these spaces
+
+28
+00:01:43,699 --> 00:01:47,060
+allocated in memory and really you don't need them anymore right?
+
+29
+00:01:47,060 --> 00:01:49,700
+I mean once a particular function call ends you no
+
+30
+00:01:49,700 --> 00:01:52,920
+longer need the space for the X that it was using.
+
+31
+00:01:52,920 --> 00:01:55,540
+So, at some point you have to deallocate this memory.
+
+32
+00:01:55,540 --> 00:01:57,550
+You have to say "Look this memory is now free,
+
+33
+00:01:57,550 --> 00:02:02,810
+" because otherwise you would eventually use up all your space and you might think well,
+
+34
+00:02:02,810 --> 00:02:08,505
+how am I going to use it my space I've got X number of gig in my memory system.
+
+35
+00:02:08,505 --> 00:02:12,380
+You can eat that up very quickly and believe me this is called a
+
+36
+00:02:12,380 --> 00:02:16,640
+memory leak this is a thing that happens in C a lot.
+
+37
+00:02:16,640 --> 00:02:18,510
+You can eat up all your space very quickly.
+
+38
+00:02:18,510 --> 00:02:22,235
+So, you have to deallocate this space in a timely fashion.
+
+39
+00:02:22,235 --> 00:02:25,710
+Now in order to talk about how space is de-allocated,
+
+40
+00:02:25,710 --> 00:02:29,880
+we got to talk a little bit about where the space is stored in memory.
+
+41
+00:02:29,880 --> 00:02:32,750
+So, memory is a big thing but there are
+
+42
+00:02:32,750 --> 00:02:36,140
+two big hunks of memory that are relevant to us right now,
+
+43
+00:02:36,140 --> 00:02:37,985
+the stack and the heap.
+
+44
+00:02:37,985 --> 00:02:42,205
+Now the stack is an area of memory that is dedicated to function calls,
+
+45
+00:02:42,205 --> 00:02:44,450
+primarily dedicated to function calls.
+
+46
+00:02:44,450 --> 00:02:48,880
+So, one of the things is stored in the stack are the local variables for a function.
+
+47
+00:02:48,880 --> 00:02:51,500
+So every time you call a function there can be variables that you
+
+48
+00:02:51,500 --> 00:02:54,770
+define in that function and generally they go into the stack.
+
+49
+00:02:54,770 --> 00:02:59,400
+They are allocated in the stack area of the memory and they're deallocated.
+
+50
+00:02:59,400 --> 00:03:01,220
+If they're allocated in the stack, they are deallocated
+
+51
+00:03:01,220 --> 00:03:03,650
+automatically when the function completes.
+
+52
+00:03:03,650 --> 00:03:08,520
+Now this is this is different a little bit different for go. This is traditional.
+
+53
+00:03:08,520 --> 00:03:11,100
+What I'm talking about now is how it works in regular languages.
+
+54
+00:03:11,100 --> 00:03:13,245
+Go change this a little bit, okay.
+
+55
+00:03:13,245 --> 00:03:15,665
+But normally the stack is the area of
+
+56
+00:03:15,665 --> 00:03:18,979
+these local variables where when the function is done,
+
+57
+00:03:18,979 --> 00:03:21,190
+the variables are deallocated automatically.
+
+58
+00:03:21,190 --> 00:03:23,085
+Now the heap on the other hand,
+
+59
+00:03:23,085 --> 00:03:27,395
+is a persistent region of memory where when you allocate something on the heap
+
+60
+00:03:27,395 --> 00:03:31,820
+it doesn't go away just because the function that allocated it is complete,
+
+61
+00:03:31,820 --> 00:03:37,270
+that heap memory it you have to explicitly deallocate it somehow in another language.
+
+62
+00:03:37,270 --> 00:03:41,015
+So if you were in say C, you would have to explicitly deallocate this.
+
+63
+00:03:41,015 --> 00:03:43,230
+Now Go does a tweak on this.
+
+64
+00:03:43,230 --> 00:03:46,040
+But it is still important to understand that memory variables can be in
+
+65
+00:03:46,040 --> 00:03:50,060
+the stack which will for the most part automatically go away when the variable,
+
+66
+00:03:50,060 --> 00:03:52,010
+will be deallocated automatically when the function is
+
+67
+00:03:52,010 --> 00:03:54,695
+done or in the heap where it's persistent.
+
+68
+00:03:54,695 --> 00:03:58,135
+Now if you're in another language like C,
+
+69
+00:03:58,135 --> 00:04:01,100
+then you have to manually deallocate things on the heap.
+
+70
+00:04:01,100 --> 00:04:03,950
+The stuff that's on the stack you don't have to manually deallocate it,
+
+71
+00:04:03,950 --> 00:04:05,885
+it will go away when the function completes.
+
+72
+00:04:05,885 --> 00:04:09,550
+But stuffs on the heap you have to manually explicitly deallocate it.
+
+73
+00:04:09,550 --> 00:04:12,475
+So, say you were working in C,
+
+74
+00:04:12,475 --> 00:04:14,390
+if you want to allocate memory on the heap,
+
+75
+00:04:14,390 --> 00:04:16,185
+you would call a function called malloc,
+
+76
+00:04:16,185 --> 00:04:18,810
+and I say I say X equals malloc 32.
+
+77
+00:04:18,810 --> 00:04:21,860
+It'll allocate 32 bytes of memory and X will be
+
+78
+00:04:21,860 --> 00:04:25,330
+appointed to that and then later when I'm, that's how you allocate it.
+
+79
+00:04:25,330 --> 00:04:30,400
+Later when I want to free it I'd say free X and it will free that space deallocating it.
+
+80
+00:04:30,400 --> 00:04:32,470
+So, error prone but fast.
+
+81
+00:04:32,470 --> 00:04:34,275
+So, what I mean by that is,
+
+82
+00:04:34,275 --> 00:04:39,340
+it's error prone because it's easy to make a mistake in your allocation and deallocation.
+
+83
+00:04:39,340 --> 00:04:43,340
+Deallocating at the wrong time or forgetting to deallocate it stuff like this,
+
+84
+00:04:43,340 --> 00:04:45,025
+it can cause headaches.
+
+85
+00:04:45,025 --> 00:04:49,325
+So, it's error prone in that sense but its fast.
+
+86
+00:04:49,325 --> 00:04:52,230
+The implementations are very fast.
+
+87
+00:04:52,230 --> 00:04:55,490
+What happens with deallocation in an interpreted language is that
+
+88
+00:04:55,490 --> 00:04:59,440
+the interpreter does it okay and that can take time.
+
+89
+00:04:59,440 --> 00:05:02,045
+So but in a compiled language like C,
+
+90
+00:05:02,045 --> 00:05:04,760
+you would have to do that manually.

@@ -1,0 +1,507 @@
+1
+00:00:10,760 --> 00:00:14,010
+To continue with the control flow,
+
+2
+00:00:14,010 --> 00:00:15,470
+we were looking at switch.
+
+3
+00:00:15,470 --> 00:00:17,000
+Let's talk about a Tagless switch.
+
+4
+00:00:17,000 --> 00:00:19,025
+This is a variant on the regular switch.
+
+5
+00:00:19,025 --> 00:00:22,650
+So, normal switches, they have a tag,
+
+6
+00:00:22,650 --> 00:00:25,120
+switch X let's say, and that's the tag,
+
+7
+00:00:25,120 --> 00:00:27,520
+that X, and that's a variable that's going to be
+
+8
+00:00:27,520 --> 00:00:31,495
+compared to constants that are right after the cases.
+
+9
+00:00:31,495 --> 00:00:33,360
+So case one, case two, case three,
+
+10
+00:00:33,360 --> 00:00:36,070
+X as compared to those constants one, two and three.
+
+11
+00:00:36,070 --> 00:00:38,665
+So, sometimes, that's not what you want.
+
+12
+00:00:38,665 --> 00:00:41,405
+Sometimes, you can have a switch without a tag.
+
+13
+00:00:41,405 --> 00:00:42,840
+And when you do that,
+
+14
+00:00:42,840 --> 00:00:45,835
+then what happens is the case that X it gets executed
+
+15
+00:00:45,835 --> 00:00:49,235
+is the first case whose expression is true.
+
+16
+00:00:49,235 --> 00:00:50,455
+So what I mean by this is,
+
+17
+00:00:50,455 --> 00:00:52,475
+when you don't have a tag in the switch,
+
+18
+00:00:52,475 --> 00:00:54,240
+then each case is going to have to have it.
+
+19
+00:00:54,240 --> 00:00:55,690
+Instead of having a constant after,
+
+20
+00:00:55,690 --> 00:01:00,610
+it will have some expression that resolves to a Boolean, true or false.
+
+21
+00:01:00,610 --> 00:01:02,690
+And if that Boolean is true,
+
+22
+00:01:02,690 --> 00:01:05,200
+then that's the case it's executed and it'll execute
+
+23
+00:01:05,200 --> 00:01:08,950
+the first case whose condition is actually true.
+
+24
+00:01:08,950 --> 00:01:11,140
+So, here's an example of that,
+
+25
+00:01:11,140 --> 00:01:14,415
+in this case we have a switch, there's no tag.
+
+26
+00:01:14,415 --> 00:01:16,055
+We just have these cases,
+
+27
+00:01:16,055 --> 00:01:17,680
+two cases plus a default.
+
+28
+00:01:17,680 --> 00:01:20,640
+So, case X greater than one,
+
+29
+00:01:20,640 --> 00:01:23,395
+case X less than negative one and then default.
+
+30
+00:01:23,395 --> 00:01:27,075
+So, in this situation, since there's no tag,
+
+31
+00:01:27,075 --> 00:01:29,765
+it just looks to the right of the case keyword,
+
+32
+00:01:29,765 --> 00:01:32,290
+looks the condition, X greater than one, evaluates that.
+
+33
+00:01:32,290 --> 00:01:36,025
+If it's true, then that's the case it gets executed and we're done to switch.
+
+34
+00:01:36,025 --> 00:01:39,740
+If it's false, it goes and checks the next case to see if this condition is true,
+
+35
+00:01:39,740 --> 00:01:42,290
+and so on until you're done with all your cases.
+
+36
+00:01:42,290 --> 00:01:43,655
+And then if none of them happen,
+
+37
+00:01:43,655 --> 00:01:46,210
+then the default is executed if you've included a default.
+
+38
+00:01:46,210 --> 00:01:47,510
+So that's the tagless switch,
+
+39
+00:01:47,510 --> 00:01:48,830
+and you can use that as well.
+
+40
+00:01:48,830 --> 00:01:51,030
+Instead of if else, if else if,
+
+41
+00:01:51,030 --> 00:01:54,385
+you'd use a switch like this, tagless switch.
+
+42
+00:01:54,385 --> 00:01:59,225
+Break and continue were also control flow instructions.
+
+43
+00:01:59,225 --> 00:02:01,480
+Sometimes the're considered bad form,
+
+44
+00:02:01,480 --> 00:02:03,850
+but they definitely exist and they're used.
+
+45
+00:02:03,850 --> 00:02:07,415
+So, break and continual for loops.
+
+46
+00:02:07,415 --> 00:02:10,860
+So, a break exits the containing loop.
+
+47
+00:02:10,860 --> 00:02:13,965
+So say you're inside a loop and that loop,
+
+48
+00:02:13,965 --> 00:02:17,750
+in this case we got a four loop and i equals 0,
+
+49
+00:02:17,750 --> 00:02:20,310
+i less than ten, and there's an i plus plus inside the loop.
+
+50
+00:02:20,310 --> 00:02:22,340
+So, this is supposed to happen, whatever this is,
+
+51
+00:02:22,340 --> 00:02:24,790
+it's supposed to iterate through ten times conceivably.
+
+52
+00:02:24,790 --> 00:02:26,220
+But notice inside the loop,
+
+53
+00:02:26,220 --> 00:02:27,980
+it says if X equal,
+
+54
+00:02:27,980 --> 00:02:30,385
+equal five then break.
+
+55
+00:02:30,385 --> 00:02:32,670
+So, if it hits that break,
+
+56
+00:02:32,670 --> 00:02:33,980
+and it will in this case,
+
+57
+00:02:33,980 --> 00:02:37,660
+when it hits that break, it will exit the loop.
+
+58
+00:02:37,660 --> 00:02:40,760
+So, this thing only execute for i equals zero,
+
+59
+00:02:40,760 --> 00:02:42,620
+one, two, three, four, and five.
+
+60
+00:02:42,620 --> 00:02:45,610
+It'll go into the loop and it'll hit the break on the fifth pass through the loop,
+
+61
+00:02:45,610 --> 00:02:47,095
+so it won't finish the loop.
+
+62
+00:02:47,095 --> 00:02:50,915
+So, break just jumps out of whatever the containing loop is and quits the loop.
+
+63
+00:02:50,915 --> 00:02:53,160
+Now continue on the other hand,
+
+64
+00:02:53,160 --> 00:02:54,850
+it also uses loops.
+
+65
+00:02:54,850 --> 00:02:56,560
+It doesn't quit you out of the loop,
+
+66
+00:02:56,560 --> 00:02:59,560
+it just skips the current iteration of the loop.
+
+67
+00:02:59,560 --> 00:03:01,600
+So, if we look at the continue example,
+
+68
+00:03:01,600 --> 00:03:05,015
+same code, except instead of a break, it calls the continue.
+
+69
+00:03:05,015 --> 00:03:07,590
+If i equal equal five, then it calls continue.
+
+70
+00:03:07,590 --> 00:03:08,960
+So, in this case,
+
+71
+00:03:08,960 --> 00:03:11,415
+if without that if statement and that continue,
+
+72
+00:03:11,415 --> 00:03:13,490
+it would execute this loop 10 times,
+
+73
+00:03:13,490 --> 00:03:15,000
+because i starts at zero,
+
+74
+00:03:15,000 --> 00:03:18,030
+it goes up to the condition i less than less than 10.
+
+75
+00:03:18,030 --> 00:03:19,650
+So, it would execute 10 times.
+
+76
+00:03:19,650 --> 00:03:21,400
+But for this loop,
+
+77
+00:03:21,400 --> 00:03:24,050
+it says if i equal equal five continue,
+
+78
+00:03:24,050 --> 00:03:26,520
+so that one iteration where i is equal to five,
+
+79
+00:03:26,520 --> 00:03:31,940
+it will continue and just jump right past that iteration of the loop.
+
+80
+00:03:31,940 --> 00:03:36,490
+So the loop will execute,
+
+81
+00:03:36,490 --> 00:03:38,600
+but it won't execute as many times.
+
+82
+00:03:38,600 --> 00:03:41,040
+It'll skip one iteration of the loop.
+
+83
+00:03:41,740 --> 00:03:47,750
+So, scan is a function to read the user's input.
+
+84
+00:03:47,750 --> 00:03:49,070
+This isn't a control-flow function,
+
+85
+00:03:49,070 --> 00:03:50,460
+but we need to hit this because
+
+86
+00:03:50,460 --> 00:03:52,020
+read user input is something that you're going to
+
+87
+00:03:52,020 --> 00:03:54,075
+use in the code examples that you write.
+
+88
+00:03:54,075 --> 00:03:55,740
+Sort of a common thing to do,
+
+89
+00:03:55,740 --> 00:03:58,170
+you want to read input that the user types into the keyboard.
+
+90
+00:03:58,170 --> 00:04:01,214
+So, this isn't the format package.
+
+91
+00:04:01,214 --> 00:04:05,055
+What scan does is it takes a pointer as an argument.
+
+92
+00:04:05,055 --> 00:04:11,235
+So, what you do is you make a pointed to some value that you expect the user to type in.
+
+93
+00:04:11,235 --> 00:04:13,050
+So, if a user is going to type in an integer,
+
+94
+00:04:13,050 --> 00:04:17,115
+you'd make an integer and you would pass a pointer to that integer to the scan function.
+
+95
+00:04:17,115 --> 00:04:21,995
+You call Scan, and when you execute the scan function, it blocks.
+
+96
+00:04:21,995 --> 00:04:25,810
+The program waits until the user types in something and hits Enter.
+
+97
+00:04:25,810 --> 00:04:29,460
+When they hit Enter, the scan function will take whatever they typed
+
+98
+00:04:29,460 --> 00:04:32,790
+in and will place it wherever the pointer is pointing.
+
+99
+00:04:32,790 --> 00:04:36,340
+So, it will take what they typed in and put it into say an integer.
+
+100
+00:04:36,340 --> 00:04:38,730
+If you pass the pointer to an integer, it will take it,
+
+101
+00:04:38,730 --> 00:04:40,070
+turned to an integer point in,
+
+102
+00:04:40,070 --> 00:04:42,095
+put it into that integer.
+
+103
+00:04:42,095 --> 00:04:45,550
+And what it returns is the number of scanned items.
+
+104
+00:04:45,550 --> 00:04:46,970
+It returns actually two things;
+
+105
+00:04:46,970 --> 00:04:49,640
+the number of scanned items, the number of tokens that a person typed in.
+
+106
+00:04:49,640 --> 00:04:53,520
+So, space separate tokens that's returned, also an error.
+
+107
+00:04:53,520 --> 00:04:54,870
+The second thing is returned as an error.
+
+108
+00:04:54,870 --> 00:04:57,180
+If there's an error, it'll return something other than nil.
+
+109
+00:04:57,180 --> 00:04:59,560
+If there's no error, it'll just return nil for that error.
+
+110
+00:04:59,560 --> 00:05:03,350
+But if there's an error, it'll return an error code and we could investigate that.
+
+111
+00:05:03,350 --> 00:05:05,570
+So, we can look at this example code.
+
+112
+00:05:05,570 --> 00:05:10,360
+Let's say, we make a variable appleNum and it's an integer.
+
+113
+00:05:10,360 --> 00:05:13,130
+Then we print out number of apples,
+
+114
+00:05:13,130 --> 00:05:16,160
+question expecting the user to type in how many apples.
+
+115
+00:05:16,160 --> 00:05:19,150
+So, we expect them to type in some integer, five, let's say.
+
+116
+00:05:19,150 --> 00:05:20,920
+So, the next line,
+
+117
+00:05:20,920 --> 00:05:22,610
+it executes the scan function.
+
+118
+00:05:22,610 --> 00:05:25,120
+The code will actually stop
+
+119
+00:05:25,120 --> 00:05:29,250
+running there and wait until the user types in something and hits Enter.
+
+120
+00:05:29,250 --> 00:05:31,475
+So, let's say the user types in a five hits enter.
+
+121
+00:05:31,475 --> 00:05:36,305
+Then notice that the argument to scan the argument pass is ampersand appleNum,
+
+122
+00:05:36,305 --> 00:05:39,110
+which means the address of the AppleNum variable.
+
+123
+00:05:39,110 --> 00:05:43,800
+So, when the user types in five and hits enter,
+
+124
+00:05:43,800 --> 00:05:45,790
+that scan function takes that number five,
+
+125
+00:05:45,790 --> 00:05:47,555
+puts it into the appleNum variable.
+
+126
+00:05:47,555 --> 00:05:50,560
+So on the next line, when I say, printf appleNum,
+
+127
+00:05:50,560 --> 00:05:54,470
+it'll print five or whatever integer they typed in.

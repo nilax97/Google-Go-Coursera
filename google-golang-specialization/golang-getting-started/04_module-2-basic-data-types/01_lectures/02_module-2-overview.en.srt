@@ -1,0 +1,63 @@
+1
+00:00:07,700 --> 00:00:10,155
+Welcome to the second module.
+
+2
+00:00:10,155 --> 00:00:13,260
+We're going to start talking a little bit more detail about the Go language,
+
+3
+00:00:13,260 --> 00:00:15,025
+we'll talk about datatypes in Go,
+
+4
+00:00:15,025 --> 00:00:16,325
+the basic data types.
+
+5
+00:00:16,325 --> 00:00:18,635
+That's what this module is really about.
+
+6
+00:00:18,635 --> 00:00:22,405
+We'll go over data types you've seen in other languages, integers,
+
+7
+00:00:22,405 --> 00:00:26,140
+floats, booleans, strings, variations, all those.
+
+8
+00:00:26,140 --> 00:00:28,030
+So, you can change the length of the integer,
+
+9
+00:00:28,030 --> 00:00:30,205
+length of the flow, things like this.
+
+10
+00:00:30,205 --> 00:00:32,120
+So we'll talk about those data types,
+
+11
+00:00:32,120 --> 00:00:34,680
+we'll talk specifically about how to declare them,
+
+12
+00:00:34,680 --> 00:00:38,900
+how to create them and what functions are available for them.
+
+13
+00:00:38,900 --> 00:00:41,345
+So what functions can you apply to integers?
+
+14
+00:00:41,345 --> 00:00:44,260
+What functions can you apply to strings and booleans and flows?
+
+15
+00:00:44,260 --> 00:00:46,000
+Once you're done with this,
+
+16
+00:00:46,000 --> 00:00:49,440
+you'll be able to use basic data types inside your Go code.

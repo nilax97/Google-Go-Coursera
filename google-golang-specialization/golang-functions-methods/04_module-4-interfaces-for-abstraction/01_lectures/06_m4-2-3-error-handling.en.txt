@@ -1,0 +1,28 @@
+Module 4, Interfaces for Abstraction,
+Topic 2.3, Error Handling. So I just want to show a common
+use of interfaces in Go. The Error Interface. So there are a lot of different Go
+functions that are built into packages, which return errors. And when I say return errors,
+what they do is they return whatever they're supposed to return, and then
+their second return value is an error. An error interface. So and we see it defined over here. The error interface just is any type
+that satisfies this interface, and error interface just specifies that you
+have to have a method called, error, which prints the error message essentially which
+prints something, some text that's useful. So under correct operation,
+the error return might be nil, so for instance, let's say,
+I want to open a file. If it opens the file correctly,
+it'll return nil for the error, and there's no problem. But if the error actually has a value,
+then you'll probably print the error, and it'll call its error method,
+which will successfully print the error. So show you an example of that. So basically the idea is, when you,
+this happens, there a lot of different Go language function like this, which return
+error as the second argument, okay? And so, when that happens, you should
+check that error, after the call, and handle it if you need to. So you can see on the top line,
+we're opening a file. So os.open, open the file by that name,
+and it returns two things. One is the file F, and the second
+thing is an error, if an error exist. So then, right after that, for
+safety's sake, you should check the error. So if error not equal to nil, so if it's
+equal to nil, you're fine, you go on. If it's not equal to nil,
+then, do a print that sort of the most obvious thing to do to handle
+the error, is just to print it. So you println(err) and return. So printing the error, the format package, the fmt package,
+which println is a part of. That package will call the error method
+of the error to generate the string, and print that string. And so, this is sort of the generic
+way of handling errors in Go. It's a very common way
+to handle errors in Go. Thank you.

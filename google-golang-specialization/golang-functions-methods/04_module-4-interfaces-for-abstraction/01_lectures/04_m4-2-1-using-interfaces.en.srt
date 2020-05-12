@@ -1,0 +1,599 @@
+1
+00:00:00,110 --> 00:00:02,280
+Thank you.
+
+2
+00:00:02,280 --> 00:00:06,378
+Thank you.
+
+3
+00:00:06,378 --> 00:00:08,400
+So interfaces, we've talked about them.
+
+4
+00:00:08,400 --> 00:00:12,320
+And one thing we want to talk about now
+is a little bit of how to use them.
+
+5
+00:00:12,320 --> 00:00:14,839
+So what are they used for, language-wise?
+
+6
+00:00:14,839 --> 00:00:17,330
+And in language,
+why would you need an interface?
+
+7
+00:00:17,330 --> 00:00:19,560
+And I already said, interfaces,
+
+8
+00:00:19,560 --> 00:00:23,310
+they express some sort of a conceptual
+similarity between different types.
+
+9
+00:00:23,310 --> 00:00:27,920
+So the idea is that if two
+types satisfy an interface,
+
+10
+00:00:27,920 --> 00:00:32,312
+then they must be similar in some way
+that is important to the application.
+
+11
+00:00:32,312 --> 00:00:36,420
+So one common, sort of, practical thing
+that you would use an interface for,
+
+12
+00:00:36,420 --> 00:00:37,510
+is when you need a function,
+
+13
+00:00:37,510 --> 00:00:40,580
+you want to write a function which
+takes multiple types as a parameter.
+
+14
+00:00:40,580 --> 00:00:44,030
+So specifically, normally,
+a function, it takes, say,
+
+15
+00:00:44,030 --> 00:00:46,060
+it takes an integer as its arguments,
+right?
+
+16
+00:00:46,060 --> 00:00:47,520
+It can only take an integer.
+
+17
+00:00:47,520 --> 00:00:49,930
+But what if you want to take an integer or
+a float?
+
+18
+00:00:49,930 --> 00:00:53,050
+Something like this, maybe a integer,
+a float or a string, right?
+
+19
+00:00:53,050 --> 00:00:54,930
+You want it to take multiple types.
+
+20
+00:00:54,930 --> 00:00:56,950
+In different types,
+it'll do different things, but
+
+21
+00:00:56,950 --> 00:00:59,240
+you want it to be able
+to take different types.
+
+22
+00:00:59,240 --> 00:01:01,160
+You can use an interface for that.
+
+23
+00:01:01,160 --> 00:01:04,575
+So giving an example,
+say I've got a function, foo ( ), and
+
+24
+00:01:04,575 --> 00:01:07,080
+it's gotta take a parameter.
+
+25
+00:01:07,080 --> 00:01:10,960
+And this parameter,
+it could be either type X or type Y.
+
+26
+00:01:10,960 --> 00:01:12,400
+And I'm talking very generically now.
+
+27
+00:01:12,400 --> 00:01:15,890
+I'll give you a concrete example in
+the next slide, but so I got this foo.
+
+28
+00:01:15,890 --> 00:01:18,140
+It's going to take a parameter
+which is type X or type Y.
+
+29
+00:01:18,140 --> 00:01:20,250
+I want it to take either type.
+
+30
+00:01:20,250 --> 00:01:22,910
+So the way I can do that is I can
+define an interface called Z.
+
+31
+00:01:23,940 --> 00:01:28,490
+And X as a parameter can be,
+the type it can be, in interface type Z.
+
+32
+00:01:29,500 --> 00:01:33,320
+Then I define X and Y to satisfy Z.
+
+33
+00:01:33,320 --> 00:01:36,430
+Right, so, X and
+Y are both satisfying the interface Z.
+
+34
+00:01:36,430 --> 00:01:39,710
+Then foo(), since it can take
+anything that satisfies interface Z,
+
+35
+00:01:39,710 --> 00:01:42,930
+it can take X and Y as its arguments.
+
+36
+00:01:42,930 --> 00:01:46,390
+So this is a common way
+to use an interface.
+
+37
+00:01:46,390 --> 00:01:51,270
+And basically, an interface in this way,
+it sort of generalizes, right?
+
+38
+00:01:51,270 --> 00:01:55,160
+It hides the details of
+the differences between the types.
+
+39
+00:01:55,160 --> 00:01:58,830
+It's like look, these two types are
+similar in the way that's important to me.
+
+40
+00:01:58,830 --> 00:02:00,740
+And so your function could
+just take the interface.
+
+41
+00:02:00,740 --> 00:02:03,090
+It needs to take anything
+that is similar in that way.
+
+42
+00:02:04,550 --> 00:02:07,020
+So, to be a little bit more specific,
+
+43
+00:02:07,020 --> 00:02:09,630
+I made up a problem about
+a pool in a yard, right?
+
+44
+00:02:09,630 --> 00:02:12,910
+So, I have a backyard, and
+I want to put a pool in my yard.
+
+45
+00:02:12,910 --> 00:02:16,770
+But the pool, before I can put the pool
+in the yard, it needs to fit in my yard.
+
+46
+00:02:16,770 --> 00:02:20,670
+And it needs to be fenced, because I don't
+want my kids to fall into the pool, so
+
+47
+00:02:20,670 --> 00:02:22,420
+I need fencing around the pool.
+
+48
+00:02:22,420 --> 00:02:23,444
+And it needs to fit in the yard.
+
+49
+00:02:23,444 --> 00:02:27,540
+So to fit in the yard, the total
+area this pool needs to be limited.
+
+50
+00:02:27,540 --> 00:02:29,340
+Less than the area of the backyard.
+
+51
+00:02:30,790 --> 00:02:35,010
+Also to fence it, I only have so
+much fence, because fence cost money.
+
+52
+00:02:35,010 --> 00:02:36,340
+I only have a limited amount of fence.
+
+53
+00:02:36,340 --> 00:02:42,090
+So the perimeter of this thing has
+to be limited to within some limit,
+
+54
+00:02:42,090 --> 00:02:44,070
+depending on how much I can afford.
+
+55
+00:02:44,070 --> 00:02:47,810
+So I need to determine if a particular
+pool shape satisfies this criteria,
+
+56
+00:02:47,810 --> 00:02:50,870
+because I'm trying to go through
+a bunch of different pool shapes.
+
+57
+00:02:50,870 --> 00:02:53,370
+And I want to pick one that
+satisfies these criterias.
+
+58
+00:02:53,370 --> 00:02:56,290
+It's sort of small enough
+that it can fit in the yard.
+
+59
+00:02:56,290 --> 00:02:59,380
+And also the perimeter's small enough so
+that I can afford to fence it.
+
+60
+00:02:59,380 --> 00:03:01,990
+So I'm going to write this
+function called FitInYard ().
+
+61
+00:03:01,990 --> 00:03:03,470
+And this is going to return a boolean.
+
+62
+00:03:03,470 --> 00:03:05,220
+So it takes a shape as an argument.
+
+63
+00:03:05,220 --> 00:03:09,870
+Some shape, maybe I got some triangular
+shape, I was pass that to FitInYard, and
+
+64
+00:03:09,870 --> 00:03:13,060
+it returns true,
+if the shape satisfies the criteria.
+
+65
+00:03:13,060 --> 00:03:17,310
+So if the area is small enough, and the
+pool is small enough, then it says true.
+
+66
+00:03:17,310 --> 00:03:19,200
+If I pass it a shape like rectangle and
+
+67
+00:03:19,200 --> 00:03:23,250
+it's a big rectangle and it doesn't fit in
+my yard then it will return false, okay?
+
+68
+00:03:23,250 --> 00:03:25,270
+So that's what FitInYard is.
+
+69
+00:03:25,270 --> 00:03:28,880
+Now the thing about fit in yard is it's
+got to take a shape as an argument.
+
+70
+00:03:28,880 --> 00:03:31,050
+But I want it to take any
+shape as an argument.
+
+71
+00:03:31,050 --> 00:03:34,130
+I don't care if it's a triangle,
+circle, square, rectangle,
+
+72
+00:03:34,130 --> 00:03:36,280
+whatever, it can be any shape.
+
+73
+00:03:36,280 --> 00:03:38,000
+I should take it as an argument.
+
+74
+00:03:38,000 --> 00:03:42,250
+But I have to be able to compute the area
+and compute the perimeter, okay?
+
+75
+00:03:42,250 --> 00:03:46,865
+So not any shape, its got to be a shape
+whose area and perimeter I can compute.
+
+76
+00:03:46,865 --> 00:03:52,680
+So let's say the idea is should take
+rectangles, triangles, whatever.
+
+77
+00:03:52,680 --> 00:03:59,190
+But a valid shape has to have an area
+method and a perimeter method, right?
+
+78
+00:03:59,190 --> 00:04:01,929
+So if the shape,
+if I can't compute the area,
+
+79
+00:04:01,929 --> 00:04:04,823
+then I won't be able to
+tell if it fits in my yard.
+
+80
+00:04:04,823 --> 00:04:06,430
+Say it's a sphere or something, right?
+
+81
+00:04:06,430 --> 00:04:08,080
+There's no area, it's a 3D shape,
+
+82
+00:04:08,080 --> 00:04:10,910
+that's a 3D object, I can't compute
+area of a thing like that, right?
+
+83
+00:04:10,910 --> 00:04:13,890
+So, that is not a valid shape that
+I want to try to fit in my yard.
+
+84
+00:04:15,040 --> 00:04:19,360
+So, any shape that has area and
+perimeter, that's okay with me.
+
+85
+00:04:20,950 --> 00:04:23,900
+So what I can do is I can
+define this interface for
+
+86
+00:04:23,900 --> 00:04:26,620
+shapes that have the area and perimeter.
+
+87
+00:04:26,620 --> 00:04:28,710
+So I make my Shape2D interface.
+
+88
+00:04:28,710 --> 00:04:29,820
+We already talked about this.
+
+89
+00:04:29,820 --> 00:04:31,630
+But I make my Shape2D interface.
+
+90
+00:04:31,630 --> 00:04:36,743
+It specifies area and perimeter,
+which return float64.
+
+91
+00:04:36,743 --> 00:04:43,080
+Then I can make my types, triangle type,
+rectangle type, whatever types I want.
+
+92
+00:04:43,080 --> 00:04:47,130
+And as long as these types, I don't care
+how they define what data's inside them,
+
+93
+00:04:47,130 --> 00:04:51,320
+as long as they have methods
+that use them as receiver types.
+
+94
+00:04:51,320 --> 00:04:53,950
+That it has area method and
+perimeter method.
+
+95
+00:04:53,950 --> 00:04:55,360
+So, a triangle,
+
+96
+00:04:55,360 --> 00:05:00,150
+you got area that has triangle as
+a receiver method and also perimeter.
+
+97
+00:05:00,150 --> 00:05:03,020
+Same thing for rectangles,
+it's got an area and a perimeter.
+
+98
+00:05:03,020 --> 00:05:04,240
+As long as they have area and
+
+99
+00:05:04,240 --> 00:05:06,890
+parameter, I should be able
+to take this as an argument.
+
+100
+00:05:06,890 --> 00:05:11,140
+So they satisfy this interface Shape2D.
+
+101
+00:05:11,140 --> 00:05:16,422
+So in my FitInYard implementation,
+you can see that the argument that
+
+102
+00:05:16,422 --> 00:05:21,630
+it takes is called s, and
+its type is the interface type, Shape2D.
+
+103
+00:05:21,630 --> 00:05:24,673
+So what that means is that this
+argument could be any type
+
+104
+00:05:24,673 --> 00:05:27,710
+that satisfies that Shape2D interface.
+
+105
+00:05:27,710 --> 00:05:30,130
+Like rectangle, triangle,
+whatever the types are.
+
+106
+00:05:30,130 --> 00:05:33,170
+And it returns a boolean and
+all the function does is very simple.
+
+107
+00:05:33,170 --> 00:05:36,250
+Just says if s.Area is less than 100,
+
+108
+00:05:36,250 --> 00:05:40,790
+let's say 100 is the size of my backyard,
+right?
+
+109
+00:05:40,790 --> 00:05:44,110
+And as our perimeter is less than 100,
+because that's all the fence I could
+
+110
+00:05:44,110 --> 00:05:46,405
+afford, then return true,
+else return false.
+
+111
+00:05:46,405 --> 00:05:51,440
+So a valid argument to this is any
+
+112
+00:05:51,440 --> 00:05:55,370
+type that satisfies
+the shape to the interface.
+
+113
+00:05:57,080 --> 00:06:02,081
+Now the empty interface is
+standard interfaces predefined and
+
+114
+00:06:02,081 --> 00:06:04,541
+it just specifies no methods.
+
+115
+00:06:04,541 --> 00:06:09,702
+So that means that any type can
+actually satisfy that interface.
+
+116
+00:06:09,702 --> 00:06:11,237
+And what you use it for
+
+117
+00:06:11,237 --> 00:06:15,170
+is when you want to have
+a function argument be any type.
+
+118
+00:06:15,170 --> 00:06:17,840
+You don't want to restrict it
+at all in terms of the type
+
+119
+00:06:17,840 --> 00:06:19,410
+that this function can accept.
+
+120
+00:06:19,410 --> 00:06:22,689
+Then you just make it's
+type the empty interface.
+
+121
+00:06:22,689 --> 00:06:25,729
+So as an example,
+we got this function PrintMe.
+
+122
+00:06:25,729 --> 00:06:29,850
+And its val argument is
+the empty interface.
+
+123
+00:06:29,850 --> 00:06:32,280
+That's how you specify the empty
+interface that I haven't read.
+
+124
+00:06:32,280 --> 00:06:35,660
+So that means that val
+can just be any type.
+
+125
+00:06:35,660 --> 00:06:36,930
+And all this does is just print it.
+
+126
+00:06:36,930 --> 00:06:38,320
+So it will print any type you give it.
+
+127
+00:06:38,320 --> 00:06:40,247
+You give it an int,
+float, string, whatever,
+
+128
+00:06:40,247 --> 00:06:41,754
+it will just print that to the screen.
+
+129
+00:06:43,535 --> 00:06:44,035
+Thank you.

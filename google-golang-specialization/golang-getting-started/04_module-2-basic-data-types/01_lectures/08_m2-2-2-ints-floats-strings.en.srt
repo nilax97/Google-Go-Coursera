@@ -1,0 +1,751 @@
+1
+00:00:11,240 --> 00:00:13,920
+So, we talked about integers.
+
+2
+00:00:13,920 --> 00:00:15,570
+Now, let's talk about type conversions a
+
+3
+00:00:15,570 --> 00:00:18,120
+little bit before we go on to the next basic types.
+
+4
+00:00:18,120 --> 00:00:20,925
+There are cases where you need to convert a number
+
+5
+00:00:20,925 --> 00:00:23,845
+or a value from one type to another type.
+
+6
+00:00:23,845 --> 00:00:26,110
+For that, you use the type conversion.
+
+7
+00:00:26,110 --> 00:00:28,460
+Now, these conversions are not always possible.
+
+8
+00:00:28,460 --> 00:00:31,605
+You can't necessarily do those conversions,
+
+9
+00:00:31,605 --> 00:00:33,355
+but when they exist,
+
+10
+00:00:33,355 --> 00:00:37,210
+when you can do them, here's how you do them.
+
+11
+00:00:38,180 --> 00:00:43,910
+Let's say, for instance, you've got some integers of different lengths.
+
+12
+00:00:43,910 --> 00:00:45,465
+So, I've got variable X.
+
+13
+00:00:45,465 --> 00:00:47,480
+It's a 32-bit integer,
+
+14
+00:00:47,480 --> 00:00:51,375
+and variable Y, it's a 16-bit integer.
+
+15
+00:00:51,375 --> 00:00:55,745
+I want to say, X equals Y. I want to assign one to the other.
+
+16
+00:00:55,745 --> 00:00:58,065
+I want to do some operations with them together.
+
+17
+00:00:58,065 --> 00:01:01,575
+That, as shown, would actually fail.
+
+18
+00:01:01,575 --> 00:01:05,180
+Reason why they'll fail is because these two integers,
+
+19
+00:01:05,180 --> 00:01:07,250
+they're actually two different types of integers.
+
+20
+00:01:07,250 --> 00:01:09,625
+So, the compiler sees them as two different types.
+
+21
+00:01:09,625 --> 00:01:12,020
+Int32 is a different type than int16.
+
+22
+00:01:12,020 --> 00:01:15,680
+So, it'll throw an error when you try to set one to the other,
+
+23
+00:01:15,680 --> 00:01:18,070
+because when you assign like that, the two things,
+
+24
+00:01:18,070 --> 00:01:19,560
+the things on the left-hand side and the right-hand side,
+
+25
+00:01:19,560 --> 00:01:21,970
+they have to be the same type. It sees them.
+
+26
+00:01:21,970 --> 00:01:23,195
+Even though they're both integers,
+
+27
+00:01:23,195 --> 00:01:26,095
+the fact they're different length means they're different types, and it throws an error.
+
+28
+00:01:26,095 --> 00:01:27,630
+So, in order to do this,
+
+29
+00:01:27,630 --> 00:01:29,260
+you've got to convert one to the other.
+
+30
+00:01:29,260 --> 00:01:32,870
+So, for instance, you might say, let me take that Y,
+
+31
+00:01:32,870 --> 00:01:34,300
+which is an int16,
+
+32
+00:01:34,300 --> 00:01:36,250
+and convert it to an int32, and then,
+
+33
+00:01:36,250 --> 00:01:38,635
+assign X to that. Then, that would work.
+
+34
+00:01:38,635 --> 00:01:41,120
+So, the way you do type conversions like that is,
+
+35
+00:01:41,120 --> 00:01:43,570
+you use this T operation,
+
+36
+00:01:43,570 --> 00:01:45,825
+where T is the name of the type.
+
+37
+00:01:45,825 --> 00:01:49,745
+So, if I want to convert Y int16 into an int32,
+
+38
+00:01:49,745 --> 00:01:53,865
+I just use this built-in function int32.
+
+39
+00:01:53,865 --> 00:01:58,695
+That will take whatever its argument is and try to convert it into an int32.
+
+40
+00:01:58,695 --> 00:02:00,985
+So, X equals int32 Y.
+
+41
+00:02:00,985 --> 00:02:02,340
+That's what it would do: take Y,
+
+42
+00:02:02,340 --> 00:02:04,805
+which is int16, convert it to int32.
+
+43
+00:02:04,805 --> 00:02:06,985
+Now, this is a conversion that is possible.
+
+44
+00:02:06,985 --> 00:02:11,160
+All it has to do is, its sign extends the Y integer.
+
+45
+00:02:11,160 --> 00:02:12,370
+So, the Y value,
+
+46
+00:02:12,370 --> 00:02:14,725
+you don't want to change Y's value. It's equal to two.
+
+47
+00:02:14,725 --> 00:02:18,730
+So, Y is a 16-bit version of two,
+
+48
+00:02:18,730 --> 00:02:21,390
+and they want to make it into a 32-bit version.
+
+49
+00:02:21,390 --> 00:02:24,250
+So, what it's going do is, take the sign bit and just extend it.
+
+50
+00:02:24,250 --> 00:02:25,690
+So, if the sign bits is zero,
+
+51
+00:02:25,690 --> 00:02:26,885
+meaning it's a positive value,
+
+52
+00:02:26,885 --> 00:02:28,810
+it just puts 16 zero bits,
+
+53
+00:02:28,810 --> 00:02:31,850
+and the high bits gives you a 32-bit number, which is equivalent, and also,
+
+54
+00:02:31,850 --> 00:02:34,310
+a 32-bit representation of two,
+
+55
+00:02:34,310 --> 00:02:35,770
+[inaudible] S equal to that.
+
+56
+00:02:35,770 --> 00:02:38,165
+So, this is a type of conversion that's possible.
+
+57
+00:02:38,165 --> 00:02:42,210
+So, it's easy to do. So, you just use this int32 function to do it.
+
+58
+00:02:42,210 --> 00:02:45,965
+Note that there are other type of conversions that you can't do so easily,
+
+59
+00:02:45,965 --> 00:02:47,100
+and it will fail on those,
+
+60
+00:02:47,100 --> 00:02:50,175
+but some of them are possible, like this one.
+
+61
+00:02:50,175 --> 00:02:54,265
+So, another type, besides integers, are floating points.
+
+62
+00:02:54,265 --> 00:02:58,360
+So, floating points, they're basic real numbers.
+
+63
+00:02:58,360 --> 00:03:01,970
+Now, depending on how many bits long the floating point is, say,
+
+64
+00:03:01,970 --> 00:03:04,220
+you got float32, that's going to give you
+
+65
+00:03:04,220 --> 00:03:08,990
+approximately six decimal bit digits of precision.
+
+66
+00:03:08,990 --> 00:03:14,335
+Float64 is going to give you approximately 15 decimal digits of precision.
+
+67
+00:03:14,335 --> 00:03:17,785
+So, you figure out how many bits you want to use,
+
+68
+00:03:17,785 --> 00:03:21,230
+how big you want it to be based on how much precision you need.
+
+69
+00:03:21,230 --> 00:03:23,565
+Often, it tends to be,
+
+70
+00:03:23,565 --> 00:03:26,395
+you want to go longer than shorter
+
+71
+00:03:26,395 --> 00:03:30,380
+because precision errors are a common problem in floating point arithmetic,
+
+72
+00:03:30,380 --> 00:03:32,205
+so you want to use more precision.
+
+73
+00:03:32,205 --> 00:03:33,900
+The more precision is probably the better.
+
+74
+00:03:33,900 --> 00:03:34,950
+Of course, there's a space issue.
+
+75
+00:03:34,950 --> 00:03:38,275
+You use more memory if you make them longer,
+
+76
+00:03:38,275 --> 00:03:40,180
+and also, performance changes.
+
+77
+00:03:40,180 --> 00:03:45,740
+But still, precision errors are an issue sometimes.
+
+78
+00:03:45,740 --> 00:03:52,150
+So, you can express floating point numbers with decimals or in scientific notation.
+
+79
+00:03:52,150 --> 00:03:57,410
+So, we can see two, var X is float64, 123.45.
+
+80
+00:03:57,410 --> 00:04:00,620
+That's a decimal. It'll make it a floating point representation.
+
+81
+00:04:00,620 --> 00:04:03,800
+Also, you can represent the same thing scientifically with this E
+
+82
+00:04:03,800 --> 00:04:07,320
+as the exponent for the 10.
+
+83
+00:04:07,320 --> 00:04:08,670
+So, this is base 10.
+
+84
+00:04:08,670 --> 00:04:10,770
+So, E2 means 10 to the two.
+
+85
+00:04:10,770 --> 00:04:13,270
+Also, you can represent complex numbers.
+
+86
+00:04:13,270 --> 00:04:16,560
+If you want to, they have complex numbers.
+
+87
+00:04:16,560 --> 00:04:19,640
+So, if you remember complex numbers from high school or wherever you learned it,
+
+88
+00:04:19,640 --> 00:04:21,980
+you get the real part and the imaginary part.
+
+89
+00:04:21,980 --> 00:04:24,760
+So, this is how you create a complex number.
+
+90
+00:04:24,760 --> 00:04:26,610
+You use this complex function.
+
+91
+00:04:26,610 --> 00:04:28,195
+You give two arguments.
+
+92
+00:04:28,195 --> 00:04:29,695
+The first number is the real,
+
+93
+00:04:29,695 --> 00:04:31,180
+the second number is the imaginary.
+
+94
+00:04:31,180 --> 00:04:35,030
+So, two plus three I would be that complex number,
+
+95
+00:04:35,030 --> 00:04:37,260
+if you're using complex.
+
+96
+00:04:38,070 --> 00:04:42,310
+So, first, we are going to talk about strings.
+
+97
+00:04:42,310 --> 00:04:46,350
+In order to talk about strings, we need to talk about ASCII code and Unicode.
+
+98
+00:04:46,350 --> 00:04:49,945
+So, strings are going to be sequences of bytes.
+
+99
+00:04:49,945 --> 00:04:51,430
+We'll see that in the next slide,
+
+100
+00:04:51,430 --> 00:04:54,070
+but each individual element,
+
+101
+00:04:54,070 --> 00:04:55,630
+each byte in a string,
+
+102
+00:04:55,630 --> 00:05:02,640
+strings are made to represent different characters that you see.
+
+103
+00:05:02,640 --> 00:05:04,695
+So, often, strings are made for printing.
+
+104
+00:05:04,695 --> 00:05:06,110
+They don't have to be for printing,
+
+105
+00:05:06,110 --> 00:05:08,260
+but they're often made to represent printed things.
+
+106
+00:05:08,260 --> 00:05:11,255
+So, for instance, the string hello world,
+
+107
+00:05:11,255 --> 00:05:14,895
+that's something that's meant to be printed and seen by a user.
+
+108
+00:05:14,895 --> 00:05:19,890
+So, now, each one these characters that you want to store in a string,
+
+109
+00:05:19,890 --> 00:05:23,610
+each character has to be coded according to a standardized code.
+
+110
+00:05:23,610 --> 00:05:26,910
+ASCII was basically the first accepted one,
+
+111
+00:05:26,910 --> 00:05:29,340
+American Standard Code for Information Exchange,
+
+112
+00:05:29,340 --> 00:05:30,750
+and it's just a character coding.
+
+113
+00:05:30,750 --> 00:05:37,465
+So, each character that you want to represent is represented with an 8-bit code.
+
+114
+00:05:37,465 --> 00:05:40,100
+So, for instance, a capital A.
+
+115
+00:05:40,100 --> 00:05:45,010
+Capital A in ASCII is the number 41 in hexadecimal.
+
+116
+00:05:45,010 --> 00:05:46,760
+I just know that.
+
+117
+00:05:46,760 --> 00:05:48,190
+I tell my head it's a common code.
+
+118
+00:05:48,190 --> 00:05:49,925
+But it's 41 in hexadecimal.
+
+119
+00:05:49,925 --> 00:05:51,785
+So, that's an 8-bit code.
+
+120
+00:05:51,785 --> 00:05:53,930
+So, ASCII is an 8-bit long code,
+
+121
+00:05:53,930 --> 00:05:57,955
+which means it can maximum represent 256 possible characters.
+
+122
+00:05:57,955 --> 00:06:01,740
+Really does 128 because one of the bits is used for something else.
+
+123
+00:06:01,740 --> 00:06:03,750
+So, that's not a lot of characters.
+
+124
+00:06:03,750 --> 00:06:05,890
+So, an 8-bit code is sufficient
+
+125
+00:06:05,890 --> 00:06:08,585
+for English because they aren't that many letters in the alphabet.
+
+126
+00:06:08,585 --> 00:06:11,090
+But once you start incorporating
+
+127
+00:06:11,090 --> 00:06:15,205
+other characters that you need to include, so, for instance,
+
+128
+00:06:15,205 --> 00:06:18,530
+Chinese is a good example because there are a lot of characters in Chinese,
+
+129
+00:06:18,530 --> 00:06:21,790
+you can't use an 8-bit code and hope to represent Chinese.
+
+130
+00:06:21,790 --> 00:06:23,930
+So, once you start trying to look at
+
+131
+00:06:23,930 --> 00:06:27,140
+all these different character sets in different languages and different characters
+
+132
+00:06:27,140 --> 00:06:32,520
+that maybe even aren't part of languages but things that you want to represent anyway,
+
+133
+00:06:32,520 --> 00:06:34,630
+that you want to show and have appear on the screen,
+
+134
+00:06:34,630 --> 00:06:36,870
+you need a lot more than 8-bits.
+
+135
+00:06:36,870 --> 00:06:38,360
+So, that's what Unicode is for.
+
+136
+00:06:38,360 --> 00:06:43,295
+Unicode is a character code that is a 32-bit long code.
+
+137
+00:06:43,295 --> 00:06:46,070
+So, you can represent two to the 32,
+
+138
+00:06:46,070 --> 00:06:47,450
+which is a lot bigger,
+
+139
+00:06:47,450 --> 00:06:49,320
+two gig, I think.
+
+140
+00:06:49,320 --> 00:06:51,755
+So, it's a lot bigger. So, that's a lot of characters.
+
+141
+00:06:51,755 --> 00:06:55,400
+Now, UTF-8 is, say,
+
+142
+00:06:55,400 --> 00:06:59,180
+a subset of Unicode.
+
+143
+00:06:59,180 --> 00:07:01,365
+It's a variable length code.
+
+144
+00:07:01,365 --> 00:07:03,630
+So, it can be 8-bit,
+
+145
+00:07:03,630 --> 00:07:06,330
+but it can go up to 32-bit.
+
+146
+00:07:06,500 --> 00:07:11,530
+The first set of codes in UTF-8 match ASCII.
+
+147
+00:07:11,530 --> 00:07:16,260
+So, all the ASCII code values are the same as their UTF-8 values.
+
+148
+00:07:16,260 --> 00:07:18,035
+So, for instance, capital A,
+
+149
+00:07:18,035 --> 00:07:21,615
+it's in hexadecimals of 41 in ASCII.
+
+150
+00:07:21,615 --> 00:07:24,375
+It's also a 41 in UTF-8.
+
+151
+00:07:24,375 --> 00:07:27,260
+Now, UTF-8 also includes a lot of other codes like,
+
+152
+00:07:27,260 --> 00:07:28,760
+for instance, Chinese characters.
+
+153
+00:07:28,760 --> 00:07:32,260
+Those aren't in the first 128,
+
+154
+00:07:32,260 --> 00:07:33,765
+they're outside of that.
+
+155
+00:07:33,765 --> 00:07:35,465
+They require more bytes.
+
+156
+00:07:35,465 --> 00:07:41,135
+You can't just use an 8-bit code to represent those or maybe those of 16-bits or 32-bits.
+
+157
+00:07:41,135 --> 00:07:43,480
+So, UTF-8 is a variable length code,
+
+158
+00:07:43,480 --> 00:07:48,665
+but it represents a lot more characters than you can represent with ASCII.
+
+159
+00:07:48,665 --> 00:07:54,450
+Now, the default in Go is UTF-8.
+
+160
+00:07:54,450 --> 00:07:57,170
+In UTF-8 or Unicode,
+
+161
+00:07:57,170 --> 00:08:00,700
+code point is a term for a Unicode character.
+
+162
+00:08:00,700 --> 00:08:05,020
+So, there can be up to two to the 32 code points.
+
+163
+00:08:05,020 --> 00:08:08,450
+In Go, they call a code point a rune.
+
+164
+00:08:08,450 --> 00:08:10,820
+So, rune is just a term for a code point.
+
+165
+00:08:10,820 --> 00:08:13,625
+So, the capital A character,
+
+166
+00:08:13,625 --> 00:08:14,795
+it has a rune,
+
+167
+00:08:14,795 --> 00:08:17,520
+which is represented with 0x41.
+
+168
+00:08:17,520 --> 00:08:19,485
+In hexadecimals, it's a 41.
+
+169
+00:08:19,485 --> 00:08:24,930
+You call that it's rune. Now to strings.
+
+170
+00:08:24,930 --> 00:08:31,310
+Now, strings are arbitrary sequences of bytes represented in UTF-8.
+
+171
+00:08:31,310 --> 00:08:35,345
+So, each byte is a rune represented as a UTF-8 code point.
+
+172
+00:08:35,345 --> 00:08:38,385
+So, the strings, they're read only.
+
+173
+00:08:38,385 --> 00:08:40,230
+You can't modify a string.
+
+174
+00:08:40,230 --> 00:08:44,510
+You can make a new string that is a modified version of an existing string,
+
+175
+00:08:44,510 --> 00:08:46,710
+but you can't modify an existing string.
+
+176
+00:08:46,710 --> 00:08:49,820
+Often meant to be printed or displayed to a user.
+
+177
+00:08:49,820 --> 00:08:54,230
+String literal is just a string that's notated with double quotes.
+
+178
+00:08:54,230 --> 00:08:55,450
+So, for instance, if I say,
+
+179
+00:08:55,450 --> 00:08:58,230
+X colon equals hi there, that's a string literal.
+
+180
+00:08:58,230 --> 00:08:59,900
+That's a sequence of bytes.
+
+181
+00:08:59,900 --> 00:09:02,710
+Each one those characters, H,
+
+182
+00:09:02,710 --> 00:09:05,940
+I, space, T, H, E, R, E,
+
+183
+00:09:05,940 --> 00:09:08,485
+each one of those is going to be represented as a rune,
+
+184
+00:09:08,485 --> 00:09:11,215
+a UTF-8 code point,
+
+185
+00:09:11,215 --> 00:09:12,900
+and they're put together.
+
+186
+00:09:12,900 --> 00:09:14,780
+An array of those,
+
+187
+00:09:14,780 --> 00:09:15,985
+we'll cover arrays soon,
+
+188
+00:09:15,985 --> 00:09:18,780
+but an array of those is going to be a string.

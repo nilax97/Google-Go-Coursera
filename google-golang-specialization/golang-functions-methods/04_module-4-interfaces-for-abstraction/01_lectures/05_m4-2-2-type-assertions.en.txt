@@ -1,0 +1,87 @@
+Module four, Interfaces for Abstraction. Topic 2.2, Type Assertions. So a lot of the point of an interface is
+to conceal differences between types. So if you think about it, an interface can
+hide the differences between two types. It basically highlights
+the two similarities. So while in this fit and yard
+implementation, there are rectangles and there are triangles. But from the inside fit in yard,
+they're all treated the same, right? As long as they both satisfy Shape2D,
+I can call s.Area, s.Perimeter, right? So what you're doing is, what interface
+allow you to do is to treat different types that have some similarities,
+some similar methods, treat them the same. All right, so you are hiding
+differences by using interfaces. But sometimes you need to disambiguate, sometimes you need to treat different
+types in different ways, okay? So sometimes, like in this function,
+we don't, right? We can just say s.Area, s.Perimeter. We treat them exactly the same
+because they have the same methods. But sometimes you do need to
+differentiate based on the type. You need to be able to figure out
+what is the concrete type, right? So in this example, s, since you're
+just calling area and perimeter, it doesn't matter exactly what
+the concrete type is, right? The concrete type could be rectangle,
+it could be triangle. It doesn't matter, either way area and
+perimeter do what you think. So in this case, the concrete type
+that underlies the interface value, that doesn't matter, okay? But there are definitely cases
+where the concrete type matters. In those cases, you're going to have
+to expose those type differences. So you're going to have
+to take this interface, which is hiding the differences between
+the types, and peel it apart again, and say okay, actually, this is really
+a rectangle, this is really a triangle. So situations like that might
+be a graphics program, okay? So I got my graphics program
+which I've used many times, but in my graphics program, this time I
+want to write a function called DrawShape. And it should draw any shape. So I want to be able to pass it as
+an argument any two dimensional shape. So I declare it sort of the top line I'm
+showing right there, func DrawShape. It takes Shape2D,
+that's the type of it's argument, Shape2D. So it can take any two
+dimensional shape as an argument. So that's good, right? I've used my interface to generalize and to hide the differences between the types,
+rectangle, triangle, circle, doesn't matter, for passing it as
+an argument to draw shape anyway. Now, inside DrawShape, though, in this
+case, I'm going to have to disambiguate. I'm going to have to determine this s,
+is it a rectangle, is it a triangle, what is it? Because maybe in the underlying API there's some kind of drawing functions
+that I'm using in this API, right? And the underlying drawing functions, they actually are specific to
+the type of shaping drawing. So for instance, maybe the underlying
+API gives me a draw rectangle, DrawRect, right? And then another draw triangle,
+and a draw circle, and so on, which is not uncommon in
+these drawing APIs, right? So you got draw rectangle,
+draw triangle, draw circle, all those. Now, these API functions, my DrawShape
+is going to have call these, right? When it wants to draw a rectangle,
+it's going to have to call DrawRectangle. DrawTriangle to draw triangle. And these underlying API functions,
+they don't take just any shape. They won't take Shape2D. DrawRect only takes rectangles. DrawTriangle only takes triangles. And so on. So this is the case where I
+want to use my interface so my DrawShape can take any argument,
+any type of reasonable shape. But inside my DrawShape,
+I'm going to have to differentiate. I'm going to say, look,
+if you're a rectangle, call DrawRect. If you're a triangle,
+call DrawTriangle, and so on. So in this case, inside DrawShape,
+I'm going to have to determine the concrete type that s is based on,
+that the shape is based on. So for that,
+I use what's called a type assertion. So type assertions can be used to
+disambiguate between the different concrete types that actually
+satisfy a particular interface. And you can see that here with DrawShape. It needs to actually disambiguate. So if it's a rectangle that's being
+passed, it needs to call DrawRect. If it's a triangle,
+it needs to call it DrawTraingle. So you can see us doing that here. At the top, you've got that first type
+assertion, where it says rect, ok:=, so that will return a rectangle,
+if the s is actually a rectangle. So if ok is true, and it found a rectangle,
+it will call DrawRect with that rectangle. Otherwise, the next type assertion actually checks to see if the type
+of the interface of s is a triangle. So it says, tri,
+ok:= s.(Triangle) this time. And so, ok will be true if
+s is actually a triangle. And in that case,
+tri is going to equal that triangle. And so,
+you call DrawTriangle with a triangle. So either way, we use this type
+assertion to disambiguate, to determine the actual underlying
+concrete type for this Shape2D interface. Now, another way to do this sort of
+a common thing that you need to do is what we just did in the last slide,
+we went down a list of possible types. So rectangle and triangle in this case. But note that an interface can actually
+be satisfied by many different types. There's an interface that's
+satisfied by 10 different types, you might need to disambiguate all 10. So to run down the list. If you're this type, then do this. If you're that type,
+then do that, and so on. And so, there's a switch construct type
+switch which is just for that purpose. So you got one case for every different
+type that you need to deal with. So in this case, you got two cases,
+case Rectangle, case Triangle. And in each case,
+case Rectangle draws the rectangle, case Triangle draws the triangle. But right before that,
+you start with the switch. So notice the type Type
+assertion says s.type. In parentheses you just say type,
+the generic word type. And so,
+what happens is sh will be whatever the, it'll be the concrete
+type that s represents. So if s is actually a rectangle,
+then sh will be that rectangle, right? If s is a triangle,
+then sh will be that triangle. And you'll hit the appropriate case. So if sh is a rectangle,
+then you'll execute the case rectangle. If sh is a triangle,
+then you'll execute the case triangle. So this is just a more convenient
+way to sort of run down a list to disambiguate a whole set of types
+that all satisfy a particular interface. Thank you.

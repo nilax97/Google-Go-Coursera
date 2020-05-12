@@ -1,0 +1,126 @@
+Module 2, Function Types. Topic 1.1, First-class Values. So, we've been talking about
+functions in this class already. You can't really program
+in Go without functions. So you've always gotta have
+at least the main function. And we've had that in all
+the examples that we've used. But what we're going to talk
+about now is the ways in which Go allows you to treat a function
+as a first-class value. So there's this term first-class value,
+treating the functions as first-class values and it's associated
+with functional programming. Functional programming is a way of
+programming, a programming paradigm let's say, that is different than what
+people usually use, let's say. So if you've ever programmed in scheme or
+something like that, that's a functional programming language,
+ML, there are a bunch of these languages. And so
+it's a different way of thinking, and we're not going to really do
+a lot of functional programming. But there are some of features of
+functional programming that can be very useful. So implement some of these features,
+and we'll talk about how to use those. So treating a function as a first-class
+value, generally means being able to treat a function like any other type,
+like an integer, a string, a float. All the things that you can
+do to one of those types, you can also do to a function. So as an example, variables can be
+declared to be a function type. So you can always declare a variable to be
+an integer type, a floating point type, things like that. You can also declare it
+to be a function type. And you can then set a variable
+equal to a function. You can create them dynamically, so in your code,
+you can create an integer on a fly, right? In the middle of your code, you can
+create new variable, X or whatever, and X equal three, whatever. And that creates an integer on a fly at
+run time while you're running the code. So that's creating a variable dynamically,
+creating some type dynamically. You can do that with functions, too. Now up until this point,
+we haven't done that. We create them statically,
+just at the top level you say func main or something like that. But we want to be able to
+create them dynamically, too. Sometimes it's very useful. So inside a function, you can create
+a new function, right inside. Functions can be passed as
+arguments to other functions and returned as values from other functions. So just like an integer,
+a flow, to something like that. You can pass it as an argument. You can pass a function as
+an argument to a function, or a function can return a new
+function as its return value. Also it can be stored in a data structure. So you can have a data structure,
+maybe a slice. You can have a slice of integers,
+something like that. You can also have a slice of floats. So in all these ways, Go lang is going to allow us to treat
+a function just like a regular type. So let's talk about how to
+implement these things in Go. Start off with variables as function. So one thing you'd like to be able to
+do sometimes is declare a variable as a function. So the variable basically acts
+as an alias, another name for that function in this case,
+we do this the way we're doing right here. So if you look at the example code,
+see in red, we've got that variable that we're
+declaring right at the top called funcVar. And that is going to be my new variable
+that I'm declaring to be a function type. So if you look at the top line,
+var funcVar, and then to the right of it, I give its type,
+and that's how you do it. So that's how you declare variables
+of certain types you say var funcVar, let's say I want it to be an integer,
+I'd say var funcVar int. So now I want it to be a function,
+so I say var funcVar func, and I give the argument type, integer, right? And I give its return type, so that right
+there, func, int in parentheses, and then int to the right of funcVar, you'd call
+that a signature, a function signature. And so you have to put that to the right
+of the variable name in the declaration. So that first line just declares
+a new variable called funcVar, which will be able to be
+assigned to a function. Now then right after that,
+I declare a function, inc function, incFn and
+it just does increment. Right, it takes a value x and
+it increments it, returns x+1. So it's just a function. Now in the main,
+first thing I do is I say funcVar = incFn. So right there, I am assigning
+funcVar to be that function incFn. Now notice in that assignment there, I don't put the parenthesis
+to the right of incFn. So normally, when you write a function, when you call a function,
+you'd put parenthesis. Open paren, close paren to the right
+of it, so if I wanted to call incFn, I'd say incFn open paren, close paren, put some parameters inside the
+parentheses, but that's how you call it. You put those parentheses. We are not calling it here though, right? So all we're doing is we're saying
+funcVar is basically appointed to the same function, to incFn, so
+we just do an assignment just as shown. And then once I've done that, I can use funcVar just the same as
+I would use that function name. So you can look at the last line. I'm doing a print,
+I'd say print funcVar 1. That's the same as saying print incFn 1. Pass one to the function,
+it executes it and increments it, it should print out a two. So in this way, the variable can be
+assigned directly to a function. So this is treating a function
+as a first-class object. Functions can also be passed as
+arguments to other functions. So you can see that here,
+I got this function called applyIt. And all it's supposed to do is
+apply a function to an integer. So it takes two arguments,
+my function applyIt. The first argument is a function. I call it afunct, and its type is func. Func takes an integer and
+returns an integer. The second argument is a value
+which I'm calling an integer. And the whole point of this function,
+this whole function applyIt should basically take that function
+that is its argument, apply that to the val argument,
+and it should return an integer. And if you look at what the function
+does in between the curly brackets, all you have is return afunct(val). So it takes whatever that
+function is that you passed, passes the value to that function,
+and returns its return value. So in this way,
+we're passing a function as an argument to another function which
+is useless sometimes. We'll talk about that. So here's sort of a slightly bigger
+example where passing a function as an argument. Again at the top, we've got that
+applyIt that I told you about, right? So we're just going to show how
+you might use such a function. So applyIt is a function. It takes a function as an argument, and it applies the argument function to
+the other argument, the val argument. Now then right after I define that,
+I define two other functions, an inc function and a dec function,
+increment, decrement functions. And they do what you would expect,
+return x + 1, return x- 1. So we got those two functions,
+then we looked at the main and there are two print statements. I call applyIt both times,
+applyIt with the incFn as the argument and applyIt with the decFn. So when I call applyIt with the incFn,
+the other argument is 2, right? So an incFn should increment that,
+so it should print out a 3. And then the next print statement
+calls applyIt with the decFn, decrement function. It passes it a 2, so we should return
+a 1 and so 1 should get printed out. So if you run this code,
+you should get a 3 and 1. Anonymous functions, so anonymous functions are basically
+functions without a name. So you don't actually need to name
+a function if you don't want to. Now, it is usually very
+useful to name functions. If you want to call them,
+you need a name for them, right? But if you're going to pass a function
+as an argument to another function, often you don't need to
+give it an explicit name. So you saw on the last slide just now,
+I had this inc function and dec function. And I gave them names and
+I passed it to my applyIt function. But I don't have to actually give them
+names in order to pass them as arguments. I can just make the function
+right there in the call. They call this a lambda calculator,
+because this is a lambda and it comes from lambda calculus,
+but we won't use those terms. That's a math term that people,
+where this actually came from. Because these ideas of passing these
+functions around came from lambda calculus a long time ago. But if we look at the function,
+we've still got the same applyIt. But if you look at the main,
+I call applyIt, and the first argument is
+a function definition, right? So without a name, there's no name for it,
+but it is otherwise a function definition. So I have it highlighted in red,
+func takes x integer as an argument, returns an int, and
+in curly brackets, return x + 1. So that's the increment function. But I never gave it the name inc function,
+I don't have to. I just define the function the function
+right there, define it without a name. So it is now called an anonymous function. And I can just pass it
+directly to applyIt, and I didn't really need the name, right? ApplyIt will just apply that function. Names are more useful if you're going to
+call this function directly in your code. You want it named associated with it,
+but in a case like this, you don't need a name. You can just make the function and
+just pass it as an argument. Thank you.

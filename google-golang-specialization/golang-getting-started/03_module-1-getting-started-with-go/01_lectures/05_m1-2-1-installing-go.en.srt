@@ -1,0 +1,279 @@
+1
+00:00:10,670 --> 00:00:15,390
+We'll talk right now about how you download and install the Go tools,
+
+2
+00:00:15,390 --> 00:00:18,210
+just to get you started running a program.
+
+3
+00:00:18,210 --> 00:00:20,400
+Right now, we'll talk about
+
+4
+00:00:20,400 --> 00:00:24,865
+the download process and then next I'll go through actually doing it,
+
+5
+00:00:24,865 --> 00:00:27,475
+showing you how to compile your first program,
+
+6
+00:00:27,475 --> 00:00:29,335
+but right here, just talk about installing,
+
+7
+00:00:29,335 --> 00:00:31,040
+which is fairly straightforward.
+
+8
+00:00:31,040 --> 00:00:35,615
+So, first thing you are going to do is go to golang.org,
+
+9
+00:00:35,615 --> 00:00:39,010
+and this is a snippet of the page when you go there.
+
+10
+00:00:39,010 --> 00:00:40,530
+This isn't the whole page,
+
+11
+00:00:40,530 --> 00:00:41,680
+I had to fit it on the slide,
+
+12
+00:00:41,680 --> 00:00:43,590
+but this is what it basically looks like,
+
+13
+00:00:43,590 --> 00:00:44,750
+at least right now it does,
+
+14
+00:00:44,750 --> 00:00:46,320
+that can change over time of course.
+
+15
+00:00:46,320 --> 00:00:48,220
+You can see the gopher, see that little gopher.
+
+16
+00:00:48,220 --> 00:00:51,920
+You'll see that gopher icon over and over again.
+
+17
+00:00:51,920 --> 00:00:58,120
+Gopher is the mascot of the Go programming language like Unix, you got demons.
+
+18
+00:00:58,120 --> 00:01:00,240
+So, Go you have the gopher,
+
+19
+00:01:00,240 --> 00:01:04,485
+but the main thing to look at here is that button down there that says Download Go.
+
+20
+00:01:04,485 --> 00:01:05,810
+So, that's first thing you're going to click on.
+
+21
+00:01:05,810 --> 00:01:07,630
+You're going to see Download Go, you click on that.
+
+22
+00:01:07,630 --> 00:01:09,940
+Actually also look at this,
+
+23
+00:01:09,940 --> 00:01:12,500
+on the left side, when you go to the web page, you'll see the whole screen.
+
+24
+00:01:12,500 --> 00:01:15,970
+I've cut it off here, but on the left side,
+
+25
+00:01:15,970 --> 00:01:18,800
+you could see there's a yellow box there
+
+26
+00:01:18,800 --> 00:01:21,410
+where you can type in Go code and click on the Run button,
+
+27
+00:01:21,410 --> 00:01:22,690
+it'll compile and run it.
+
+28
+00:01:22,690 --> 00:01:25,745
+So, it'll compile it remotely and run it remotely.
+
+29
+00:01:25,745 --> 00:01:27,385
+We're not going to use that,
+
+30
+00:01:27,385 --> 00:01:29,180
+instead we're going to download the compiler,
+
+31
+00:01:29,180 --> 00:01:30,530
+we're going to download Go Download to
+
+32
+00:01:30,530 --> 00:01:32,950
+your machine locally and you'll be doing it locally,
+
+33
+00:01:32,950 --> 00:01:35,010
+but if you want to just fool around,
+
+34
+00:01:35,010 --> 00:01:37,080
+you could type in their, type some go program in there,
+
+35
+00:01:37,080 --> 00:01:39,035
+click run, and it would actually execute it.
+
+36
+00:01:39,035 --> 00:01:43,370
+So, what we're doing now is we're going to click Download Go to download the tools.
+
+37
+00:01:43,370 --> 00:01:46,925
+Now, when you do that, you come to a page that looks like this.
+
+38
+00:01:46,925 --> 00:01:49,965
+Now, again I'm only showing a part of the page,
+
+39
+00:01:49,965 --> 00:01:52,445
+there's more below it and to the right.
+
+40
+00:01:52,445 --> 00:01:54,930
+Basically, when you download Go,
+
+41
+00:01:54,930 --> 00:01:58,590
+you can download the precompiled versions for different platforms.
+
+42
+00:01:58,590 --> 00:02:00,495
+They've got Windows, and Linux,
+
+43
+00:02:00,495 --> 00:02:05,050
+and Mac OS and you can also download the source if you want to,
+
+44
+00:02:05,050 --> 00:02:07,530
+and you could compile all of the Go from scratch,
+
+45
+00:02:07,530 --> 00:02:10,295
+it's whole tools chain from scratch if you wanted to.
+
+46
+00:02:10,295 --> 00:02:13,105
+We will not be doing that. That is pain.
+
+47
+00:02:13,105 --> 00:02:15,290
+We won't be doing that, but know that you could,
+
+48
+00:02:15,290 --> 00:02:18,780
+it is open source and all the sources are right there for download if you want it.
+
+49
+00:02:18,780 --> 00:02:20,800
+So, I'm going to be doing this on a Windows machine,
+
+50
+00:02:20,800 --> 00:02:24,335
+although you could be doing it on a Linux or a Mac OS machine, either way.
+
+51
+00:02:24,335 --> 00:02:26,910
+So, go for the feature downloads,
+
+52
+00:02:26,910 --> 00:02:28,335
+they make it pretty easy.
+
+53
+00:02:28,335 --> 00:02:31,900
+For Windows, you pick that MSI file that they've got highlighted right there.
+
+54
+00:02:31,900 --> 00:02:36,090
+Basically, what you want is the newest stable precompiled version.
+
+55
+00:02:36,090 --> 00:02:39,440
+I don't see unstable ones on here,
+
+56
+00:02:39,440 --> 00:02:42,510
+but I would recommend the stable, but it's up to you.
+
+57
+00:02:42,510 --> 00:02:44,020
+Anyway, you go for a new version,
+
+58
+00:02:44,020 --> 00:02:46,965
+click the featured one and you download the MSI.
+
+59
+00:02:46,965 --> 00:02:48,490
+Now, once you get that,
+
+60
+00:02:48,490 --> 00:02:51,560
+remember if you have an antivirus on your machine,
+
+61
+00:02:51,560 --> 00:02:54,875
+it can pop up and worry about this and complain,
+
+62
+00:02:54,875 --> 00:02:57,010
+but just say okay.
+
+63
+00:02:57,010 --> 00:03:00,410
+Then once you start running it, it'll start a wizard.
+
+64
+00:03:00,410 --> 00:03:02,210
+Now, you've seen these installation wizards and
+
+65
+00:03:02,210 --> 00:03:04,235
+this is sort of a standard installation wizard.
+
+66
+00:03:04,235 --> 00:03:06,690
+Just obey the wizard and click Next, Next,
+
+67
+00:03:06,690 --> 00:03:09,240
+and it will ask you where you want to install the tool,
+
+68
+00:03:09,240 --> 00:03:11,175
+what directory you want it in, and so on.
+
+69
+00:03:11,175 --> 00:03:13,190
+The default locations were fine with me,
+
+70
+00:03:13,190 --> 00:03:15,400
+but that of course is up to you.

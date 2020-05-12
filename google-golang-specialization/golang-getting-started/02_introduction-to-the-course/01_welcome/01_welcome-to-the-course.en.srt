@@ -1,0 +1,87 @@
+1
+00:00:07,550 --> 00:00:10,660
+Welcome to the course, Course One.
+
+2
+00:00:10,660 --> 00:00:12,870
+The point of this course is to give you
+
+3
+00:00:12,870 --> 00:00:18,545
+some first-tier working knowledge of the Go language and how to use it.
+
+4
+00:00:18,545 --> 00:00:22,910
+I'm assuming that you already have some experience programming in other languages,
+
+5
+00:00:22,910 --> 00:00:25,470
+so I'm not talking from scratch here.
+
+6
+00:00:25,470 --> 00:00:28,390
+I'm assuming you already have seen a lot of these concepts.
+
+7
+00:00:28,390 --> 00:00:30,675
+You know data types, you know things like this,
+
+8
+00:00:30,675 --> 00:00:34,080
+but maybe you're familiar with C or Python or
+
+9
+00:00:34,080 --> 00:00:37,440
+Java or something like that and you want to move over to Go.
+
+10
+00:00:37,440 --> 00:00:41,655
+Maybe you want to start programming systems devices right.
+
+11
+00:00:41,655 --> 00:00:43,790
+You want to do some more low-level stuff
+
+12
+00:00:43,790 --> 00:00:45,915
+but you don't want to go straight to C, let's say,
+
+13
+00:00:45,915 --> 00:00:48,110
+or you've been dealing in C in a long time and you want
+
+14
+00:00:48,110 --> 00:00:50,550
+your life to be easier right? Something like that.
+
+15
+00:00:50,550 --> 00:00:53,955
+In fact, Go on the whole is a sort of sweet spot,
+
+16
+00:00:53,955 --> 00:00:56,835
+where it's efficient, close to C,
+
+17
+00:00:56,835 --> 00:01:01,010
+but it's also easy to use like say maybe Python or Java, has a lot of that.
+
+18
+00:01:01,010 --> 00:01:06,585
+So it's in-between, and so we're going to just hit on all the basics in this class,
+
+19
+00:01:06,585 --> 00:01:07,720
+in this particular course,
+
+20
+00:01:07,720 --> 00:01:09,830
+and you should be able to program something and get
+
+21
+00:01:09,830 --> 00:01:12,030
+a feel for it and see if you even like this language at all,
+
+22
+00:01:12,030 --> 00:01:14,400
+and if you can be comfortable with it.

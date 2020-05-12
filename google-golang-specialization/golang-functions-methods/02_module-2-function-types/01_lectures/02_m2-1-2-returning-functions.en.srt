@@ -1,0 +1,963 @@
+1
+00:00:00,110 --> 00:00:05,880
+Module 2, function types,
+topic 1.2, returning functions.
+
+2
+00:00:05,880 --> 00:00:09,350
+Functions can also return other
+functions as their return value.
+
+3
+00:00:10,430 --> 00:00:12,710
+So why would you do such a thing?
+
+4
+00:00:12,710 --> 00:00:14,690
+Okay, that's a good question.
+
+5
+00:00:14,690 --> 00:00:18,690
+One reason to do it is if you want to make
+a new function that's sort of a special
+
+6
+00:00:18,690 --> 00:00:21,170
+purpose parameterizable function.
+
+7
+00:00:21,170 --> 00:00:24,760
+So you want to change something about
+the function according to some kind of
+
+8
+00:00:24,760 --> 00:00:25,300
+input data.
+
+9
+00:00:25,300 --> 00:00:28,930
+You want to make a new function that acts
+differently, that is parameterizable.
+
+10
+00:00:28,930 --> 00:00:31,870
+So you can create that, you can have
+a function create a new function
+
+11
+00:00:31,870 --> 00:00:33,930
+which has a different set of parameters.
+
+12
+00:00:33,930 --> 00:00:38,320
+So to give you an example
+of something like this, and
+
+13
+00:00:38,320 --> 00:00:42,070
+by the way, I'll admit, it took me
+a while to think of this example, okay?
+
+14
+00:00:42,070 --> 00:00:46,450
+So this isn't a common thing that people
+do a whole heck of a lot anymore.
+
+15
+00:00:46,450 --> 00:00:51,174
+But I can imagine uses for it, and it's
+kind of interesting to think about it,
+
+16
+00:00:51,174 --> 00:00:53,760
+about all the things you could
+do once you start thinking about
+
+17
+00:00:53,760 --> 00:00:56,790
+returning new functions that
+have different properties.
+
+18
+00:00:56,790 --> 00:00:58,290
+Okay, so here is my example.
+
+19
+00:00:58,290 --> 00:01:00,040
+I want to find a distance origin,
+
+20
+00:01:00,040 --> 00:01:02,100
+I want a function that computes
+the distance in to the origin.
+
+21
+00:01:02,100 --> 00:01:05,865
+So, it takes a point, x,
+y coordinates of a point, and
+
+22
+00:01:05,865 --> 00:01:07,435
+it returns a distance to the origin.
+
+23
+00:01:07,435 --> 00:01:09,945
+So basically it's going to
+perform Pythagorean theorem
+
+24
+00:01:09,945 --> 00:01:11,985
+to find the distance, right?
+
+25
+00:01:11,985 --> 00:01:15,015
+Now, what if I want to be able
+to move the origin, right?
+
+26
+00:01:15,015 --> 00:01:17,948
+I remember vaguely in physics,
+you might want to move the origin.
+
+27
+00:01:17,948 --> 00:01:21,746
+Maybe I don't want it here, I want it on
+top of the car, depending on the problem,
+
+28
+00:01:21,746 --> 00:01:23,522
+right, which is moving, who knows.
+
+29
+00:01:23,522 --> 00:01:25,752
+But I might want to change the origin.
+
+30
+00:01:25,752 --> 00:01:29,262
+So the distance to the origin is
+going to change depending on what
+
+31
+00:01:29,262 --> 00:01:31,112
+the origin is, right?
+
+32
+00:01:31,112 --> 00:01:32,752
+So I can think of the origin,
+
+33
+00:01:32,752 --> 00:01:36,482
+the location of the origin as a set
+of parameters to this function.
+
+34
+00:01:36,482 --> 00:01:40,860
+And I would like to make a new function,
+a function for each different origin.
+
+35
+00:01:40,860 --> 00:01:44,290
+So maybe I want a distance to origin
+function that assumes one origin.
+
+36
+00:01:44,290 --> 00:01:47,340
+And then another distance to origin
+function that assumes a new origin.
+
+37
+00:01:47,340 --> 00:01:49,400
+Maybe the origin is moving for
+some reason.
+
+38
+00:01:49,400 --> 00:01:51,110
+Which actually happens in physics.
+
+39
+00:01:51,110 --> 00:01:53,820
+So let's take a look at
+how we might do that.
+
+40
+00:01:54,860 --> 00:01:59,110
+So a way we do it, is we can make
+a function that defines a function and
+
+41
+00:01:59,110 --> 00:02:00,140
+it returns a function.
+
+42
+00:02:00,140 --> 00:02:02,850
+So this function is called MakeDistOrigin,
+right?
+
+43
+00:02:02,850 --> 00:02:06,810
+And the point of this function is
+to create the function that I want,
+
+44
+00:02:06,810 --> 00:02:08,640
+this distance to origin function.
+
+45
+00:02:08,640 --> 00:02:10,950
+So if we look down at
+the bottom of this function,
+
+46
+00:02:10,950 --> 00:02:13,170
+you could see it says a return fn, right?
+
+47
+00:02:13,170 --> 00:02:16,490
+So what its going to do is its going to
+define a function inside it, and
+
+48
+00:02:16,490 --> 00:02:19,730
+then it's going to return that
+function as its return value.
+
+49
+00:02:19,730 --> 00:02:24,720
+So let's look at the, go back to the top,
+make this into origin.
+
+50
+00:02:24,720 --> 00:02:26,180
+It takes several arguments, okay.
+
+51
+00:02:27,360 --> 00:02:31,310
+The arguments right there are o_x,
+o_y, right?
+
+52
+00:02:31,310 --> 00:02:32,796
+These are two floats.
+
+53
+00:02:32,796 --> 00:02:36,273
+Now, these two floats,
+they're supposed to be the origin.
+
+54
+00:02:36,273 --> 00:02:37,625
+The o stands for origin in this case.
+
+55
+00:02:37,625 --> 00:02:41,006
+So the o_x and
+o_y are the origin location, right?
+
+56
+00:02:41,006 --> 00:02:45,683
+So if I want my origin to be 0,0,
+those first two arguments would be 0,0.
+
+57
+00:02:45,683 --> 00:02:47,870
+So wherever I want my origin,
+
+58
+00:02:47,870 --> 00:02:53,100
+I pass that as arguments to
+this MakeDistOrigin function.
+
+59
+00:02:53,100 --> 00:02:56,940
+Now, the return value of this
+MakeDistOrigin function is a function.
+
+60
+00:02:56,940 --> 00:02:59,390
+And you can see that in the second line,
+line 2,
+
+61
+00:02:59,390 --> 00:03:04,230
+func at two arguments
+float64,float64 returns one float64.
+
+62
+00:03:04,230 --> 00:03:09,230
+So the two arguments of this return
+value of the two floats are going to
+
+63
+00:03:09,230 --> 00:03:13,024
+be the x and y coordinates whose distance
+we want to compute to the origin.
+
+64
+00:03:13,024 --> 00:03:16,883
+And then, the last float64 is a return
+value which is going to be a float which
+
+65
+00:03:16,883 --> 00:03:18,522
+is the actual distance, okay?
+
+66
+00:03:18,522 --> 00:03:23,180
+So just get this straight,
+this make distance to origin function,
+
+67
+00:03:23,180 --> 00:03:28,500
+it has two arguments which are the x,
+y coordinates of the origin.
+
+68
+00:03:28,500 --> 00:03:31,000
+And it has a return value
+which is a function,
+
+69
+00:03:31,000 --> 00:03:35,460
+which is going to compute the distance to
+that origin that we passed as arguments.
+
+70
+00:03:35,460 --> 00:03:38,480
+Now, if we look into the function,
+line three.
+
+71
+00:03:38,480 --> 00:03:39,850
+We have a variable called fn,
+
+72
+00:03:39,850 --> 00:03:42,980
+and that's going to be
+the function that we're creating.
+
+73
+00:03:42,980 --> 00:03:47,534
+So fn: equals, and you notice we're
+defining a new function, func x,
+
+74
+00:03:47,534 --> 00:03:50,540
+y to floats and returns a float.
+
+75
+00:03:50,540 --> 00:03:54,265
+And this new function that we're creating,
+it returns math.square root, so
+
+76
+00:03:54,265 --> 00:03:55,498
+it computes square root.
+
+77
+00:03:55,498 --> 00:03:57,370
+It's doing Pythagorean theorem.
+
+78
+00:03:57,370 --> 00:03:59,838
+Math,pow x minus o, x, right?
+
+79
+00:03:59,838 --> 00:04:04,250
+So I take the difference between
+the x coordinate and the origin.
+
+80
+00:04:04,250 --> 00:04:06,180
+And the origin's x.
+
+81
+00:04:06,180 --> 00:04:10,150
+And I square that, and then I do
+the same thing, I add that to y squared.
+
+82
+00:04:10,150 --> 00:04:14,470
+So it's y minus it's origin with a y
+component of the origin, squared.
+
+83
+00:04:14,470 --> 00:04:15,880
+And then, I take the square root of that.
+
+84
+00:04:15,880 --> 00:04:17,504
+So that's just Pythagorean theorem.
+
+85
+00:04:17,504 --> 00:04:20,360
+It does its Pythagorean theorem,
+and notice that it take the x,
+
+86
+00:04:20,360 --> 00:04:24,380
+y coordinates that you want to find, whose
+distant you want to find from the origin.
+
+87
+00:04:24,380 --> 00:04:27,340
+Subtracts x from the origins x,
+y from the origins y.
+
+88
+00:04:27,340 --> 00:04:29,840
+Does the Pythagorean theorem.
+
+89
+00:04:29,840 --> 00:04:31,558
+And then, it returns that function.
+
+90
+00:04:31,558 --> 00:04:36,050
+So this MakeDistOrigin function doesn't
+actually compute the Pythagorean theorem,
+
+91
+00:04:36,050 --> 00:04:39,430
+it returns a function whose job
+it is to do Pythagorean theorem,
+
+92
+00:04:39,430 --> 00:04:44,545
+to compute Pythagorean theorem to
+figure out the distance from an origin,
+
+93
+00:04:44,545 --> 00:04:47,180
+o, x comma o, y.
+
+94
+00:04:47,180 --> 00:04:51,230
+So this is a function that
+is made special purpose,
+
+95
+00:04:51,230 --> 00:04:54,000
+this actually creates
+special purpose functions.
+
+96
+00:04:54,000 --> 00:04:55,812
+So notice, I could use this function,
+
+97
+00:04:55,812 --> 00:04:59,200
+this MakeDistOrigin function
+to make many functions.
+
+98
+00:04:59,200 --> 00:05:01,930
+I could make one distance
+to origin function that
+
+99
+00:05:01,930 --> 00:05:03,360
+computes a distance to one origin.
+
+100
+00:05:03,360 --> 00:05:06,370
+I could make another one that computes
+the distance to a different origin.
+
+101
+00:05:06,370 --> 00:05:09,740
+So I can make as many as I
+want with different origins.
+
+102
+00:05:09,740 --> 00:05:12,676
+And so, the origin is now built
+in to the return function.
+
+103
+00:05:14,805 --> 00:05:18,230
+Okay, so now,
+let's look at how we might use this.
+
+104
+00:05:18,230 --> 00:05:20,850
+In my main,
+I'm going to create two functions.
+
+105
+00:05:20,850 --> 00:05:22,410
+I say, look, I want to have origins.
+
+106
+00:05:22,410 --> 00:05:27,037
+I want to have origin 0,0 and
+another origin at 2,2, for one reason or
+
+107
+00:05:27,037 --> 00:05:30,481
+another in my problem,
+I need two different origins.
+
+108
+00:05:30,481 --> 00:05:36,207
+So Dist1 is going to be the function that
+computes the distance to origins 0,0.
+
+109
+00:05:36,207 --> 00:05:40,935
+Dist2 is going to be the function that
+computes the distance to origin 2,2.
+
+110
+00:05:40,935 --> 00:05:43,865
+And you can see me define
+those in the first two lines.
+
+111
+00:05:43,865 --> 00:05:47,732
+I just call MakeDistOrigin with 0,0,
+and then 2,2.
+
+112
+00:05:47,732 --> 00:05:51,386
+Then the last two lines,
+the print lines, they just print,
+
+113
+00:05:51,386 --> 00:05:54,822
+they compute the distance
+from 2,2 to the origins.
+
+114
+00:05:54,822 --> 00:05:56,750
+So the first one uses Dist1.
+
+115
+00:05:56,750 --> 00:06:00,900
+So it computes the distance
+from 2,2 to the origin 0,0,
+
+116
+00:06:00,900 --> 00:06:03,547
+which is about 2.1 something.
+
+117
+00:06:03,547 --> 00:06:05,340
+So that's what we'd print out.
+
+118
+00:06:05,340 --> 00:06:09,570
+Where the second one computes
+the distance from 2,2 to origin 2,2,
+
+119
+00:06:09,570 --> 00:06:11,110
+which it should be zero.
+
+120
+00:06:11,110 --> 00:06:13,613
+So you print that out and
+you get zero for that.
+
+121
+00:06:13,613 --> 00:06:17,193
+So what we've done is we've made
+two special-purpose functions.
+
+122
+00:06:17,193 --> 00:06:20,883
+And we made them special-purpose
+by giving them parameters,
+
+123
+00:06:20,883 --> 00:06:23,260
+specifically the origins, right?
+
+124
+00:06:23,260 --> 00:06:26,730
+The origins are the parameters
+that we use to make the function.
+
+125
+00:06:26,730 --> 00:06:31,285
+So this is somethings that's kind of
+a cool use of returning a function, right?
+
+126
+00:06:31,285 --> 00:06:36,033
+A function can create a new function that
+serves sort of a catered, special purpose.
+
+127
+00:06:39,037 --> 00:06:41,720
+Now, every function has an environment.
+
+128
+00:06:43,100 --> 00:06:47,530
+An environment Is a set of all the names
+that are valid inside the function, okay?
+
+129
+00:06:47,530 --> 00:06:48,442
+All the variables and
+
+130
+00:06:48,442 --> 00:06:52,150
+other things the you define that you
+can refer to inside that function.
+
+131
+00:06:52,150 --> 00:06:55,350
+So this includes all the names that
+are defined locally in the function,
+
+132
+00:06:55,350 --> 00:06:57,280
+any variables that you
+create in the function.
+
+133
+00:06:57,280 --> 00:07:00,235
+But also, it uses Lexical Scoping.
+
+134
+00:07:00,235 --> 00:07:01,753
+Is lexically scoped.
+
+135
+00:07:01,753 --> 00:07:06,227
+So what that means is the function
+can access variables that
+
+136
+00:07:06,227 --> 00:07:11,080
+are defined in the block where
+the function is defined.
+
+137
+00:07:11,080 --> 00:07:14,460
+So in the example code down there,
+we got this function foo.
+
+138
+00:07:14,460 --> 00:07:17,170
+Now, the variables that I
+have highlighted in red,
+
+139
+00:07:17,170 --> 00:07:19,670
+those are all inside its environment.
+
+140
+00:07:19,670 --> 00:07:21,010
+So let's take z.
+
+141
+00:07:21,010 --> 00:07:27,675
+z is defined inside foo, so clearly,
+it's within foo's environment.
+
+142
+00:07:27,675 --> 00:07:30,619
+Actually, notice how I use the words
+scope to refer to environment?
+
+143
+00:07:30,619 --> 00:07:31,850
+People do that all the time.
+
+144
+00:07:31,850 --> 00:07:32,810
+It's very common.
+
+145
+00:07:32,810 --> 00:07:34,240
+It's not technically correct.
+
+146
+00:07:34,240 --> 00:07:37,090
+I think you're supposed to use the term
+environment rather than scope.
+
+147
+00:07:37,090 --> 00:07:41,010
+So anyway,
+the variable z is defined inside foo.
+
+148
+00:07:41,010 --> 00:07:42,810
+So it's inside foo's environment.
+
+149
+00:07:42,810 --> 00:07:45,008
+The variable y is a local variable to foo.
+
+150
+00:07:45,008 --> 00:07:47,050
+It's one of it's parameters, right?
+
+151
+00:07:47,050 --> 00:07:49,910
+So that is also inside
+the environment of foo.
+
+152
+00:07:49,910 --> 00:07:52,560
+So foo can access y and z.
+
+153
+00:07:52,560 --> 00:07:58,140
+Now, the variable x is defined in the same
+block as the function foo is defined,
+
+154
+00:07:58,140 --> 00:08:00,130
+so foo can see that variable x, too.
+
+155
+00:08:00,130 --> 00:08:01,760
+So let's say this whole,
+
+156
+00:08:01,760 --> 00:08:04,360
+this piece of code is all defined
+inside another function, right?
+
+157
+00:08:04,360 --> 00:08:09,080
+This variable x is defined in the same
+place, the same block, as foo is defined,
+
+158
+00:08:09,080 --> 00:08:10,970
+and so foo can have access to that, too.
+
+159
+00:08:10,970 --> 00:08:15,590
+So all those variables highlighted in
+red are within the environment of foo.
+
+160
+00:08:15,590 --> 00:08:19,850
+All the variables that foo has access
+to and can use when it's executed.
+
+161
+00:08:20,870 --> 00:08:23,720
+So that's what environment is,
+and that's important.
+
+162
+00:08:23,720 --> 00:08:26,404
+When you start passing around
+functions as arguments,
+
+163
+00:08:26,404 --> 00:08:28,698
+the environment goes
+along with the function.
+
+164
+00:08:30,419 --> 00:08:33,220
+So, this term Closure.
+
+165
+00:08:33,220 --> 00:08:36,647
+A Closure is a function plus
+its environment, right?
+
+166
+00:08:36,647 --> 00:08:37,550
+Together.
+
+167
+00:08:37,550 --> 00:08:42,990
+In fact, in Go, I think it's implemented
+actually directly as a struct.
+
+168
+00:08:42,990 --> 00:08:45,055
+You have a pointer to the function and
+pointed to the environment, and
+
+169
+00:08:45,055 --> 00:08:46,270
+they're put together.
+
+170
+00:08:46,270 --> 00:08:50,270
+So when you pass a function as
+an argument to another function,
+
+171
+00:08:50,270 --> 00:08:53,390
+you're also passing its
+environment with it.
+
+172
+00:08:53,390 --> 00:08:55,890
+So what that means is when
+you eventually execute
+
+173
+00:08:55,890 --> 00:08:59,630
+this function that you just passed,
+it still has access to its environment,
+
+174
+00:08:59,630 --> 00:09:02,090
+the environment where it was defined.
+
+175
+00:09:02,090 --> 00:09:04,259
+So what implications does this have?
+
+176
+00:09:04,259 --> 00:09:08,320
+Sometimes it makes figuring out
+the variable values kind of confusing.
+
+177
+00:09:08,320 --> 00:09:11,220
+But just remember that the closure,
+the environment to that function,
+
+178
+00:09:11,220 --> 00:09:14,360
+goes with the function when
+you pass it as an argument.
+
+179
+00:09:14,360 --> 00:09:16,970
+So let's take an example.
+
+180
+00:09:16,970 --> 00:09:20,720
+This, again, is a make distant
+to origin function, right?
+
+181
+00:09:20,720 --> 00:09:25,060
+Now, the function that it
+defines fn equals func,
+
+182
+00:09:25,060 --> 00:09:28,520
+that function, that function,
+it has and environment.
+
+183
+00:09:28,520 --> 00:09:30,621
+And notice that o underscore x, and
+
+184
+00:09:30,621 --> 00:09:33,980
+o underscore y are part
+of its environment, okay?
+
+185
+00:09:33,980 --> 00:09:34,950
+That's important, right?
+
+186
+00:09:34,950 --> 00:09:36,250
+They are a part of its environment.
+
+187
+00:09:36,250 --> 00:09:39,710
+So when you execute that function later,
+so
+
+188
+00:09:39,710 --> 00:09:42,296
+this make distance to origin,
+it's going to return this function.
+
+189
+00:09:42,296 --> 00:09:45,801
+And later on, when that function
+that you return gets executed,
+
+190
+00:09:45,801 --> 00:09:48,235
+it still has access to
+the same environment.
+
+191
+00:09:48,235 --> 00:09:51,554
+So o_x and o_y,
+that it had when it was defined,
+
+192
+00:09:51,554 --> 00:09:56,221
+they were paths to make distance to
+origin, those variables are still
+
+193
+00:09:56,221 --> 00:10:00,196
+accessible to this function
+when you call it later, okay?
+
+194
+00:10:00,196 --> 00:10:01,174
+So that's why, so
+
+195
+00:10:01,174 --> 00:10:04,550
+basically what I'm saying is it
+remembers these origin values.
+
+196
+00:10:04,550 --> 00:10:07,790
+The o_x, o_y,
+that gets carried with the function.
+
+197
+00:10:07,790 --> 00:10:09,060
+And so, when you execute the function,
+
+198
+00:10:09,060 --> 00:10:14,465
+it's still using the same origin values,
+o_x, o_y when it gets executed.
+
+199
+00:10:14,465 --> 00:10:15,555
+So that's called a closure.
+
+200
+00:10:15,555 --> 00:10:18,388
+And when you pass a function as
+an argument, you pass this closure,
+
+201
+00:10:18,388 --> 00:10:21,139
+the function plus its environment
+together, they go together.
+
+202
+00:10:21,139 --> 00:10:24,674
+So you have to remember that when
+you're trying to figure out how
+
+203
+00:10:24,674 --> 00:10:26,512
+these functions get evaluated.
+
+204
+00:10:26,512 --> 00:10:29,422
+Where are the variables are coming from,
+they're coming from this closure,
+
+205
+00:10:29,422 --> 00:10:33,974
+from where it was defined,
+because that's how Golang is scoped.
+
+206
+00:10:33,974 --> 00:10:37,090
+It's lexically scoped, so it gets its
+environment from where it was defined.
+
+207
+00:10:38,967 --> 00:10:39,895
+Thank you.

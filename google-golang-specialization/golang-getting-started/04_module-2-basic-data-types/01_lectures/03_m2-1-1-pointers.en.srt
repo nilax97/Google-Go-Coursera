@@ -1,0 +1,379 @@
+1
+00:00:10,640 --> 00:00:12,780
+So, in this module,
+
+2
+00:00:12,780 --> 00:00:14,380
+we're going to talk about basic data types,
+
+3
+00:00:14,380 --> 00:00:15,570
+and we're going to start with Pointers,
+
+4
+00:00:15,570 --> 00:00:18,840
+which maybe is an unusual place to start the discussion of data types,
+
+5
+00:00:18,840 --> 00:00:20,070
+but that's where we're starting,
+
+6
+00:00:20,070 --> 00:00:22,020
+because people who are taking these courses
+
+7
+00:00:22,020 --> 00:00:24,630
+generally already know something about programming.
+
+8
+00:00:24,630 --> 00:00:27,450
+So, let's go straight to these Pointers and talk about them.
+
+9
+00:00:27,450 --> 00:00:31,075
+A pointer is an address to some data in memory.
+
+10
+00:00:31,075 --> 00:00:36,020
+So, I got to say every variable is located in memory somewhere,
+
+11
+00:00:36,020 --> 00:00:38,315
+in some data staying in memory somewhere.
+
+12
+00:00:38,315 --> 00:00:40,310
+Also, functions and so on,
+
+13
+00:00:40,310 --> 00:00:42,280
+they're all in memory somewhere.
+
+14
+00:00:42,280 --> 00:00:45,265
+A pointer is the address of that in memory.
+
+15
+00:00:45,265 --> 00:00:48,890
+Tips give virtual address but that doesn't matter to us too much right now.
+
+16
+00:00:48,890 --> 00:00:55,605
+So, with Pointers, there are two main operators that are associated with Pointers.
+
+17
+00:00:55,605 --> 00:00:57,740
+The ampersand operator right there,
+
+18
+00:00:57,740 --> 00:01:01,550
+that returns the address of the variable or the function,
+
+19
+00:01:01,550 --> 00:01:03,220
+whatever the name is referring to,
+
+20
+00:01:03,220 --> 00:01:05,880
+and the star operator which dereferencing,
+
+21
+00:01:05,880 --> 00:01:07,370
+does the opposite of the ampersand.
+
+22
+00:01:07,370 --> 00:01:09,505
+It returns the data at the address.
+
+23
+00:01:09,505 --> 00:01:11,670
+So, the ampersand operator,
+
+24
+00:01:11,670 --> 00:01:13,905
+if you put that in front of a variable,
+
+25
+00:01:13,905 --> 00:01:15,175
+the name of a variable,
+
+26
+00:01:15,175 --> 00:01:17,730
+that will return you the address of that variable.
+
+27
+00:01:17,730 --> 00:01:19,640
+The star operator goes the other way.
+
+28
+00:01:19,640 --> 00:01:23,325
+If you put that in front of a Pointer,
+
+29
+00:01:23,325 --> 00:01:25,555
+to some address, put that in front of an address,
+
+30
+00:01:25,555 --> 00:01:28,345
+it will return you the data at that address.
+
+31
+00:01:28,345 --> 00:01:30,320
+So, it's important to understand
+
+32
+00:01:30,320 --> 00:01:34,030
+this ampersand operator and the star operator are opposites of one another.
+
+33
+00:01:34,030 --> 00:01:36,469
+So, I'll give you an example,
+
+34
+00:01:36,469 --> 00:01:38,040
+take the look at this code,
+
+35
+00:01:38,040 --> 00:01:43,865
+little piece of code, we define our variable X is an integer, it's equal to one.
+
+36
+00:01:43,865 --> 00:01:47,010
+Then, Y is an integer and it's not initialized,
+
+37
+00:01:47,010 --> 00:01:50,115
+so that would mean it would be by default initialized to zero.
+
+38
+00:01:50,115 --> 00:01:52,190
+Then, a var IP.
+
+39
+00:01:52,190 --> 00:01:55,680
+So, IP is not declared to be an int,
+
+40
+00:01:55,680 --> 00:01:56,890
+it's a star int.
+
+41
+00:01:56,890 --> 00:01:59,100
+Right? So, that means IP is actually
+
+42
+00:01:59,100 --> 00:02:01,525
+a Pointer since there's a star operator in front of the int,
+
+43
+00:02:01,525 --> 00:02:04,135
+IP is declared to be a Pointer to an integer.
+
+44
+00:02:04,135 --> 00:02:05,850
+So, IP is the Pointer,
+
+45
+00:02:05,850 --> 00:02:07,590
+but it is not an actual integer,
+
+46
+00:02:07,590 --> 00:02:09,060
+is a Pointer to an integer.
+
+47
+00:02:09,060 --> 00:02:10,925
+So then, if we go on,
+
+48
+00:02:10,925 --> 00:02:15,320
+IP equals ampersand X. X is actually an integer.
+
+49
+00:02:15,320 --> 00:02:17,125
+Right? Integer whose value is one.
+
+50
+00:02:17,125 --> 00:02:20,050
+So, there is a number one sitting in memory somewhere,
+
+51
+00:02:20,050 --> 00:02:23,155
+and X is a reference to it, the name of that.
+
+52
+00:02:23,155 --> 00:02:27,450
+Ampersand X is the address in memory where I can find that value one.
+
+53
+00:02:27,450 --> 00:02:30,885
+So, IP is now equal to that address.
+
+54
+00:02:30,885 --> 00:02:34,340
+So, whatever the address of that one, is rather,
+
+55
+00:02:34,340 --> 00:02:36,440
+of X, whatever that address is,
+
+56
+00:02:36,440 --> 00:02:39,495
+IP is the Pointer to that address, it is the address.
+
+57
+00:02:39,495 --> 00:02:41,260
+Then, in the next line,
+
+58
+00:02:41,260 --> 00:02:43,695
+I say Y equals star IP.
+
+59
+00:02:43,695 --> 00:02:46,340
+So, remember that in this little example,
+
+60
+00:02:46,340 --> 00:02:49,010
+IP is actually a Pointer and
+
+61
+00:02:49,010 --> 00:02:53,040
+the data at that address that IP is pointing to, is the value one.
+
+62
+00:02:53,040 --> 00:02:55,690
+Now, star IP, star does dereferencing.
+
+63
+00:02:55,690 --> 00:02:58,379
+Star says, star returns the value,
+
+64
+00:02:58,379 --> 00:03:00,125
+the data at that address.
+
+65
+00:03:00,125 --> 00:03:03,955
+So, Y is now equal to the data at the address that IP is pointing to.
+
+66
+00:03:03,955 --> 00:03:07,265
+Now, if you remember for line for IP is pointed to what X is pointing to.
+
+67
+00:03:07,265 --> 00:03:10,130
+Right? So, IP is pointing to the value one,
+
+68
+00:03:10,130 --> 00:03:11,630
+that data in memory.
+
+69
+00:03:11,630 --> 00:03:14,270
+So Y, if Y is equal to star IP,
+
+70
+00:03:14,270 --> 00:03:15,490
+Y is equal to one.
+
+71
+00:03:15,490 --> 00:03:17,760
+So, this now sets Y equal to one.
+
+72
+00:03:17,760 --> 00:03:19,550
+It is just a little example here,
+
+73
+00:03:19,550 --> 00:03:21,560
+just trying to show how the ampersand and
+
+74
+00:03:21,560 --> 00:03:25,245
+the star operators work opposite to one another.
+
+75
+00:03:25,245 --> 00:03:27,745
+So, these are Pointers, and Pointers exist.
+
+76
+00:03:27,745 --> 00:03:29,275
+These Pointers are basically,
+
+77
+00:03:29,275 --> 00:03:33,330
+if you now see same type of implementation.
+
+78
+00:03:34,040 --> 00:03:37,720
+Now, there's another function called New.
+
+79
+00:03:37,720 --> 00:03:40,950
+It's another way to create a variable.
+
+80
+00:03:40,950 --> 00:03:44,290
+New, instead of returning a variable,
+
+81
+00:03:44,290 --> 00:03:45,840
+it returns a Pointer to the variable.
+
+82
+00:03:45,840 --> 00:03:49,910
+So, the new function creates a variable and it returns a Pointer to that variable.
+
+83
+00:03:49,910 --> 00:03:51,745
+So, this is unlike,
+
+84
+00:03:51,745 --> 00:03:53,870
+if we're just declaring a variable, right?
+
+85
+00:03:53,870 --> 00:03:55,155
+That also creates a variable,
+
+86
+00:03:55,155 --> 00:03:58,035
+but New explicitly returns a Pointer to a variable.
+
+87
+00:03:58,035 --> 00:04:01,555
+So, the variable is initialized to zero by default with New.
+
+88
+00:04:01,555 --> 00:04:06,445
+So, for instance here, if I say our Pointer equals new int,
+
+89
+00:04:06,445 --> 00:04:09,045
+and then star Pointer equals three, right?
+
+90
+00:04:09,045 --> 00:04:14,745
+Pointer was new int, new int returns me a Pointer to an integer,
+
+91
+00:04:14,745 --> 00:04:18,120
+and that PTR is equal to that Pointer.
+
+92
+00:04:18,120 --> 00:04:23,305
+Then, I can set the value of that integer by referring to star PTR, right?
+
+93
+00:04:23,305 --> 00:04:26,490
+Because star PTR is the value that PTR is pointing to.
+
+94
+00:04:26,490 --> 00:04:28,315
+If I say star PTR equals three,
+
+95
+00:04:28,315 --> 00:04:33,490
+then the value three is placed at the address specified by PTR.

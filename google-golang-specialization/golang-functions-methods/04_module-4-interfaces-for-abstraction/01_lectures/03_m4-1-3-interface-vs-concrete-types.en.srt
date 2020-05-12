@@ -1,0 +1,923 @@
+1
+00:00:00,080 --> 00:00:03,375
+Module 4: Interfaces for Abstraction,
+
+2
+00:00:03,375 --> 00:00:07,319
+Topic 1.3: Interface
+versus Concrete Types.
+
+3
+00:00:07,319 --> 00:00:11,710
+So concrete types and interface
+types are fundamentally different.
+
+4
+00:00:11,710 --> 00:00:13,701
+A concrete type is a regular type,
+
+5
+00:00:13,701 --> 00:00:17,618
+it specifies the exact representation
+of the data and the methods,
+
+6
+00:00:17,618 --> 00:00:22,516
+data specifically, but also methods that
+are used in the type of the receiver type.
+
+7
+00:00:22,516 --> 00:00:27,157
+So, they're fully specified, and it has
+complete implementations of the method,
+
+8
+00:00:27,157 --> 00:00:28,259
+of all the methods.
+
+9
+00:00:28,259 --> 00:00:30,481
+So any methods that use this
+type as a receiver type,
+
+10
+00:00:30,481 --> 00:00:31,955
+they're completely specified.
+
+11
+00:00:31,955 --> 00:00:36,695
+But the first thing is sort of a big
+difference between interface types and
+
+12
+00:00:36,695 --> 00:00:41,374
+concrete types is that the exact
+representation of the data is in there.
+
+13
+00:00:41,374 --> 00:00:44,887
+So if you have a concrete type,
+it's going to have a bunch of data, one or
+
+14
+00:00:44,887 --> 00:00:47,639
+more pieces of data that
+are associated with the type.
+
+15
+00:00:47,639 --> 00:00:51,649
+And interface type just specifies
+some method signatures.
+
+16
+00:00:51,649 --> 00:00:56,261
+So no data is specified, just the methods.
+
+17
+00:00:56,261 --> 00:00:58,939
+And even the methods,
+the implementations are abstracted.
+
+18
+00:00:58,939 --> 00:01:02,104
+You don't have implementations, you
+just have the signatures of the methods.
+
+19
+00:01:02,104 --> 00:01:04,673
+So that's the difference between the two.
+
+20
+00:01:04,673 --> 00:01:07,041
+But remember that when
+you give an interface,
+
+21
+00:01:07,041 --> 00:01:11,299
+interface eventually gets mapped to a
+concrete type, we'll see that in a second.
+
+22
+00:01:11,299 --> 00:01:15,275
+So an interface value, when you create an
+interface you declare an interface type,
+
+23
+00:01:15,275 --> 00:01:16,678
+you make a value of that type.
+
+24
+00:01:16,678 --> 00:01:20,093
+You can treat it like other values,
+ints, floats and all this,
+
+25
+00:01:20,093 --> 00:01:22,065
+you can make a variable of that type.
+
+26
+00:01:22,065 --> 00:01:26,069
+So I can make a variable of
+the type of a particular interface,
+
+27
+00:01:26,069 --> 00:01:29,539
+like my shape 2D,
+I can make a variable of that type.
+
+28
+00:01:29,539 --> 00:01:34,339
+Now an interface value, the value of
+an interface like that has two components.
+
+29
+00:01:34,339 --> 00:01:38,888
+First, there's dynamic type,
+second there's dynamic value.
+
+30
+00:01:38,888 --> 00:01:47,247
+So dynamic type,
+is a concrete type that is assigned to.
+
+31
+00:01:47,247 --> 00:01:54,238
+So the dynamic value though is actually
+the value of that dynamic type.
+
+32
+00:01:54,238 --> 00:01:57,252
+So the dynamic type is just
+the type which it's associated to.
+
+33
+00:01:57,252 --> 00:02:00,481
+So to be more specific,
+let's say we're talking about shape 2D,
+
+34
+00:02:00,481 --> 00:02:02,022
+that's my interface, right.
+
+35
+00:02:02,022 --> 00:02:06,491
+This interface, there are several concrete
+types which satisfy my interface, like
+
+36
+00:02:06,491 --> 00:02:10,664
+rectangle, that satisfies my interface,
+triangle satisfies my interface.
+
+37
+00:02:10,664 --> 00:02:15,664
+Now when I make my interface variable and
+I give it a value,
+
+38
+00:02:15,664 --> 00:02:19,963
+that value has gotta be
+mapped to a concrete type.
+
+39
+00:02:19,963 --> 00:02:23,476
+Maybe it's mapped to a rectangle, or
+a triangle, or something like that.
+
+40
+00:02:23,476 --> 00:02:27,311
+And that rectangle, triangle, whatever
+it is, it's going to have a value.
+
+41
+00:02:27,311 --> 00:02:29,352
+So the rectangle might have
+some points in it, and
+
+42
+00:02:29,352 --> 00:02:31,108
+the triangle might have some points in it.
+
+43
+00:02:31,108 --> 00:02:35,500
+So there's a dynamic type which is
+the type of the concrete type that
+
+44
+00:02:35,500 --> 00:02:37,901
+the interface value is assigned to.
+
+45
+00:02:37,901 --> 00:02:41,763
+And the dynamic value is
+the value of that dynamic type.
+
+46
+00:02:41,763 --> 00:02:44,443
+So an interface value is actually a pair,
+
+47
+00:02:44,443 --> 00:02:47,748
+the dynamic type together
+with the dynamic value.
+
+48
+00:02:47,748 --> 00:02:52,125
+This probably will become more clear
+within the next lesson given a bit of
+
+49
+00:02:52,125 --> 00:02:52,920
+an example.
+
+50
+00:02:52,920 --> 00:02:55,344
+So defining an interface type, so
+
+51
+00:02:55,344 --> 00:02:59,281
+we got this type speaker
+interface speaker interface.
+
+52
+00:02:59,281 --> 00:03:02,349
+And all we define in there
+is the speak method.
+
+53
+00:03:02,349 --> 00:03:05,905
+Which takes the arguments and returns
+no values, so very simple interface.
+
+54
+00:03:05,905 --> 00:03:09,054
+So that's our interface type at the top.
+
+55
+00:03:09,054 --> 00:03:14,290
+Now then I also defined my dog type, okay.
+
+56
+00:03:14,290 --> 00:03:19,034
+And it's a type called dog, its structure,
+and it's got just a string in there, okay.
+
+57
+00:03:19,034 --> 00:03:21,350
+The name of the dog let's say,
+name, it's called name.
+
+58
+00:03:21,350 --> 00:03:24,117
+So it just got, that's my whole dog type.
+
+59
+00:03:24,117 --> 00:03:27,523
+And what I'm going to do is I'm
+going to make this dog type,
+
+60
+00:03:27,523 --> 00:03:29,980
+make it satisfy my speaker interface.
+
+61
+00:03:29,980 --> 00:03:34,245
+So I declare a function called Speak,
+it's receiver type is Dog.
+
+62
+00:03:34,245 --> 00:03:38,736
+And it just prints the name of the dog,
+d.name, so that's what the dog speaks.
+
+63
+00:03:38,736 --> 00:03:45,884
+So now, Dog is a type that
+satisfies the Speaker interface.
+
+64
+00:03:45,884 --> 00:03:49,948
+In my main the first thing I
+do is I declare a speaker.
+
+65
+00:03:49,948 --> 00:03:55,158
+So an s1, s1 is a variable and
+is going to actually have a speaker value.
+
+66
+00:03:55,158 --> 00:03:57,986
+So it's a speaker type,
+it's going to be a speaker value, right.
+
+67
+00:03:57,986 --> 00:04:00,234
+So s1 is an interface value.
+
+68
+00:04:00,234 --> 00:04:05,607
+Next I declare a dog, [LAUGH] a d1,
+it's going to be my dog type.
+
+69
+00:04:05,607 --> 00:04:07,612
+It's going to have a name equal to Brian.
+
+70
+00:04:07,612 --> 00:04:10,825
+Now then I can say s1 equals d1.
+
+71
+00:04:10,825 --> 00:04:16,382
+Now, that is legal because the dog
+type satisfies the s1 interface.
+
+72
+00:04:16,382 --> 00:04:19,977
+So S1 can be a dog because it
+satisfies the interface, so
+
+73
+00:04:19,977 --> 00:04:21,956
+I can say s1 is equal to d1.
+
+74
+00:04:21,956 --> 00:04:25,367
+So now s1, s1 is a speaker type,
+
+75
+00:04:25,367 --> 00:04:29,851
+its concrete type that
+is assigned to is d1.
+
+76
+00:04:29,851 --> 00:04:34,371
+That is the concrete object that it's
+assigned to, which is the concrete type is
+
+77
+00:04:34,371 --> 00:04:37,170
+going to be the dynamic type
+is going to be the dog type.
+
+78
+00:04:37,170 --> 00:04:41,243
+And the value is going to be the dog
+value, which he's name is Brian.
+
+79
+00:04:41,243 --> 00:04:45,884
+And then I can say s1.speak, and
+it'll call the speak of the dog,
+
+80
+00:04:45,884 --> 00:04:48,342
+which we'll just print out Brian.
+
+81
+00:04:48,342 --> 00:04:54,173
+So the Dynamic type in this case
+of s1 is Dog, is a Dog type.
+
+82
+00:04:54,173 --> 00:04:59,411
+And the Dynamic value is d1 which
+contains that name Brian, okay.
+
+83
+00:04:59,411 --> 00:05:03,171
+So this s1 which is a speaker object,
+it is, sorry,
+
+84
+00:05:03,171 --> 00:05:07,361
+it's a speaker object which is
+an interface, it is a pair.
+
+85
+00:05:07,361 --> 00:05:11,597
+The Dynamic type Dog, that's the type,
+and Dynamic value, Dynamic value,
+
+86
+00:05:11,597 --> 00:05:13,021
+which is d1 in this case.
+
+87
+00:05:13,021 --> 00:05:15,973
+Which has this Dog name, name Brian,
+that's all it has in it.
+
+88
+00:05:18,324 --> 00:05:23,757
+Okay, so an interface, just to repeat,
+has dynamic type and dynamic value.
+
+89
+00:05:23,757 --> 00:05:29,248
+Now interface can have a Nil Dynamic
+Value, meaning no dynamic value.
+
+90
+00:05:29,248 --> 00:05:32,561
+It can have a type, a dynamic type but
+not a dynamic value.
+
+91
+00:05:32,561 --> 00:05:33,947
+So let me give you an example of that.
+
+92
+00:05:33,947 --> 00:05:38,057
+[COUGH] We got a variable,
+s1 is the speaker, okay.
+
+93
+00:05:38,057 --> 00:05:45,383
+Then I have my dog d1 and I make it
+point to a dog, *Dog, then I say s1=d1.
+
+94
+00:05:45,383 --> 00:05:50,197
+Now when I do that,
+I'm assigning s1 to d1, but d1,
+
+95
+00:05:50,197 --> 00:05:57,276
+it's not a concrete object it's type is
+Dog, or *Dog, it's pointing to a Dog.
+
+96
+00:05:57,276 --> 00:05:59,584
+But it doesn't have any data in it, okay.
+
+97
+00:05:59,584 --> 00:06:03,727
+So remember Dog has this data,
+this name, which is a string.
+
+98
+00:06:03,727 --> 00:06:07,890
+But d1 is a pointer to a Dog,
+so it's not an actual Dog,
+
+99
+00:06:07,890 --> 00:06:10,289
+it doesn't have the data in it.
+
+100
+00:06:10,289 --> 00:06:14,782
+Okay, so
+d1 has no concrete value at this point.
+
+101
+00:06:14,782 --> 00:06:20,009
+But it have a type, okay, it's associated
+with a dog, it's appointed to a dog.
+
+102
+00:06:20,009 --> 00:06:24,515
+So what that means is when I do
+that assignment s1 equals d1.
+
+103
+00:06:24,515 --> 00:06:27,684
+S1 has a dynamic type,
+dog, or dog pointer, but
+
+104
+00:06:27,684 --> 00:06:32,532
+has no dynamic value because d1 doesn't
+have a dynamic value yet, right.
+
+105
+00:06:32,532 --> 00:06:34,059
+because d1 is a pointer to a dog,
+
+106
+00:06:34,059 --> 00:06:38,090
+it doesn't actually have dog information
+in it, namely the name, okay.
+
+107
+00:06:38,090 --> 00:06:42,033
+So this is a situation where you got
+an interface that has a nil dynamic value.
+
+108
+00:06:42,033 --> 00:06:44,700
+Nil means nothing,
+it's sort of the empty end goal.
+
+109
+00:06:44,700 --> 00:06:48,189
+So it has a nil dynamic value but
+it has a dynamic type.
+
+110
+00:06:50,471 --> 00:06:56,469
+And this is legal, to have a dynamic
+type but no dynamic value is legal.
+
+111
+00:06:56,469 --> 00:07:00,371
+So when you have that situation,
+when you have an interface like that,
+
+112
+00:07:00,371 --> 00:07:04,739
+with a dynamic type but no dynamic value,
+you can still call the methods of s1.
+
+113
+00:07:04,739 --> 00:07:08,225
+So in this case, s1,
+its method is speak, right.
+
+114
+00:07:08,225 --> 00:07:10,290
+That's the method that's
+defined in the interface.
+
+115
+00:07:10,290 --> 00:07:13,529
+And Dog, or
+at least it's specified in the interface.
+
+116
+00:07:13,529 --> 00:07:15,895
+And then Dog defines that method, right.
+
+117
+00:07:15,895 --> 00:07:20,142
+So when I say Dog defines that method,
+there's a method Dog who's receiver type
+
+118
+00:07:20,142 --> 00:07:22,833
+is Dog,
+method speak who's receiver type is Dog.
+
+119
+00:07:22,833 --> 00:07:24,798
+And that method is fully specified.
+
+120
+00:07:24,798 --> 00:07:31,032
+Now this s1, it has a dynamic type.
+
+121
+00:07:31,032 --> 00:07:35,283
+The fact that it has a dynamic type
+means that the compiler knows that when
+
+122
+00:07:35,283 --> 00:07:38,080
+you call Speak,
+call that speak method on s1.
+
+123
+00:07:38,080 --> 00:07:42,099
+It could look at the type and say,
+the type is dog, the dynamic type is dog.
+
+124
+00:07:42,099 --> 00:07:46,843
+So I know that the method implementation
+that I want is dog method implementation.
+
+125
+00:07:46,843 --> 00:07:52,276
+So it can call that function, that method
+speak even without having a dynamic value,
+
+126
+00:07:52,276 --> 00:07:54,851
+all it needs to know is the dynamic type.
+
+127
+00:07:54,851 --> 00:07:58,867
+The dynamic type is enough information to
+go find which implementation Speak you
+
+128
+00:07:58,867 --> 00:07:59,465
+want to use.
+
+129
+00:07:59,465 --> 00:08:06,599
+Now, it would be wise inside
+the speak function to check,
+
+130
+00:08:06,599 --> 00:08:12,578
+to see if the variable has
+a dynamic value or not.
+
+131
+00:08:12,578 --> 00:08:17,066
+But the point though, is that you can make
+the call even without a dynamic value,
+
+132
+00:08:17,066 --> 00:08:18,787
+all you need is a dynamic type.
+
+133
+00:08:18,787 --> 00:08:23,474
+So we take a look over here,
+we got this function Dog,
+
+134
+00:08:23,474 --> 00:08:27,029
+Speak rather, and its receiver is Dog.
+
+135
+00:08:27,029 --> 00:08:31,950
+And notice inside the function it says
+if d == nil then it prints ("<noise>")
+
+136
+00:08:31,950 --> 00:08:36,544
+some generic thing, else it prints
+(d.name), it prints the dog's name.
+
+137
+00:08:36,544 --> 00:08:41,393
+Now what that does is it checks saying
+d == nil</noise> It checks look,
+
+138
+00:08:41,393 --> 00:08:43,835
+does this have a dynamic value or not?
+
+139
+00:08:43,835 --> 00:08:46,320
+If it doesn't have a dynamic value and
+
+140
+00:08:46,320 --> 00:08:49,511
+d equals nil then it just
+does what it says there.
+
+141
+00:08:49,511 --> 00:08:51,399
+Prints noise because it doesn't
+have a dynamic value yet,
+
+142
+00:08:51,399 --> 00:08:52,392
+prints something generic.
+
+143
+00:08:52,392 --> 00:08:56,273
+L, so if it does have a value then it
+knows it can actually access dname,
+
+144
+00:08:56,273 --> 00:08:58,487
+d.name, and so it prints out the name.
+
+145
+00:08:58,487 --> 00:09:01,482
+And then the rest of the code maybe
+that would appear inside a main or
+
+146
+00:09:01,482 --> 00:09:03,849
+something like that,
+which I'm not drawing here.
+
+147
+00:09:03,849 --> 00:09:09,485
+But so I declare this speaker as one,
+I declare the Dog pointer d1.
+
+148
+00:09:09,485 --> 00:09:14,477
+I set s1 to d1 so now s1 has
+a dynamic type but no dynamic value.
+
+149
+00:09:14,477 --> 00:09:18,444
+And then I can call s1.speak and
+it works, right.
+
+150
+00:09:18,444 --> 00:09:24,072
+A class one does speak even without the
+dynamic value because it can figure out,
+
+151
+00:09:24,072 --> 00:09:29,127
+the compiler can figure out,
+I see s1 is mapped to d1 which is a dog.
+
+152
+00:09:29,127 --> 00:09:33,843
+So I can find the dog, the method is
+bigger that is associated with dog that
+
+153
+00:09:33,843 --> 00:09:37,055
+I had to find up above, so
+this is actually legal.
+
+154
+00:09:37,055 --> 00:09:40,759
+So the point of all this is
+it legal to have a speaker,
+
+155
+00:09:40,759 --> 00:09:45,404
+sorry an interface, with a dynamic
+type but not a dynamic value.
+
+156
+00:09:45,404 --> 00:09:50,070
+And in that situation,
+you can still call the method of
+
+157
+00:09:50,070 --> 00:09:53,727
+that interface, so it is legal to do that.
+
+158
+00:09:53,727 --> 00:09:58,069
+Now we'll be wise like we do here
+to check inside the method if
+
+159
+00:09:58,069 --> 00:10:00,979
+the dynamic value is nil or not, right.
+
+160
+00:10:00,979 --> 00:10:04,525
+Because you might want to do something,
+for instance if we didn't do this check,
+
+161
+00:10:04,525 --> 00:10:06,100
+this is where we say if d equals nil.
+
+162
+00:10:06,100 --> 00:10:10,033
+If we didn't do that check, we might try
+to print D.name, even though D was nil,
+
+163
+00:10:10,033 --> 00:10:12,032
+and that would throw an error at run time.
+
+164
+00:10:12,032 --> 00:10:16,291
+So we don't want to, it's probably
+wise to check it but it's allowed.
+
+165
+00:10:16,291 --> 00:10:21,241
+This is a legal state, to have
+a dynamic type but no dynamic value.
+
+166
+00:10:21,241 --> 00:10:25,870
+Now on the other hand,
+people use a term nil interface value,
+
+167
+00:10:25,870 --> 00:10:29,886
+this describes an interface
+with a nil dynamic type.
+
+168
+00:10:29,886 --> 00:10:34,488
+So not only does it not have a dynamic
+value, it doesn't have a dynamic type, and
+
+169
+00:10:34,488 --> 00:10:36,398
+that's a different situation.
+
+170
+00:10:36,398 --> 00:10:40,233
+[COUGH] In that situation,
+when you don't even have the dynamic type,
+
+171
+00:10:40,233 --> 00:10:43,103
+then you cannot call
+the methods on that interface.
+
+172
+00:10:43,103 --> 00:10:45,326
+Because without the dynamic type,
+
+173
+00:10:45,326 --> 00:10:48,521
+you can't know which method
+you are referring to.
+
+174
+00:10:48,521 --> 00:10:53,648
+So for instance,
+here If at the top example I
+
+175
+00:10:53,648 --> 00:10:59,616
+got the speaker s1 dog d1 and
+I say s1 equals d1.
+
+176
+00:10:59,616 --> 00:11:01,740
+So it has a dynamic type but
+no dynamic value.
+
+177
+00:11:01,740 --> 00:11:06,740
+So the compiler configure out if I go to
+call speak It would be able to figure out,
+
+178
+00:11:06,740 --> 00:11:11,031
+I see, it's the dog's speak.,
+the one whose receiver type is dog.
+
+179
+00:11:11,031 --> 00:11:13,790
+But if I have a nil dynamic type, so
+
+180
+00:11:13,790 --> 00:11:17,703
+if I just say VAR S1 speaker and
+leave it at that.
+
+181
+00:11:17,703 --> 00:11:19,691
+Then I don't have a dynamic type yet
+
+182
+00:11:19,691 --> 00:11:22,480
+because I haven't assigned s1 to anything,
+right.
+
+183
+00:11:22,480 --> 00:11:26,421
+So s1 is just sitting there with
+no dynamic type, no dynamic value.
+
+184
+00:11:26,421 --> 00:11:30,730
+And in that state there's
+no actual method to call.
+
+185
+00:11:30,730 --> 00:11:32,310
+He tried to call a speak on that,
+
+186
+00:11:32,310 --> 00:11:35,722
+it would throw an error because
+there's no method implementation.
+
+187
+00:11:35,722 --> 00:11:38,033
+Remember to interface
+doesn't specify the method,
+
+188
+00:11:38,033 --> 00:11:40,305
+it doesn't give
+the implementation of the method.
+
+189
+00:11:40,305 --> 00:11:43,685
+It specifies just the name and
+the arguments and the return value, but
+
+190
+00:11:43,685 --> 00:11:45,699
+it doesn't actually define the method.
+
+191
+00:11:45,699 --> 00:11:49,770
+So if you just say var s1 Speaker, there's
+no method that it is associated with.
+
+192
+00:11:49,770 --> 00:11:53,737
+There's no speak method associated
+with s1, so this would throw an error.
+
+193
+00:11:53,737 --> 00:11:58,743
+So the point here is summarized that
+if you have no dynamic type and
+
+194
+00:11:58,743 --> 00:12:01,201
+no dynamic value on interface,
+
+195
+00:12:01,201 --> 00:12:06,040
+then you can't call the methods
+of the interface, thank you.

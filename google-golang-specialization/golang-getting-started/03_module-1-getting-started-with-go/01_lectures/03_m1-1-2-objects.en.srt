@@ -1,0 +1,483 @@
+1
+00:00:10,460 --> 00:00:15,185
+So, Go language is object-oriented,
+
+2
+00:00:15,185 --> 00:00:17,170
+but let's say, weakly object-oriented.
+
+3
+00:00:17,170 --> 00:00:19,710
+So, what I mean by that is that it implements
+
+4
+00:00:19,710 --> 00:00:23,670
+objects but maybe they have fewer features than
+
+5
+00:00:23,670 --> 00:00:26,535
+you would see in another object-oriented language like
+
+6
+00:00:26,535 --> 00:00:30,760
+Python or Java or C++ or something like that.
+
+7
+00:00:30,760 --> 00:00:35,910
+So, I'm just going to summarize what object-oriented languages are,
+
+8
+00:00:35,910 --> 00:00:38,300
+what object-oriented programming is very
+
+9
+00:00:38,300 --> 00:00:43,110
+briefly just so I can highlight some of the differences in Go's implementation.
+
+10
+00:00:43,110 --> 00:00:48,315
+So, object-oriented programming, it's really for code organization,
+
+11
+00:00:48,315 --> 00:00:50,480
+in my mind is for code organization.
+
+12
+00:00:50,480 --> 00:00:53,080
+So, you organize your code by encapsulating your code.
+
+13
+00:00:53,080 --> 00:00:57,565
+You group together data and functions that are related to each other.
+
+14
+00:00:57,565 --> 00:01:01,070
+So, this is essentially what a type is.
+
+15
+00:01:01,070 --> 00:01:04,150
+So, what object-oriented programming and
+
+16
+00:01:04,150 --> 00:01:07,095
+lets you do is essentially create a user-defined type,
+
+17
+00:01:07,095 --> 00:01:10,455
+one that's specific for whatever application it is that you're building.
+
+18
+00:01:10,455 --> 00:01:12,420
+So, typical types, you have integers,
+
+19
+00:01:12,420 --> 00:01:14,400
+floats, that sort of thing.
+
+20
+00:01:14,400 --> 00:01:17,450
+Those are generic. You can use those in any kind of program.
+
+21
+00:01:17,450 --> 00:01:20,080
+But when you're making a specific application,
+
+22
+00:01:20,080 --> 00:01:24,010
+you might like to have a type that is specific to that application domain.
+
+23
+00:01:24,010 --> 00:01:25,800
+You can create that.
+
+24
+00:01:25,800 --> 00:01:28,170
+Object-oriented programming allows you to create that.
+
+25
+00:01:28,170 --> 00:01:29,880
+So, if you think about a type,
+
+26
+00:01:29,880 --> 00:01:31,815
+your standard type, like an integer,
+
+27
+00:01:31,815 --> 00:01:35,305
+each integer it has data, the number,
+
+28
+00:01:35,305 --> 00:01:36,585
+the value of the number,
+
+29
+00:01:36,585 --> 00:01:37,950
+and then it has functions,
+
+30
+00:01:37,950 --> 00:01:39,420
+the functions that you can apply to the data.
+
+31
+00:01:39,420 --> 00:01:40,735
+So, you can apply addition,
+
+32
+00:01:40,735 --> 00:01:42,850
+subtraction, multiplication, that sort of thing.
+
+33
+00:01:42,850 --> 00:01:47,570
+So, a type has data and has set of functions that you can apply to the data.
+
+34
+00:01:47,570 --> 00:01:50,815
+So, object-oriented programming is the same idea.
+
+35
+00:01:50,815 --> 00:01:53,100
+You're creating types.
+
+36
+00:01:53,100 --> 00:01:54,570
+But they are more complicated,
+
+37
+00:01:54,570 --> 00:01:55,690
+they can be more complicated,
+
+38
+00:01:55,690 --> 00:01:57,945
+and they are specific to your application.
+
+39
+00:01:57,945 --> 00:02:05,290
+As an example, let's say you're making an application and it's going to do geometry,
+
+40
+00:02:05,290 --> 00:02:08,415
+some kind of geometric operations in three dimensions.
+
+41
+00:02:08,415 --> 00:02:14,070
+So, many of the functions that you're going to write are going to operate on points.
+
+42
+00:02:14,070 --> 00:02:17,700
+You're going to have this idea of points because you're doing 3D geometry.
+
+43
+00:02:17,700 --> 00:02:20,975
+Each point is going to have some data associated with it,
+
+44
+00:02:20,975 --> 00:02:23,470
+specifically x, y, and z coordinates.
+
+45
+00:02:23,470 --> 00:02:25,420
+Maybe you want to put other data in there, but at least,
+
+46
+00:02:25,420 --> 00:02:26,460
+you're going to have that x, y,
+
+47
+00:02:26,460 --> 00:02:28,145
+z coordinates because in 3D.
+
+48
+00:02:28,145 --> 00:02:30,190
+Also points are going to have a set of functions,
+
+49
+00:02:30,190 --> 00:02:34,155
+a set of functions that you can use to operate on points.
+
+50
+00:02:34,155 --> 00:02:37,060
+So, distance to origin,
+
+51
+00:02:37,060 --> 00:02:39,130
+maybe every point has a distance to its origin.
+
+52
+00:02:39,130 --> 00:02:41,675
+You can have a function that computes that.
+
+53
+00:02:41,675 --> 00:02:43,530
+Quadrant, it tells you what quadrant.
+
+54
+00:02:43,530 --> 00:02:47,030
+Maybe it returns what quadrant the point is in, something like this.
+
+55
+00:02:47,030 --> 00:02:51,740
+There are a lot of functions that you can imagine that work on points.
+
+56
+00:02:51,740 --> 00:02:54,380
+So, if I think about this idea of points,
+
+57
+00:02:54,380 --> 00:02:57,495
+I got a bunch of data that I want all related together.
+
+58
+00:02:57,495 --> 00:02:58,760
+So, I want the x, and the y,
+
+59
+00:02:58,760 --> 00:03:00,640
+and the z variables for a particular point,
+
+60
+00:03:00,640 --> 00:03:03,265
+I want them to be somehow associated together.
+
+61
+00:03:03,265 --> 00:03:07,845
+Also, I'd like these functions that operate on points to be associated with that too.
+
+62
+00:03:07,845 --> 00:03:10,610
+So, in typical object-oriented languages,
+
+63
+00:03:10,610 --> 00:03:13,400
+you have this idea of a class.
+
+64
+00:03:13,940 --> 00:03:16,000
+Now, I should note right now,
+
+65
+00:03:16,000 --> 00:03:18,395
+Go does not use this term class.
+
+66
+00:03:18,395 --> 00:03:20,615
+But I bring it up because it's used in
+
+67
+00:03:20,615 --> 00:03:23,900
+other object-oriented languages and so people might be familiar with this idea.
+
+68
+00:03:23,900 --> 00:03:27,835
+So, this class, it defines that may I make a point class,
+
+69
+00:03:27,835 --> 00:03:31,490
+and the class defines all the data that would be inside a point.
+
+70
+00:03:31,490 --> 00:03:32,915
+So, x, y, and z,
+
+71
+00:03:32,915 --> 00:03:35,500
+maybe they're all floating point value, something like that.
+
+72
+00:03:35,500 --> 00:03:37,310
+The class would define all the functions
+
+73
+00:03:37,310 --> 00:03:39,260
+that you would have that are associated with points,
+
+74
+00:03:39,260 --> 00:03:41,915
+distance to origin, quadrant, and so on.
+
+75
+00:03:41,915 --> 00:03:43,385
+So, that will be the class.
+
+76
+00:03:43,385 --> 00:03:46,985
+Then an object is an instantiation of the class.
+
+77
+00:03:46,985 --> 00:03:50,240
+So, I can make my point class but then I might
+
+78
+00:03:50,240 --> 00:03:53,960
+have many different actual points with actual data values inside.
+
+79
+00:03:53,960 --> 00:03:55,910
+So, if I have a triangle,
+
+80
+00:03:55,910 --> 00:03:57,690
+I've got three points with three sets of x,
+
+81
+00:03:57,690 --> 00:03:58,840
+y, and z values.
+
+82
+00:03:58,840 --> 00:04:01,190
+So, I might have this point class that's
+
+83
+00:04:01,190 --> 00:04:04,690
+sort of a general template of what point should have,
+
+84
+00:04:04,690 --> 00:04:06,050
+but then the point objects,
+
+85
+00:04:06,050 --> 00:04:08,890
+my three-point object will have actual values for x,
+
+86
+00:04:08,890 --> 00:04:10,855
+and y, and z and so on.
+
+87
+00:04:10,855 --> 00:04:12,640
+So, that's the idea,
+
+88
+00:04:12,640 --> 00:04:14,510
+that's the terminology that you normally see use,
+
+89
+00:04:14,510 --> 00:04:17,590
+classes and objects which are instances of that class.
+
+90
+00:04:17,590 --> 00:04:20,670
+So, different languages have this.
+
+91
+00:04:20,670 --> 00:04:22,275
+Java is very popular,
+
+92
+00:04:22,275 --> 00:04:25,545
+Java, Python, C++, and so on.
+
+93
+00:04:25,545 --> 00:04:29,540
+Now Go, we don't use this term class,
+
+94
+00:04:29,540 --> 00:04:32,340
+instead they use structs.
+
+95
+00:04:32,340 --> 00:04:38,015
+Now structs, actually, this goes back to C and probably before that.
+
+96
+00:04:38,015 --> 00:04:41,835
+But the idea of a struct is a struct is just the data.
+
+97
+00:04:41,835 --> 00:04:44,490
+So, the different types of data that you want to associate together.
+
+98
+00:04:44,490 --> 00:04:46,080
+So, like with our point class,
+
+99
+00:04:46,080 --> 00:04:49,010
+you'd have a point struct and it would have an x,
+
+100
+00:04:49,010 --> 00:04:51,300
+and a y, and a z, maybe they're all three floating points.
+
+101
+00:04:51,300 --> 00:04:53,245
+So, just the data are related together.
+
+102
+00:04:53,245 --> 00:04:57,640
+But also you can associate methods or functions with those structs.
+
+103
+00:04:57,640 --> 00:04:59,990
+So, the struct ends up being like what you
+
+104
+00:04:59,990 --> 00:05:02,845
+would call a class in a normal object-oriented language.
+
+105
+00:05:02,845 --> 00:05:05,490
+So, you got the structs that had some data,
+
+106
+00:05:05,490 --> 00:05:09,405
+some fields of data associated with them plus some methods that you want to define.
+
+107
+00:05:09,405 --> 00:05:13,340
+Now, Go's implementation of structs is
+
+108
+00:05:13,340 --> 00:05:17,700
+simplified compared to traditional implementation of classes.
+
+109
+00:05:17,700 --> 00:05:19,545
+So, you don't have inheritance,
+
+110
+00:05:19,545 --> 00:05:21,170
+you don't have constructors,
+
+111
+00:05:21,170 --> 00:05:23,640
+and you don't have generics, none of those.
+
+112
+00:05:23,640 --> 00:05:26,645
+Now, this, one can argue it makes it easier to code,
+
+113
+00:05:26,645 --> 00:05:28,220
+also it makes it efficient to run.
+
+114
+00:05:28,220 --> 00:05:30,165
+So, it typically runs faster.
+
+115
+00:05:30,165 --> 00:05:33,980
+But it can make it easier to code unless you like those features.
+
+116
+00:05:33,980 --> 00:05:35,280
+Now, if you'd like inheritance,
+
+117
+00:05:35,280 --> 00:05:37,345
+and generics, and constructors.
+
+118
+00:05:37,345 --> 00:05:40,230
+Then, you can see this is a disadvantage.
+
+119
+00:05:40,230 --> 00:05:41,840
+But Go is different.
+
+120
+00:05:41,840 --> 00:05:43,880
+It has objects but is different than
+
+121
+00:05:43,880 --> 00:05:49,340
+traditional object-oriented implementation and a linear object-oriented implementation.

@@ -1,0 +1,68 @@
+So we've already talked about strings. Strings are a common construct. You see them in every
+programming language, and strings are made of unicode Unicode runes. They're straight,
+basically, a raid of runes. So, there's a package called the Unicode
+Package which provides a set of functions that actually evaluate the properties of
+the different runes inside the strings. And it's useful if you've
+ever done parsing, you know, you want to parse some
+string out of whatever file. Or out of a- maybe something somebody
+typed in directly as user input and you want to evaluate that string
+when you're doing parsing you need functions like these so
+there a long set of functions that the unicode package provides to
+evaluate the runes Some of them here, are IsDigit tells you if the rune
+is a digit, a numerical digit. IsSpace- is it a space character? isLetter is the letter lowercase,
+IsPunct- is punctuation so these are all binary- boolean right so
+they return true or false depending on if the rune is what it's saying it to
+be, if it's a digit or space or so on. There aree also a set of other
+functions that perform conversions. So some of these conversions ae possible. For isntance ToUpper and ToLower. You can take a lower case (r rune),turn
+it into an upper case (r rune). And vice versa. So they provide funtions for that. So they take a (r rune), like ToUpper, it
+takes a (r rune), Which is lowercase and returns a which is uppercase and so on. So a unicode package is useful for that. But there are other packages that are also
+involved in manipulating strings. There's the strings package. So the strings package. The functions that it provides
+are things to directly. Not looking at the individual generally,
+but look at the whole string. So there are a set of search
+functions it provided. Inside the strings package. These are common functions that you see
+in lots of different lanugages also. So for instance,
+the first one would be compare. Compare (a, b), you givev it two strings
+and it compares to see if they're equal. And actually this compare function,
+it returns a -1. It returns 0 if they're equal,
+it returns a -1 if a is less than b, meaning earlier than it,
+in In alphanumeric order. And A, it returns a positive one,
+if A is greater than B, so if A is later than B
+in alphanumeric order. So, to compare, contains, so you give
+S a string, and then a sub string, if that sub string is contained inside S,
+it returns true, otherwise false. Have prefix so
+you give it a string s and a prefix. If that and returns true, if that prefix
+is the, s starts with a prefix and index s and you go to substring,
+what that does is a search, it searches for the substring inside s. And it returns you the index
+of where the first instance, instance of that substring can be found
+inside a [INAUDIBLE] can be found. So, this is the string's package. Now, the string's package also provides a
+set of functions that manipulate strings. Now, when I say manipulate, you can say
+changes string, a string is mutable. But, there are a lot of functions
+that take an existing string and return a new string. That is some modified and some useful way. So the first one will be replace. With replace you basically take a string
+and it allows you to replace instances whenever it finds it in a current of old
+it replaces it with currents of new. So these are all strings. So there's a big string S Is a substring
+old and another substring new. Replaces instances of old
+with instances of new. And return to a new string. So s the original string
+is not actually changed. It returns you to a new string
+with a replacements for ToLower, ToUpper, so this'll take the whole string
+and change it to lower case or upper case. I keep saying change. It does not change the string. It returns a new string that is modified. Also, trim space is useful. That gets rid of leading and
+trailing light space from a string. So you get this a lot when you're
+reading from a file with, say, and maybe the tokens in the file are seperatedby
+spaces, so if you just read directly in the file, you'll also read these
+spaces in, but you don't need the spaces. You just need the token. So you may call TrimSpace
+to get rid of the spaces. Another package that has
+a lot of useful functions for strings is the Strconv Package. So generally this provides a set of
+functions for converting strings from different basic data types, to and
+from different basic data types. So some of the big ones are Atoi As
+ascii to integer is what it stands for. And converts a string to an integer
+if that string represents an integar. Lets say,
+you are reading a string from a file and the string is a number 123 one hundred and
+twenty three. Now when you read that, and you read that as a string,
+You can't do math on a string, right? You can't take that 123 and
+add 1 to it because it's a string type, it's not an Int type. So you need to read that string in and
+convert it to an Int. And then you can do math on it. So you'd use Atoi to do a thing like that. And Itoa does the reverse. It converts an Int into a string,
+an equivalent string. Then FormatFloat basically does
+a similar thing for float. So it converts a floating point number
+into a string representation of that floating point number. And then ParseFloat does the opposite, converts a string to
+a floating point number. So a string, so if you have a string. 123.45, and
+in a string it can convert it into a floating point the number
+you can actually do method.

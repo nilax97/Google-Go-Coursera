@@ -1,0 +1,107 @@
+[MUSIC] So, Control Flow describes the order
+in which statements are executed inside a program. Now, basic control flow, the most basic
+control flow is just executing one statement at a time,
+one after the other, right. A procedural control flow, just top-down. Now, the control flow changes for
+a lot of reasons. But the first reason why
+control flow changes is because the programmer inserts control
+flow structures into their code, which changes the sequence in
+which the statements are executed. So the main control flow structure,
+the first one, is an if statement. Basically, with an if statement, you can conditionally execute
+certain sequences of code. So if this condition is true,
+then you execute the sequence of code. If not, then you don't. And this, what we're showing here, is the most straight forward if
+statement without an else clause, you can also have an else clause, but
+I'll just start with the basic one first. So the structure is just if, condition,
+you write some condition in there, x is greater than 5, or
+something like that, and this condition has to
+evaluate to a boolean, right. If that condition is true, then
+whatever is inside the curly brackets, label consequent there, that's executed. And you can have any number of
+statements inside there, and that'll be executed if
+the condition evaluates to true. So this changes control flow because
+instead of just definitely executing the next statement one after the other,
+it checks its conditions. If the condition's false,
+then that consequent, those statements in the consequent
+are not executed at all. And so, we can see at the bottom,
+we got, if x is greater than five. And then it prints,
+it performs a print state. And if it's not,
+then it just skips that entirely. Now, this if statement,
+this is a very vanilla if statement. You could also have an else
+clause after that, right? So if the condition's true, it executes
+what's inside the curly brackets. Then, you could have a next clause,
+the else clause. It would execute whatever's inside
+the next set of curly brackets, the next block for the else, right? We didn't include one here, but
+this is a straightforward extension. And you see this in every major language. So for loops, they're another
+form of control flow statement. Again, so for loops, what they do,
+basically, they're loops. So the control flow,
+rather than just going top-down, when you hit the bottom of the loop,
+you come back to the top of the loop, and you do it again and again until
+a certain condition is met or not met. So that's how they alter control flow. It's just, and these are extremely
+common in programming, using loops. So, they just iterate over a block of
+code, as long as the condition is true. Now, there's several forms of for
+statements, we're looking at one right here. Probably the main and most common form. You see it similarly in C and
+things like this. If you look at that keyword for, right after that,
+there are three statements, really. There's the initialization statement,
+init. There's a condition,
+and there's the update. And separated by semicolons. So the init is executed once
+at the beginning of the loop. So, the first time you hit the for loop, it executes the init just to
+initialize things, right at the top. Then, the next block, that condition,
+that is checked on each iteration. So at the beginning of each iteration,
+that condition is checked. It has to result, it has to be
+an expression, that results to a boolean. If that condition is true, then it executes all
+the statements inside the loop. Otherwise it doesn't,
+otherwise it's done with the loop, and it continues past the loop. So that condition is
+the termination condition. It determines when you
+stop executing this loop. because as soon as that condition is not
+true, you skip the loop and you're done. Now, the update, that third block there, the update is what is executed at
+the end of each iteration, and it's used to act as some
+element of a state. So a very common way in which
+you use is you'll have, you'll have some index variable for i. i equals zero, maybe start off with i
+equals zero, and you want to do this, iterate through this ten times, so the
+condition might say, i less than 10 and then the update would be i++,
+or i=i+1, right? And then every time, every pass
+through it updates that i value, that element to the state. And one thing about these for loops is,
+unless you want an infinite for loop which you typically do not want, you
+gotta make sure that that condition is, at some point, false, right? because if the condition is always true,
+then you never leave the loop. So the most common way to make sure that
+condition's always false is to make sure that update changes
+the state in such a way that eventually the updates cause
+the condition to be false. So for instance, if I say i is equal to
+zero, I start off being equal to zero, and my update is i equals i+1,
+then eventually i will be greater than 10, so the update guarantees that
+the condition is eventually false, and that you eventually drop out of the loop. So here are some forms of for loops, these
+are three most common forms of for loops. The top one is what we've already seen. You've got the initialization,
+you got the condition you got the update. The next one,
+if you look at the for keyword, there's only the condition check after it. No initialization, no update. You don't have to have those. Now, instead, what we did here to make
+it equivalent to the for loop before, we had to put the initialization before the
+for loop, that's another way of doing it. And the update is now built into the for
+loop, so if you look, there's an i plus plus inside the loop,
+right. So, it's actually inside the fourth block,
+instead of, as you have in the first form, where you actually put it in
+there right after the keyword. But, it's another way
+you can define a for, which is really just like a while
+loop inside another language. Then, the last form is
+just an infinite loop. It has nothing after the for loop,
+it just is an infinite loop, which is not typically what
+we are going to be doing. You do that, maybe,
+in an embedded system but, it's not common to do
+in a regular program. You usually don't want an infinite loop. All right, so another type of
+controlled flow is a switch. Switch is paired with case, right? So a switch is a multi-way if statement. So, you often get situations where you
+want to say, if this is true you do this. If this is true, you do that. If this is true, you do that. You sort of, you do one of a set of cases. Sort of an else if, if else if is
+another way to write this type of thing. So a switch is like,
+there's a set of cases and only one of them is going to be executed. Whichever one matches. So the switch may contain,
+typically contains, a tag, which is a variable to be checked. Right, so maybe I say switch x. So that's the variable I'm going to check. Then each case is associated with some
+constant value that x is compared to, that the tag is compared to. So tag is compared to the constant
+defined right after the case keyword. And then whichever case is constant, matches the value of X, that's the case
+that's executed, and none of the rest are. So, in this example,
+you can see, you got switch x. Inside you've got two cases. Case one, case two. So if x is a 1, it will execute case one. If x is a 2, it will execute case two. And then the bottom one is default. Default is executed if
+none of the cases are hit. So it's an optional thing. You don't have to have a default.
+But you can have it default so if it falls through,
+it'll end up executing something. So this is a typical form for a case. And one thing to note, just if you're
+used to C, is in comparison to C, the case automatically breaks
+at the end of the case. So in C, If you were to execute case1,
+say x was equal to one, you hit case1, you execute case1, it would also follow
+through and execute case2, right? That's what C would do, unless you put a break statement in
+there at the end of case1, right? After the fmt.Printf,
+you put a break statement, then it would skip the other
+case in the default. In switch in Go lang,
+you don't have to do that, it automatically breaks,
+which is a good, good thing.

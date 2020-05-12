@@ -1,0 +1,603 @@
+1
+00:00:08,720 --> 00:00:13,800
+So, now we're moving on to composite data types.
+
+2
+00:00:13,800 --> 00:00:17,120
+Composite data types are beyond the basic data types.
+
+3
+00:00:17,120 --> 00:00:19,170
+They are data types that put together,
+
+4
+00:00:19,170 --> 00:00:21,940
+that aggregate other data types.
+
+5
+00:00:21,940 --> 00:00:25,685
+So, unlike a string.
+
+6
+00:00:25,685 --> 00:00:28,050
+Even a string you can think of.
+
+7
+00:00:28,050 --> 00:00:30,300
+Actually, a string is a special case
+
+8
+00:00:30,300 --> 00:00:33,190
+because you can think of it as aggregating these different bytes.
+
+9
+00:00:33,190 --> 00:00:35,570
+So, a string is somewhat of if I ask you.
+
+10
+00:00:35,570 --> 00:00:38,400
+Now, I think about a string is a composite data type,
+
+11
+00:00:38,400 --> 00:00:41,170
+but we're going to talk more generally about arrays right now.
+
+12
+00:00:41,170 --> 00:00:42,500
+So, an array in general,
+
+13
+00:00:42,500 --> 00:00:47,620
+is just where you take a bunch of a fixed-length series of elements of a chosen type.
+
+14
+00:00:47,620 --> 00:00:49,320
+So, you can make an array of bytes,
+
+15
+00:00:49,320 --> 00:00:50,710
+you can make an array of integers,
+
+16
+00:00:50,710 --> 00:00:52,570
+an array of floats, and so on.
+
+17
+00:00:52,570 --> 00:00:56,285
+But it's fixed length. That's the key thing about arrays, they are fixed length.
+
+18
+00:00:56,285 --> 00:00:58,600
+It is known to compile time how big they're going to be.
+
+19
+00:00:58,600 --> 00:00:59,945
+So, the compiler can tell,
+
+20
+00:00:59,945 --> 00:01:02,470
+how much space in memory it needs to allocate for these.
+
+21
+00:01:02,470 --> 00:01:07,295
+Just in general, let me say that these composite data types are important.
+
+22
+00:01:07,295 --> 00:01:10,660
+That is, in any kind of complicated program,
+
+23
+00:01:10,660 --> 00:01:12,460
+you're going to need to use composite data types.
+
+24
+00:01:12,460 --> 00:01:14,320
+It's not enough to use the fundamental data types.
+
+25
+00:01:14,320 --> 00:01:18,965
+Yeah. You need to bring together different data types and group them,
+
+26
+00:01:18,965 --> 00:01:22,225
+and aggregate them into some kind of composite data type.
+
+27
+00:01:22,225 --> 00:01:26,210
+So, you have different array elements.
+
+28
+00:01:26,210 --> 00:01:27,905
+Each one is some chosen type,
+
+29
+00:01:27,905 --> 00:01:29,130
+maybe it's an integer array,
+
+30
+00:01:29,130 --> 00:01:32,605
+you've got a set of each array element would be an integer.
+
+31
+00:01:32,605 --> 00:01:35,510
+Elements of the array,
+
+32
+00:01:35,510 --> 00:01:38,555
+each element is indexed by using subscript notation.
+
+33
+00:01:38,555 --> 00:01:39,755
+So, square brackets.
+
+34
+00:01:39,755 --> 00:01:42,670
+You put the index right in the middle of the square brackets.
+
+35
+00:01:42,670 --> 00:01:44,480
+So, we're going to have example here,
+
+36
+00:01:44,480 --> 00:01:48,325
+but this is a similar notation what you see in a lot of different languages.
+
+37
+00:01:48,325 --> 00:01:50,040
+Indices start at zero,
+
+38
+00:01:50,040 --> 00:01:52,895
+because we're computer science, we start counting at zero not one.
+
+39
+00:01:52,895 --> 00:01:56,105
+Elements are initialized to a zero value and actually,
+
+40
+00:01:56,105 --> 00:01:59,450
+this is not always the case in other languages.
+
+41
+00:01:59,450 --> 00:02:01,885
+Say in C, your making an array,
+
+42
+00:02:01,885 --> 00:02:03,530
+that array is not initialized at all.
+
+43
+00:02:03,530 --> 00:02:06,220
+Unless you actually write code to initialize it.
+
+44
+00:02:06,220 --> 00:02:08,345
+When you create it, it's not initialized.
+
+45
+00:02:08,345 --> 00:02:12,610
+In goaling, the array is initialized to zero value.
+
+46
+00:02:12,610 --> 00:02:13,780
+When I say zero value,
+
+47
+00:02:13,780 --> 00:02:17,420
+I mean the zero value of the type that the array is composed of.
+
+48
+00:02:17,420 --> 00:02:18,710
+So, if it's the integer,
+
+49
+00:02:18,710 --> 00:02:20,290
+the zero value is just zero.
+
+50
+00:02:20,290 --> 00:02:23,840
+If it's strings, the zero value is empty string.
+
+51
+00:02:23,840 --> 00:02:26,275
+So, in this example,
+
+52
+00:02:26,275 --> 00:02:28,735
+we're showing how you can declare an array.
+
+53
+00:02:28,735 --> 00:02:30,450
+So, you say C at the top,
+
+54
+00:02:30,450 --> 00:02:33,970
+var x, and then in brackets five int.
+
+55
+00:02:33,970 --> 00:02:35,385
+The fact that it has the brackets five,
+
+56
+00:02:35,385 --> 00:02:38,955
+tells you this is supposed to be an array of five integers.
+
+57
+00:02:38,955 --> 00:02:41,430
+So, that's how you declare an array.
+
+58
+00:02:41,430 --> 00:02:43,720
+That would be initialized to zeros by default.
+
+59
+00:02:43,720 --> 00:02:49,095
+Then next line I refer to a particular element x bracket zero.
+
+60
+00:02:49,095 --> 00:02:50,835
+So, I'm looking at the zeroth element.
+
+61
+00:02:50,835 --> 00:02:52,765
+I'm setting that equal to two.
+
+62
+00:02:52,765 --> 00:02:55,050
+So, now I've changed that to equal to two.
+
+63
+00:02:55,050 --> 00:02:57,260
+In the next line I'm doing a Printf.
+
+64
+00:02:57,260 --> 00:02:59,630
+So, do Printf x of bracket one.
+
+65
+00:02:59,630 --> 00:03:02,790
+Since bracket one, I didn't actually explicitly initialize that,
+
+66
+00:03:02,790 --> 00:03:04,100
+it would have been initialized to zero.
+
+67
+00:03:04,100 --> 00:03:05,555
+So, that'll print zero.
+
+68
+00:03:05,555 --> 00:03:09,610
+So, that's an array. You've seen that in other languages most likely.
+
+69
+00:03:09,610 --> 00:03:16,725
+An array literal, is a pre-defined set of values that make up an array.
+
+70
+00:03:16,725 --> 00:03:20,785
+So, you use this to initialize arrays if you want to.
+
+71
+00:03:20,785 --> 00:03:25,370
+So, for instance here, we say var x bracket five int.
+
+72
+00:03:25,370 --> 00:03:27,590
+So, it's an array of five integers.
+
+73
+00:03:27,590 --> 00:03:33,020
+We say equals and we say square bracket five and within the curly brackets,
+
+74
+00:03:33,020 --> 00:03:34,550
+there are actually five integers.
+
+75
+00:03:34,550 --> 00:03:38,480
+So, that's actually a way of initializing the array to a set of values,
+
+76
+00:03:38,480 --> 00:03:39,820
+to an array of five integers.
+
+77
+00:03:39,820 --> 00:03:43,550
+So, that array of five integers that's inside the curly brackets.
+
+78
+00:03:43,550 --> 00:03:45,390
+That's actually called an array literal,
+
+79
+00:03:45,390 --> 00:03:49,205
+and we're defining x to be equal to that array literal.
+
+80
+00:03:49,205 --> 00:03:52,160
+The length of the literal has to be the same as the length of the array.
+
+81
+00:03:52,160 --> 00:03:53,855
+So, if you declare x to be five,
+
+82
+00:03:53,855 --> 00:03:58,290
+you better have five literals inside the array literal.
+
+83
+00:03:58,290 --> 00:04:01,410
+Then this is operation that dot dot dot.
+
+84
+00:04:01,410 --> 00:04:03,885
+That's actually a key word.
+
+85
+00:04:03,885 --> 00:04:06,930
+So, dot dot dot is used to express the size.
+
+86
+00:04:06,930 --> 00:04:11,360
+You can use dot dot dot to express the size of an array literal.
+
+87
+00:04:11,360 --> 00:04:15,740
+You can do that because if you have
+
+88
+00:04:15,740 --> 00:04:19,910
+an array literal and inside the curly brackets you have four elements in there,
+
+89
+00:04:19,910 --> 00:04:23,045
+then it's clear that you want this array literal to be size four.
+
+90
+00:04:23,045 --> 00:04:25,375
+You don't have to say explicitly four.
+
+91
+00:04:25,375 --> 00:04:27,305
+So, you can just put a dot dot dot in there,
+
+92
+00:04:27,305 --> 00:04:29,255
+and it will infer the size of the array
+
+93
+00:04:29,255 --> 00:04:31,955
+from the number of elements inside the array literal.
+
+94
+00:04:31,955 --> 00:04:33,395
+So, in this example,
+
+95
+00:04:33,395 --> 00:04:36,465
+x :=, brackets we have.dot dot dot.
+
+96
+00:04:36,465 --> 00:04:38,725
+We don't specify explicitly what the size is.
+
+97
+00:04:38,725 --> 00:04:40,820
+This is int 1, 2, 3, 4.
+
+98
+00:04:40,820 --> 00:04:42,480
+Since there's four elements in there,
+
+99
+00:04:42,480 --> 00:04:45,260
+clearly you want x to be size four.
+
+100
+00:04:45,260 --> 00:04:49,600
+The most common programming operation that you do to arrays,
+
+101
+00:04:49,600 --> 00:04:51,150
+is to iterate through the array.
+
+102
+00:04:51,150 --> 00:04:53,240
+You look through each element of the array and
+
+103
+00:04:53,240 --> 00:04:55,245
+you do something with the element of the array.
+
+104
+00:04:55,245 --> 00:05:00,740
+Maybe you add it to a sum or you check if it's greater than five or something like that,
+
+105
+00:05:00,740 --> 00:05:02,990
+but it is extremely common in programming to
+
+106
+00:05:02,990 --> 00:05:06,185
+iterate through an array and check out each element in the array.
+
+107
+00:05:06,185 --> 00:05:10,380
+So, the way you do that in goaling, is with a four loop.
+
+108
+00:05:10,380 --> 00:05:11,990
+So, you can see the code here,
+
+109
+00:05:11,990 --> 00:05:15,310
+we've got some sample array one, two, three.
+
+110
+00:05:15,310 --> 00:05:17,500
+It's just three elements in it, one, two, three.
+
+111
+00:05:17,500 --> 00:05:19,830
+Now, we want to iterate through this array.
+
+112
+00:05:19,830 --> 00:05:22,690
+Maybe we want to print out each element of the array.
+
+113
+00:05:22,690 --> 00:05:24,745
+So, we make a four loop.
+
+114
+00:05:24,745 --> 00:05:28,920
+Now, notice that I have highlighted near that range keyword.
+
+115
+00:05:28,920 --> 00:05:30,890
+To the right of the range keyword is
+
+116
+00:05:30,890 --> 00:05:32,770
+the name of the array that we want to iterate through.
+
+117
+00:05:32,770 --> 00:05:34,455
+So, range x.
+
+118
+00:05:34,455 --> 00:05:36,230
+To the left, we say for i,
+
+119
+00:05:36,230 --> 00:05:37,940
+v. We got two variables here,
+
+120
+00:05:37,940 --> 00:05:40,070
+i and v. I is
+
+121
+00:05:40,070 --> 00:05:44,210
+the index of the array element that we're looking through in this particular pass,
+
+122
+00:05:44,210 --> 00:05:47,000
+and v is going to be bound to the value
+
+123
+00:05:47,000 --> 00:05:49,730
+of the array in element that we're looking at in this pass.
+
+124
+00:05:49,730 --> 00:05:52,040
+So, the idea here is that in this loop,
+
+125
+00:05:52,040 --> 00:05:54,760
+if you look inside the curly brackets, there's a print statement.
+
+126
+00:05:54,760 --> 00:05:58,620
+That print statement is going to get iterated once each passes the loop.
+
+127
+00:05:58,620 --> 00:06:00,290
+So, every pass of the loop,
+
+128
+00:06:00,290 --> 00:06:02,845
+i and v have bound to different values.
+
+129
+00:06:02,845 --> 00:06:06,830
+I is the index of the element that we're looking at,
+
+130
+00:06:06,830 --> 00:06:08,005
+and v is the value.
+
+131
+00:06:08,005 --> 00:06:09,715
+So, in this case,
+
+132
+00:06:09,715 --> 00:06:12,155
+with this array, the first pass of the loop.
+
+133
+00:06:12,155 --> 00:06:14,445
+I is going to be zero, next pass is going to be one,
+
+134
+00:06:14,445 --> 00:06:15,990
+next pass is going to be two.
+
+135
+00:06:15,990 --> 00:06:17,850
+They'll increment each time.
+
+136
+00:06:17,850 --> 00:06:22,245
+V is going to be the ith value in the array.
+
+137
+00:06:22,245 --> 00:06:25,070
+So, the first pass through when i is equal to 0,
+
+138
+00:06:25,070 --> 00:06:28,950
+v is going to be equal to one because the first element in that array is the number one.
+
+139
+00:06:28,950 --> 00:06:30,840
+So, the zeroth element is the number one.
+
+140
+00:06:30,840 --> 00:06:32,310
+Then the next pass,
+
+141
+00:06:32,310 --> 00:06:34,790
+i is going to be one and v is going to be two,
+
+142
+00:06:34,790 --> 00:06:37,240
+because the first element from zero, one.
+
+143
+00:06:37,240 --> 00:06:40,730
+The first element in that count is the value two and so on.
+
+144
+00:06:40,730 --> 00:06:43,990
+All this loop does is very simple,
+
+145
+00:06:43,990 --> 00:06:46,780
+it just prints out the i and v together,
+
+146
+00:06:46,780 --> 00:06:48,050
+but that's the idea.
+
+147
+00:06:48,050 --> 00:06:50,120
+This allows me to iterate through the array.
+
+148
+00:06:50,120 --> 00:06:57,110
+So, i and v get bound to an index and a value inside this array on each pass.
+
+149
+00:06:57,110 --> 00:06:58,570
+So, inside the loop,
+
+150
+00:06:58,570 --> 00:07:00,365
+inside the curly brackets of the loop,
+
+151
+00:07:00,365 --> 00:07:05,110
+we can do whatever we want to that value v and to that index i.

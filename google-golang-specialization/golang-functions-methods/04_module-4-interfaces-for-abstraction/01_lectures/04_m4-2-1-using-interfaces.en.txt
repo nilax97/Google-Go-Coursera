@@ -1,0 +1,85 @@
+Thank you. Thank you. So interfaces, we've talked about them. And one thing we want to talk about now
+is a little bit of how to use them. So what are they used for, language-wise? And in language,
+why would you need an interface? And I already said, interfaces, they express some sort of a conceptual
+similarity between different types. So the idea is that if two
+types satisfy an interface, then they must be similar in some way
+that is important to the application. So one common, sort of, practical thing
+that you would use an interface for, is when you need a function, you want to write a function which
+takes multiple types as a parameter. So specifically, normally,
+a function, it takes, say, it takes an integer as its arguments,
+right? It can only take an integer. But what if you want to take an integer or
+a float? Something like this, maybe a integer,
+a float or a string, right? You want it to take multiple types. In different types,
+it'll do different things, but you want it to be able
+to take different types. You can use an interface for that. So giving an example,
+say I've got a function, foo ( ), and it's gotta take a parameter. And this parameter,
+it could be either type X or type Y. And I'm talking very generically now. I'll give you a concrete example in
+the next slide, but so I got this foo. It's going to take a parameter
+which is type X or type Y. I want it to take either type. So the way I can do that is I can
+define an interface called Z. And X as a parameter can be,
+the type it can be, in interface type Z. Then I define X and Y to satisfy Z. Right, so, X and
+Y are both satisfying the interface Z. Then foo(), since it can take
+anything that satisfies interface Z, it can take X and Y as its arguments. So this is a common way
+to use an interface. And basically, an interface in this way,
+it sort of generalizes, right? It hides the details of
+the differences between the types. It's like look, these two types are
+similar in the way that's important to me. And so your function could
+just take the interface. It needs to take anything
+that is similar in that way. So, to be a little bit more specific, I made up a problem about
+a pool in a yard, right? So, I have a backyard, and
+I want to put a pool in my yard. But the pool, before I can put the pool
+in the yard, it needs to fit in my yard. And it needs to be fenced, because I don't
+want my kids to fall into the pool, so I need fencing around the pool. And it needs to fit in the yard. So to fit in the yard, the total
+area this pool needs to be limited. Less than the area of the backyard. Also to fence it, I only have so
+much fence, because fence cost money. I only have a limited amount of fence. So the perimeter of this thing has
+to be limited to within some limit, depending on how much I can afford. So I need to determine if a particular
+pool shape satisfies this criteria, because I'm trying to go through
+a bunch of different pool shapes. And I want to pick one that
+satisfies these criterias. It's sort of small enough
+that it can fit in the yard. And also the perimeter's small enough so
+that I can afford to fence it. So I'm going to write this
+function called FitInYard (). And this is going to return a boolean. So it takes a shape as an argument. Some shape, maybe I got some triangular
+shape, I was pass that to FitInYard, and it returns true,
+if the shape satisfies the criteria. So if the area is small enough, and the
+pool is small enough, then it says true. If I pass it a shape like rectangle and it's a big rectangle and it doesn't fit in
+my yard then it will return false, okay? So that's what FitInYard is. Now the thing about fit in yard is it's
+got to take a shape as an argument. But I want it to take any
+shape as an argument. I don't care if it's a triangle,
+circle, square, rectangle, whatever, it can be any shape. I should take it as an argument. But I have to be able to compute the area
+and compute the perimeter, okay? So not any shape, its got to be a shape
+whose area and perimeter I can compute. So let's say the idea is should take
+rectangles, triangles, whatever. But a valid shape has to have an area
+method and a perimeter method, right? So if the shape,
+if I can't compute the area, then I won't be able to
+tell if it fits in my yard. Say it's a sphere or something, right? There's no area, it's a 3D shape, that's a 3D object, I can't compute
+area of a thing like that, right? So, that is not a valid shape that
+I want to try to fit in my yard. So, any shape that has area and
+perimeter, that's okay with me. So what I can do is I can
+define this interface for shapes that have the area and perimeter. So I make my Shape2D interface. We already talked about this. But I make my Shape2D interface. It specifies area and perimeter,
+which return float64. Then I can make my types, triangle type,
+rectangle type, whatever types I want. And as long as these types, I don't care
+how they define what data's inside them, as long as they have methods
+that use them as receiver types. That it has area method and
+perimeter method. So, a triangle, you got area that has triangle as
+a receiver method and also perimeter. Same thing for rectangles,
+it's got an area and a perimeter. As long as they have area and parameter, I should be able
+to take this as an argument. So they satisfy this interface Shape2D. So in my FitInYard implementation,
+you can see that the argument that it takes is called s, and
+its type is the interface type, Shape2D. So what that means is that this
+argument could be any type that satisfies that Shape2D interface. Like rectangle, triangle,
+whatever the types are. And it returns a boolean and
+all the function does is very simple. Just says if s.Area is less than 100, let's say 100 is the size of my backyard,
+right? And as our perimeter is less than 100,
+because that's all the fence I could afford, then return true,
+else return false. So a valid argument to this is any type that satisfies
+the shape to the interface. Now the empty interface is
+standard interfaces predefined and it just specifies no methods. So that means that any type can
+actually satisfy that interface. And what you use it for is when you want to have
+a function argument be any type. You don't want to restrict it
+at all in terms of the type that this function can accept. Then you just make it's
+type the empty interface. So as an example,
+we got this function PrintMe. And its val argument is
+the empty interface. That's how you specify the empty
+interface that I haven't read. So that means that val
+can just be any type. And all this does is just print it. So it will print any type you give it. You give it an int,
+float, string, whatever, it will just print that to the screen. Thank you.

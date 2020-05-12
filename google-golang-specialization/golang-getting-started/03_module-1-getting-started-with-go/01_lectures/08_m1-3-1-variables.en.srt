@@ -1,0 +1,303 @@
+1
+00:00:08,720 --> 00:00:14,825
+So now we're going to start talking a little bit about the Go language,
+
+2
+00:00:14,825 --> 00:00:18,540
+will broached the topic of variables and talk a little bit about
+
+3
+00:00:18,540 --> 00:00:19,920
+those variables that are in
+
+4
+00:00:19,920 --> 00:00:22,820
+every high level language and we'll just see how Go implements it.
+
+5
+00:00:22,820 --> 00:00:25,730
+A lot of this is very similar to what you've seen in other languages,
+
+6
+00:00:25,730 --> 00:00:27,575
+some things are a little bit different.
+
+7
+00:00:27,575 --> 00:00:30,000
+So first there's naming.
+
+8
+00:00:30,000 --> 00:00:32,305
+Every- you need names.
+
+9
+00:00:32,305 --> 00:00:34,075
+Names are variables for functions,
+
+10
+00:00:34,075 --> 00:00:36,350
+you need names to refer to things in your code.
+
+11
+00:00:36,350 --> 00:00:39,030
+So names for variables and things like that,
+
+12
+00:00:39,030 --> 00:00:40,665
+they need to start with a letter.
+
+13
+00:00:40,665 --> 00:00:44,290
+They can have any number of letters and digits and underscores,
+
+14
+00:00:44,290 --> 00:00:48,290
+they are case sensitive in Go and you can't use keywords.
+
+15
+00:00:48,290 --> 00:00:52,520
+There's a list of keywords you can google these or look them up but "if", "case",
+
+16
+00:00:52,520 --> 00:00:53,770
+"package" all the different keywords,
+
+17
+00:00:53,770 --> 00:00:58,230
+the language you can't use those as the names.
+
+18
+00:00:58,470 --> 00:01:03,350
+So, variables are basically data stored in memory somewhere.
+
+19
+00:01:03,350 --> 00:01:08,585
+And every variable has to have a name and a type.
+
+20
+00:01:08,585 --> 00:01:11,115
+So all variables have to have a declaration,
+
+21
+00:01:11,115 --> 00:01:14,090
+specifies the name, and the type of the variable.
+
+22
+00:01:14,090 --> 00:01:19,365
+So, here's a really simple variable declaration.
+
+23
+00:01:19,365 --> 00:01:22,175
+Just as var, x, int.
+
+24
+00:01:22,175 --> 00:01:25,625
+So var is the key word for a declaration of a variable.
+
+25
+00:01:25,625 --> 00:01:27,340
+After that I have the name.
+
+26
+00:01:27,340 --> 00:01:32,685
+So my name variable is called x and then after that I have the type, var, x, int.
+
+27
+00:01:32,685 --> 00:01:36,140
+That's it. That's a declaration of this variable x since it's an integer.
+
+28
+00:01:36,140 --> 00:01:39,680
+And the compiler needs to know what type of variable it is,
+
+29
+00:01:39,680 --> 00:01:42,400
+what the type is, so it knows how much space to allocate,
+
+30
+00:01:42,400 --> 00:01:44,990
+what operations to perform that type of thing.
+
+31
+00:01:44,990 --> 00:01:49,980
+You can declare many on the same line if you want to, just comma-separated.
+
+32
+00:01:49,980 --> 00:01:54,575
+So var x, y int and you can do that as much as you want.
+
+33
+00:01:54,575 --> 00:01:57,450
+So variables have types.
+
+34
+00:01:57,450 --> 00:02:00,680
+Type defines the values that a variable can take
+
+35
+00:02:00,680 --> 00:02:03,810
+and the operations that can be performed on that variable.
+
+36
+00:02:03,810 --> 00:02:06,480
+So for instance common types,
+
+37
+00:02:06,480 --> 00:02:09,105
+basic types, integer, floating point, strings.
+
+38
+00:02:09,105 --> 00:02:14,010
+Integers, the data, the values that they can take are only integral values right?
+
+39
+00:02:14,010 --> 00:02:18,710
+They are integers and the operations you can perform are integer arithmetic,
+
+40
+00:02:18,710 --> 00:02:20,410
+plus, minus, times that sort of
+
+41
+00:02:20,410 --> 00:02:24,340
+thing and there are a set of other ones we'll talk about them a little more detail.
+
+42
+00:02:24,340 --> 00:02:27,740
+Floating point, those are the data that they can have,
+
+43
+00:02:27,740 --> 00:02:30,350
+the values they can have or fractional like
+
+44
+00:02:30,350 --> 00:02:35,765
+decimal values and there you have a set of operations, arithmetic operations.
+
+45
+00:02:35,765 --> 00:02:38,830
+Actually they look superficially the same as the integer operations, plus,
+
+46
+00:02:38,830 --> 00:02:42,440
+times, divide but they may actually be implemented with different hardware right?
+
+47
+00:02:42,440 --> 00:02:44,510
+Because floating point division say is
+
+48
+00:02:44,510 --> 00:02:47,210
+significantly more complicated than integer division.
+
+49
+00:02:47,210 --> 00:02:49,430
+So there's oftentimes as
+
+50
+00:02:49,430 --> 00:02:52,310
+special hardware just for floating point divide things like this.
+
+51
+00:02:52,310 --> 00:02:54,185
+We don't have to know that as programmers but
+
+52
+00:02:54,185 --> 00:02:57,730
+the machine has to know which operation to map it to.
+
+53
+00:02:57,730 --> 00:02:59,620
+Then strings.
+
+54
+00:02:59,620 --> 00:03:01,580
+So strings they're a sequence of
+
+55
+00:03:01,580 --> 00:03:05,405
+bytes represented in unicode and we'll get into that later.
+
+56
+00:03:05,405 --> 00:03:07,505
+But it's a sequence of bytes,
+
+57
+00:03:07,505 --> 00:03:10,610
+that's the type of data the values it can take on and
+
+58
+00:03:10,610 --> 00:03:14,340
+then the operations you can perform on strings. There are many of them.
+
+59
+00:03:14,340 --> 00:03:17,425
+String comparison, string search,
+
+60
+00:03:17,425 --> 00:03:22,540
+concatenation, all sorts operations that you can you can perform on a string.
+
+61
+00:03:22,540 --> 00:03:25,280
+But the point is the type specifies these things.
+
+62
+00:03:25,280 --> 00:03:31,180
+It specifies what data the variable can hold and how big that data can be right?
+
+63
+00:03:31,180 --> 00:03:32,450
+Because you need to know
+
+64
+00:03:32,450 --> 00:03:34,930
+how much space in memory you're going to need to allocate for this.
+
+65
+00:03:34,930 --> 00:03:39,380
+The compiler needs to know that and also what operations are going to be performed on it.
+
+66
+00:03:39,380 --> 00:03:41,195
+So what that's for is
+
+67
+00:03:41,195 --> 00:03:44,810
+eventually the compiler is going to have to take these these operations that you
+
+68
+00:03:44,810 --> 00:03:47,180
+type and go and compile them into
+
+69
+00:03:47,180 --> 00:03:50,630
+machine code instructions for whatever the hardware platform is,
+
+70
+00:03:50,630 --> 00:03:53,630
+and those machine code instructions can be different depending on the type.
+
+71
+00:03:53,630 --> 00:03:57,220
+So for instance you can easily have an add for an integer,
+
+72
+00:03:57,220 --> 00:03:59,330
+an integer add up machine code instruction which
+
+73
+00:03:59,330 --> 00:04:01,560
+is different than a floating point add right?
+
+74
+00:04:01,560 --> 00:04:04,805
+Integer division which is different than floating point division and so on.
+
+75
+00:04:04,805 --> 00:04:09,980
+So this is why the compiler needs to know the type so it knows how to do the compilation,
+
+76
+00:04:09,980 --> 00:04:12,440
+how to convert it into machine code.

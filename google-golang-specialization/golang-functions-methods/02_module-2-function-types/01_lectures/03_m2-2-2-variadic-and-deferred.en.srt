@@ -1,0 +1,567 @@
+1
+00:00:00,000 --> 00:00:02,365
+Module two, functions and organization.
+
+2
+00:00:02,365 --> 00:00:05,580
+Topic 2.1 variadic and deferred.
+
+3
+00:00:05,580 --> 00:00:08,544
+So, we've been talking about functions generally,
+
+4
+00:00:08,544 --> 00:00:11,610
+we're going to talk about a few more variations on functions about how you can
+
+5
+00:00:11,610 --> 00:00:15,160
+pass the arguments and how you can get them to execute different times.
+
+6
+00:00:15,160 --> 00:00:20,845
+One useful tool is to be able to pass a variable number of arguments to the function.
+
+7
+00:00:20,845 --> 00:00:23,980
+So, normally when you define a function,
+
+8
+00:00:23,980 --> 00:00:27,245
+you have to hard code the arguments that it takes.
+
+9
+00:00:27,245 --> 00:00:29,410
+So, if it takes three arguments,
+
+10
+00:00:29,410 --> 00:00:31,935
+you list them, comma-separated inside parentheses.
+
+11
+00:00:31,935 --> 00:00:35,665
+But sometimes you want to make a function that takes a variable number of arguments.
+
+12
+00:00:35,665 --> 00:00:38,485
+So, there are a lot of functions like this,
+
+13
+00:00:38,485 --> 00:00:41,540
+maybe you want to take a number of integers and you don't know how many integers.
+
+14
+00:00:41,540 --> 00:00:42,885
+If you take two, you take 10,
+
+15
+00:00:42,885 --> 00:00:44,810
+you can still work with them and do the same thing with
+
+16
+00:00:44,810 --> 00:00:48,255
+the whole set of integers regardless of how many is taken.
+
+17
+00:00:48,255 --> 00:00:52,470
+So, in that case, you'd like to be able to pass it a variable number of arguments,
+
+18
+00:00:52,470 --> 00:00:55,705
+you can do that using this ellipsis character,
+
+19
+00:00:55,705 --> 00:00:58,595
+not character really but ellipsis it's just three dots.
+
+20
+00:00:58,595 --> 00:01:01,940
+Three period dots in a row and you put that there
+
+21
+00:01:01,940 --> 00:01:07,050
+inside the argument list to specify that you want to have a variable number of arguments.
+
+22
+00:01:07,350 --> 00:01:12,470
+Inside the function when you get this argument it looks like a slice.
+
+23
+00:01:12,470 --> 00:01:14,565
+So, if we look at the function there,
+
+24
+00:01:14,565 --> 00:01:16,485
+it's called getMax and its supposed to get
+
+25
+00:01:16,485 --> 00:01:20,460
+the maximum integer out of a set of integers that you pass it as an argument.
+
+26
+00:01:20,460 --> 00:01:23,630
+So, if you pass it two integers to 10 integers or whatever it is,
+
+27
+00:01:23,630 --> 00:01:25,360
+it should go through all those integers,
+
+28
+00:01:25,360 --> 00:01:28,075
+find the greatest one and return that.
+
+29
+00:01:28,075 --> 00:01:30,920
+So, we want to be able to take a variable number of arguments,
+
+30
+00:01:30,920 --> 00:01:32,550
+so you can see highlighted in red.
+
+31
+00:01:32,550 --> 00:01:35,045
+I say, vals...int.
+
+32
+00:01:35,045 --> 00:01:38,140
+So, it takes an integer but that "..." before integer,
+
+33
+00:01:38,140 --> 00:01:41,495
+means it can take as many integers as you want to take.
+
+34
+00:01:41,495 --> 00:01:44,900
+So, then inside the function,
+
+35
+00:01:44,900 --> 00:01:48,715
+this vals argument is treated like a slice of integers.
+
+36
+00:01:48,715 --> 00:01:52,320
+So, the function just basically you can see what it does it,
+
+37
+00:01:52,320 --> 00:01:53,900
+just goes through this whole,
+
+38
+00:01:53,900 --> 00:01:55,530
+you can see the for loop.
+
+39
+00:01:55,530 --> 00:01:57,710
+It goes through the range of vals so it just iterate
+
+40
+00:01:57,710 --> 00:02:01,010
+through all the integers inside vals,
+
+41
+00:02:01,010 --> 00:02:02,160
+finds the biggest one,
+
+42
+00:02:02,160 --> 00:02:04,985
+sets max v to whichever one is the biggest.
+
+43
+00:02:04,985 --> 00:02:07,965
+Then in the end it returns max v. So,
+
+44
+00:02:07,965 --> 00:02:10,550
+this is just a useful tool you can take a variable number of
+
+45
+00:02:10,550 --> 00:02:13,115
+arguments just use this ellipsis is... inside
+
+46
+00:02:13,115 --> 00:02:18,690
+the argument list and you can treat the parameter just like a slice.
+
+47
+00:02:18,690 --> 00:02:24,995
+Now, another variation on that is let's say you got one of these variadic functions,
+
+48
+00:02:24,995 --> 00:02:26,845
+it takes a variable number of arguments,
+
+49
+00:02:26,845 --> 00:02:30,250
+you can pass it a comma-separated list of arguments.
+
+50
+00:02:30,250 --> 00:02:32,645
+So, say for my getMax,
+
+51
+00:02:32,645 --> 00:02:35,280
+I want to pass it five integers.
+
+52
+00:02:35,280 --> 00:02:37,480
+I could pass it one comma,
+
+53
+00:02:37,480 --> 00:02:38,600
+two comma, three comma, four comma,
+
+54
+00:02:38,600 --> 00:02:40,490
+five, as many as I want.
+
+55
+00:02:40,490 --> 00:02:42,950
+Which is what I do actually in this example right here,
+
+56
+00:02:42,950 --> 00:02:44,300
+you can see getMax,
+
+57
+00:02:44,300 --> 00:02:46,075
+one, three, six , four.
+
+58
+00:02:46,075 --> 00:02:47,850
+I can make that list as long as I want.
+
+59
+00:02:47,850 --> 00:02:53,175
+But another way to pass a variable number of arguments is to just pass it a slice.
+
+60
+00:02:53,175 --> 00:02:56,465
+So, that one, three, six, four,
+
+61
+00:02:56,465 --> 00:02:59,400
+that could already be pre-packaged in a slice
+
+62
+00:02:59,400 --> 00:03:02,830
+and then you could pass the slice to this getMax function.
+
+63
+00:03:02,830 --> 00:03:04,680
+So, that's what I'm doing below,
+
+64
+00:03:04,680 --> 00:03:09,925
+vslice myslice is equal to slice of one, three, six, four.
+
+65
+00:03:09,925 --> 00:03:14,025
+Then I pass that in the last line where I do the print line,
+
+66
+00:03:14,025 --> 00:03:17,820
+I call getMax and I pass it vslice which is my slice.
+
+67
+00:03:17,820 --> 00:03:20,215
+Then notice when I do that,
+
+68
+00:03:20,215 --> 00:03:21,950
+that right after the word vslice,
+
+69
+00:03:21,950 --> 00:03:23,000
+I have the ellipses again.
+
+70
+00:03:23,000 --> 00:03:26,490
+So "..." you have to put that there so that
+
+71
+00:03:26,490 --> 00:03:31,085
+it knows it instead of passing a comma separated sequence of arguments,
+
+72
+00:03:31,085 --> 00:03:35,260
+this vslice is meant to be a slice of all the arguments put together.
+
+73
+00:03:35,260 --> 00:03:37,100
+But once you do that, you can just pass
+
+74
+00:03:37,100 --> 00:03:39,775
+the entire slice to the function and it works fine.
+
+75
+00:03:39,775 --> 00:03:42,440
+So, another thing that is sometimes useful
+
+76
+00:03:42,440 --> 00:03:45,465
+with functions is to have a deferred function call.
+
+77
+00:03:45,465 --> 00:03:51,005
+Deferred functions mean that they don't get executed right where they're called,
+
+78
+00:03:51,005 --> 00:03:53,095
+they get executed later.
+
+79
+00:03:53,095 --> 00:03:57,085
+So, when the surrounding function completes, they get executed.
+
+80
+00:03:57,085 --> 00:03:59,725
+So, typically use this for cleanup activities so,
+
+81
+00:03:59,725 --> 00:04:02,930
+say you're doing something opening files or doing whatever you're doing,
+
+82
+00:04:02,930 --> 00:04:04,885
+maybe you'll have a deferred function which
+
+83
+00:04:04,885 --> 00:04:07,225
+closes all the files at the end or something like that.
+
+84
+00:04:07,225 --> 00:04:10,890
+So, this function doesn't actually get called until
+
+85
+00:04:10,890 --> 00:04:12,570
+the surrounding function is
+
+86
+00:04:12,570 --> 00:04:15,720
+done and say you're done with all the files that you're interested in,
+
+87
+00:04:15,720 --> 00:04:19,440
+then it gets called as you're exiting and closes all the files.
+
+88
+00:04:19,440 --> 00:04:21,040
+So, it does some kinda clean up activity,
+
+89
+00:04:21,040 --> 00:04:23,740
+so this is a common thing to use it for,
+
+90
+00:04:23,740 --> 00:04:25,710
+for this type of cleanups afterwards.
+
+91
+00:04:25,710 --> 00:04:28,900
+So, as an example we've got our main function right here.
+
+92
+00:04:28,900 --> 00:04:32,320
+First thing we do, all you do to do the differ,
+
+93
+00:04:32,320 --> 00:04:35,120
+is just put the keyword differ in front of the function call.
+
+94
+00:04:35,120 --> 00:04:37,920
+So, here we got differ print line.
+
+95
+00:04:37,920 --> 00:04:40,875
+So, defer fmt print line bye.
+
+96
+00:04:40,875 --> 00:04:44,800
+Now and then the next line is just fmt println Hello.
+
+97
+00:04:44,800 --> 00:04:47,210
+Now if they were executed in the order that they're written,
+
+98
+00:04:47,210 --> 00:04:48,895
+you'd print bye and then hello.
+
+99
+00:04:48,895 --> 00:04:51,705
+But of course since we deferred it,
+
+100
+00:04:51,705 --> 00:04:54,070
+what will happen is hello will get executed first.
+
+101
+00:04:54,070 --> 00:04:57,360
+Then defer will not be executed until the main function,
+
+102
+00:04:57,360 --> 00:04:59,440
+the surrounding function actually completes.
+
+103
+00:04:59,440 --> 00:05:02,270
+So, what will actually get printed is hello and then bye.
+
+104
+00:05:02,270 --> 00:05:07,360
+So, one thing to remember about these deferred function calls,
+
+105
+00:05:07,360 --> 00:05:11,650
+is that the arguments are not evaluated in a deferred way.
+
+106
+00:05:11,650 --> 00:05:16,165
+The arguments are evaluated immediately but the call is deferred.
+
+107
+00:05:16,165 --> 00:05:17,445
+So, what does that mean?
+
+108
+00:05:17,445 --> 00:05:18,720
+Sometimes it doesn't mean anything.
+
+109
+00:05:18,720 --> 00:05:21,980
+If you just pass the function some kind of
+
+110
+00:05:21,980 --> 00:05:23,990
+a fixed argument that can't change that
+
+111
+00:05:23,990 --> 00:05:26,125
+doesn't meet evaluation, that doesn't mean anything.
+
+112
+00:05:26,125 --> 00:05:29,230
+But if you pass it an argument that needs to be evaluated,
+
+113
+00:05:29,230 --> 00:05:34,280
+you have to note that argument is evaluated right there where the first statement is.
+
+114
+00:05:34,280 --> 00:05:37,400
+Not later when the call actually happens.
+
+115
+00:05:37,400 --> 00:05:40,620
+So, as to show this, you got a main.
+
+116
+00:05:40,620 --> 00:05:43,640
+This main, you can see in there there's
+
+117
+00:05:43,640 --> 00:05:47,520
+a defer print line and then there's the fmt.println at the end.
+
+118
+00:05:47,520 --> 00:05:50,450
+But there's also a variable called i,
+
+119
+00:05:50,450 --> 00:05:52,050
+i set it equal to one.
+
+120
+00:05:52,050 --> 00:05:53,695
+Now when I do the differ,
+
+121
+00:05:53,695 --> 00:05:55,865
+I say print line i +1.
+
+122
+00:05:55,865 --> 00:05:58,525
+Now at the point where that the first statement is,
+
+123
+00:05:58,525 --> 00:06:01,110
+i =1, so i +1=2,
+
+124
+00:06:01,110 --> 00:06:02,715
+so two should get printed.
+
+125
+00:06:02,715 --> 00:06:05,250
+But then noticed that the line after that,
+
+126
+00:06:05,250 --> 00:06:09,430
+I say, i++, then I'd say I print hello.
+
+127
+00:06:09,430 --> 00:06:14,645
+Remember that differ will not be executed until later after the whole main is complete.
+
+128
+00:06:14,645 --> 00:06:18,750
+So, by the time that differed print line executes,
+
+129
+00:06:18,750 --> 00:06:22,090
+the value of i will actually be two.
+
+130
+00:06:22,090 --> 00:06:24,520
+Because i starts off at one as one,
+
+131
+00:06:24,520 --> 00:06:26,940
+it gets incremented plus plus and so it should be
+
+132
+00:06:26,940 --> 00:06:29,665
+two by the time you actually execute that differed statement.
+
+133
+00:06:29,665 --> 00:06:33,135
+Then if you would evaluate the argument at that time,
+
+134
+00:06:33,135 --> 00:06:35,000
+you would say i+1, 2+1,
+
+135
+00:06:35,000 --> 00:06:36,945
+three, a three would get printed.
+
+136
+00:06:36,945 --> 00:06:38,900
+What actually gets printed as a two,
+
+137
+00:06:38,900 --> 00:06:42,885
+because that i +1 is evaluated right there when the first statement,
+
+138
+00:06:42,885 --> 00:06:44,370
+when it hits the differed statement,
+
+139
+00:06:44,370 --> 00:06:46,985
+the i +1 is evaluated and at that time,
+
+140
+00:06:46,985 --> 00:06:48,960
+i is a one, so i +1 is a two.
+
+141
+00:06:48,960 --> 00:06:52,080
+So, later when the differed statement actually gets
+
+142
+00:06:52,080 --> 00:06:55,780
+executed it's still prints a two. Thank you.

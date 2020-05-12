@@ -1,0 +1,717 @@
+1
+00:00:00,000 --> 00:00:10,975
+[MUSIC]
+
+2
+00:00:10,975 --> 00:00:15,895
+So, Control Flow describes the order
+in which statements are executed inside
+
+3
+00:00:15,895 --> 00:00:16,649
+a program.
+
+4
+00:00:16,649 --> 00:00:21,045
+Now, basic control flow, the most basic
+control flow is just executing one
+
+5
+00:00:21,045 --> 00:00:24,010
+statement at a time,
+one after the other, right.
+
+6
+00:00:24,010 --> 00:00:26,185
+A procedural control flow, just top-down.
+
+7
+00:00:27,320 --> 00:00:30,460
+Now, the control flow changes for
+a lot of reasons.
+
+8
+00:00:30,460 --> 00:00:32,970
+But the first reason why
+control flow changes is because
+
+9
+00:00:32,970 --> 00:00:36,500
+the programmer inserts control
+flow structures into their code,
+
+10
+00:00:36,500 --> 00:00:39,850
+which changes the sequence in
+which the statements are executed.
+
+11
+00:00:39,850 --> 00:00:42,765
+So the main control flow structure,
+the first one, is an if statement.
+
+12
+00:00:42,765 --> 00:00:45,890
+Basically, with an if statement,
+
+13
+00:00:45,890 --> 00:00:49,140
+you can conditionally execute
+certain sequences of code.
+
+14
+00:00:49,140 --> 00:00:52,450
+So if this condition is true,
+then you execute the sequence of code.
+
+15
+00:00:52,450 --> 00:00:52,961
+If not, then you don't.
+
+16
+00:00:52,961 --> 00:00:54,807
+And this, what we're showing here,
+
+17
+00:00:54,807 --> 00:00:58,038
+is the most straight forward if
+statement without an else clause,
+
+18
+00:00:58,038 --> 00:01:01,922
+you can also have an else clause, but
+I'll just start with the basic one first.
+
+19
+00:01:01,922 --> 00:01:06,311
+So the structure is just if, condition,
+you write some condition in there,
+
+20
+00:01:06,311 --> 00:01:09,146
+x is greater than 5, or
+something like that, and
+
+21
+00:01:09,146 --> 00:01:12,198
+this condition has to
+evaluate to a boolean, right.
+
+22
+00:01:12,198 --> 00:01:15,657
+If that condition is true, then
+whatever is inside the curly brackets,
+
+23
+00:01:15,657 --> 00:01:17,881
+label consequent there, that's executed.
+
+24
+00:01:17,881 --> 00:01:21,232
+And you can have any number of
+statements inside there, and
+
+25
+00:01:21,232 --> 00:01:24,650
+that'll be executed if
+the condition evaluates to true.
+
+26
+00:01:24,650 --> 00:01:28,178
+So this changes control flow because
+instead of just definitely executing
+
+27
+00:01:28,178 --> 00:01:31,371
+the next statement one after the other,
+it checks its conditions.
+
+28
+00:01:31,371 --> 00:01:33,584
+If the condition's false,
+then that consequent,
+
+29
+00:01:33,584 --> 00:01:36,840
+those statements in the consequent
+are not executed at all.
+
+30
+00:01:36,840 --> 00:01:40,900
+And so, we can see at the bottom,
+we got, if x is greater than five.
+
+31
+00:01:40,900 --> 00:01:44,400
+And then it prints,
+it performs a print state.
+
+32
+00:01:44,400 --> 00:01:47,130
+And if it's not,
+then it just skips that entirely.
+
+33
+00:01:47,130 --> 00:01:50,330
+Now, this if statement,
+this is a very vanilla if statement.
+
+34
+00:01:50,330 --> 00:01:53,080
+You could also have an else
+clause after that, right?
+
+35
+00:01:53,080 --> 00:01:56,616
+So if the condition's true, it executes
+what's inside the curly brackets.
+
+36
+00:01:56,616 --> 00:01:58,690
+Then, you could have a next clause,
+the else clause.
+
+37
+00:01:58,690 --> 00:02:01,600
+It would execute whatever's inside
+the next set of curly brackets,
+
+38
+00:02:01,600 --> 00:02:03,770
+the next block for the else, right?
+
+39
+00:02:03,770 --> 00:02:07,210
+We didn't include one here, but
+this is a straightforward extension.
+
+40
+00:02:07,210 --> 00:02:09,610
+And you see this in every major language.
+
+41
+00:02:11,950 --> 00:02:16,160
+So for loops, they're another
+form of control flow statement.
+
+42
+00:02:17,380 --> 00:02:22,760
+Again, so for loops, what they do,
+basically, they're loops.
+
+43
+00:02:22,760 --> 00:02:25,196
+So the control flow,
+rather than just going top-down,
+
+44
+00:02:25,196 --> 00:02:28,389
+when you hit the bottom of the loop,
+you come back to the top of the loop, and
+
+45
+00:02:28,389 --> 00:02:31,304
+you do it again and again until
+a certain condition is met or not met.
+
+46
+00:02:31,304 --> 00:02:33,809
+So that's how they alter control flow.
+
+47
+00:02:33,809 --> 00:02:37,889
+It's just, and these are extremely
+common in programming, using loops.
+
+48
+00:02:37,889 --> 00:02:42,491
+So, they just iterate over a block of
+code, as long as the condition is true.
+
+49
+00:02:42,491 --> 00:02:46,420
+Now, there's several forms of for
+statements,
+
+50
+00:02:46,420 --> 00:02:50,060
+we're looking at one right here.
+
+51
+00:02:50,060 --> 00:02:51,690
+Probably the main and most common form.
+
+52
+00:02:51,690 --> 00:02:54,450
+You see it similarly in C and
+things like this.
+
+53
+00:02:54,450 --> 00:02:55,730
+If you look at that keyword for,
+
+54
+00:02:55,730 --> 00:03:00,330
+right after that,
+there are three statements, really.
+
+55
+00:03:00,330 --> 00:03:02,420
+There's the initialization statement,
+init.
+
+56
+00:03:02,420 --> 00:03:04,910
+There's a condition,
+and there's the update.
+
+57
+00:03:04,910 --> 00:03:06,870
+And separated by semicolons.
+
+58
+00:03:06,870 --> 00:03:10,380
+So the init is executed once
+at the beginning of the loop.
+
+59
+00:03:10,380 --> 00:03:12,940
+So, the first time you hit the for loop,
+
+60
+00:03:12,940 --> 00:03:17,220
+it executes the init just to
+initialize things, right at the top.
+
+61
+00:03:17,220 --> 00:03:20,995
+Then, the next block, that condition,
+that is checked on each iteration.
+
+62
+00:03:20,995 --> 00:03:23,980
+So at the beginning of each iteration,
+that condition is checked.
+
+63
+00:03:23,980 --> 00:03:28,017
+It has to result, it has to be
+an expression, that results to a boolean.
+
+64
+00:03:28,017 --> 00:03:29,459
+If that condition is true,
+
+65
+00:03:29,459 --> 00:03:32,790
+then it executes all
+the statements inside the loop.
+
+66
+00:03:32,790 --> 00:03:34,841
+Otherwise it doesn't,
+otherwise it's done with the loop, and
+
+67
+00:03:34,841 --> 00:03:35,748
+it continues past the loop.
+
+68
+00:03:35,748 --> 00:03:38,872
+So that condition is
+the termination condition.
+
+69
+00:03:38,872 --> 00:03:40,945
+It determines when you
+stop executing this loop.
+
+70
+00:03:40,945 --> 00:03:43,738
+because as soon as that condition is not
+true, you skip the loop and you're done.
+
+71
+00:03:43,738 --> 00:03:47,179
+Now, the update, that third block there,
+
+72
+00:03:47,179 --> 00:03:52,108
+the update is what is executed at
+the end of each iteration, and
+
+73
+00:03:52,108 --> 00:03:55,990
+it's used to act as some
+element of a state.
+
+74
+00:03:55,990 --> 00:03:58,600
+So a very common way in which
+you use is you'll have,
+
+75
+00:03:58,600 --> 00:04:00,760
+you'll have some index variable for i.
+
+76
+00:04:00,760 --> 00:04:04,340
+i equals zero, maybe start off with i
+equals zero, and you want to do this,
+
+77
+00:04:04,340 --> 00:04:08,750
+iterate through this ten times, so the
+condition might say, i less than 10 and
+
+78
+00:04:08,750 --> 00:04:12,980
+then the update would be i++,
+or i=i+1, right?
+
+79
+00:04:12,980 --> 00:04:16,445
+And then every time, every pass
+through it updates that i value,
+
+80
+00:04:16,445 --> 00:04:17,894
+that element to the state.
+
+81
+00:04:17,894 --> 00:04:21,535
+And one thing about these for loops is,
+unless you want an infinite for
+
+82
+00:04:21,535 --> 00:04:25,794
+loop which you typically do not want, you
+gotta make sure that that condition is,
+
+83
+00:04:25,794 --> 00:04:27,475
+at some point, false, right?
+
+84
+00:04:27,475 --> 00:04:30,138
+because if the condition is always true,
+then you never leave the loop.
+
+85
+00:04:30,138 --> 00:04:34,900
+So the most common way to make sure that
+condition's always false is to make sure
+
+86
+00:04:34,900 --> 00:04:37,672
+that update changes
+the state in such a way that
+
+87
+00:04:37,672 --> 00:04:41,610
+eventually the updates cause
+the condition to be false.
+
+88
+00:04:41,610 --> 00:04:46,821
+So for instance, if I say i is equal to
+zero, I start off being equal to zero,
+
+89
+00:04:46,821 --> 00:04:52,116
+and my update is i equals i+1,
+then eventually i will be greater than 10,
+
+90
+00:04:52,116 --> 00:04:56,923
+so the update guarantees that
+the condition is eventually false, and
+
+91
+00:04:56,923 --> 00:04:59,797
+that you eventually drop out of the loop.
+
+92
+00:04:59,797 --> 00:05:04,840
+So here are some forms of for loops, these
+are three most common forms of for loops.
+
+93
+00:05:04,840 --> 00:05:06,585
+The top one is what we've already seen.
+
+94
+00:05:06,585 --> 00:05:10,268
+You've got the initialization,
+you got the condition you got the update.
+
+95
+00:05:10,268 --> 00:05:14,524
+The next one,
+if you look at the for keyword,
+
+96
+00:05:14,524 --> 00:05:18,950
+there's only the condition check after it.
+
+97
+00:05:18,950 --> 00:05:20,620
+No initialization, no update.
+
+98
+00:05:20,620 --> 00:05:22,840
+You don't have to have those.
+
+99
+00:05:22,840 --> 00:05:28,250
+Now, instead, what we did here to make
+it equivalent to the for loop before, we
+
+100
+00:05:28,250 --> 00:05:32,150
+had to put the initialization before the
+for loop, that's another way of doing it.
+
+101
+00:05:32,150 --> 00:05:34,590
+And the update is now built into the for
+loop, so if you look,
+
+102
+00:05:34,590 --> 00:05:37,750
+there's an i plus plus inside the loop,
+right.
+
+103
+00:05:37,750 --> 00:05:42,440
+So, it's actually inside the fourth block,
+instead of, as you have in the first form,
+
+104
+00:05:42,440 --> 00:05:45,389
+where you actually put it in
+there right after the keyword.
+
+105
+00:05:46,450 --> 00:05:48,525
+But, it's another way
+you can define a for,
+
+106
+00:05:48,525 --> 00:05:51,483
+which is really just like a while
+loop inside another language.
+
+107
+00:05:51,483 --> 00:05:54,910
+Then, the last form is
+just an infinite loop.
+
+108
+00:05:55,930 --> 00:05:58,645
+It has nothing after the for loop,
+it just is an infinite loop,
+
+109
+00:05:58,645 --> 00:06:00,914
+which is not typically what
+we are going to be doing.
+
+110
+00:06:00,914 --> 00:06:03,311
+You do that, maybe,
+in an embedded system but,
+
+111
+00:06:03,311 --> 00:06:05,480
+it's not common to do
+in a regular program.
+
+112
+00:06:05,480 --> 00:06:07,130
+You usually don't want an infinite loop.
+
+113
+00:06:08,860 --> 00:06:11,680
+All right, so another type of
+controlled flow is a switch.
+
+114
+00:06:12,730 --> 00:06:14,530
+Switch is paired with case, right?
+
+115
+00:06:14,530 --> 00:06:17,350
+So a switch is a multi-way if statement.
+
+116
+00:06:17,350 --> 00:06:21,700
+So, you often get situations where you
+want to say, if this is true you do this.
+
+117
+00:06:21,700 --> 00:06:22,776
+If this is true, you do that.
+
+118
+00:06:22,776 --> 00:06:23,670
+If this is true, you do that.
+
+119
+00:06:23,670 --> 00:06:25,366
+You sort of, you do one of a set of cases.
+
+120
+00:06:25,366 --> 00:06:29,300
+Sort of an else if, if else if is
+another way to write this type of thing.
+
+121
+00:06:29,300 --> 00:06:32,320
+So a switch is like,
+there's a set of cases and
+
+122
+00:06:32,320 --> 00:06:34,670
+only one of them is going to be executed.
+
+123
+00:06:34,670 --> 00:06:36,280
+Whichever one matches.
+
+124
+00:06:36,280 --> 00:06:38,880
+So the switch may contain,
+typically contains,
+
+125
+00:06:38,880 --> 00:06:41,510
+a tag, which is a variable to be checked.
+
+126
+00:06:41,510 --> 00:06:43,960
+Right, so maybe I say switch x.
+
+127
+00:06:43,960 --> 00:06:45,670
+So that's the variable I'm going to check.
+
+128
+00:06:45,670 --> 00:06:51,820
+Then each case is associated with some
+constant value that x is compared to,
+
+129
+00:06:51,820 --> 00:06:53,570
+that the tag is compared to.
+
+130
+00:06:53,570 --> 00:06:57,310
+So tag is compared to the constant
+defined right after the case keyword.
+
+131
+00:06:57,310 --> 00:07:01,420
+And then whichever case is constant,
+
+132
+00:07:01,420 --> 00:07:05,760
+matches the value of X, that's the case
+that's executed, and none of the rest are.
+
+133
+00:07:05,760 --> 00:07:08,870
+So, in this example,
+you can see, you got switch x.
+
+134
+00:07:08,870 --> 00:07:10,740
+Inside you've got two cases.
+
+135
+00:07:10,740 --> 00:07:11,780
+Case one, case two.
+
+136
+00:07:11,780 --> 00:07:14,480
+So if x is a 1, it will execute case one.
+
+137
+00:07:14,480 --> 00:07:15,957
+If x is a 2, it will execute case two.
+
+138
+00:07:15,957 --> 00:07:18,079
+And then the bottom one is default.
+
+139
+00:07:18,079 --> 00:07:20,942
+Default is executed if
+none of the cases are hit.
+
+140
+00:07:20,942 --> 00:07:23,510
+So it's an optional thing.
+
+141
+00:07:23,510 --> 00:07:25,541
+You don't have to have a default.
+But you can have it default so
+
+142
+00:07:25,541 --> 00:07:28,820
+if it falls through,
+it'll end up executing something.
+
+143
+00:07:28,820 --> 00:07:31,070
+So this is a typical form for a case.
+
+144
+00:07:31,070 --> 00:07:36,364
+And one thing to note, just if you're
+used to C, is in comparison to C,
+
+145
+00:07:36,364 --> 00:07:40,355
+the case automatically breaks
+at the end of the case.
+
+146
+00:07:40,355 --> 00:07:45,080
+So in C, If you were to execute case1,
+say x was equal to one, you hit case1,
+
+147
+00:07:45,080 --> 00:07:49,893
+you execute case1, it would also follow
+through and execute case2, right?
+
+148
+00:07:49,893 --> 00:07:51,195
+That's what C would do,
+
+149
+00:07:51,195 --> 00:07:54,857
+unless you put a break statement in
+there at the end of case1, right?
+
+150
+00:07:54,857 --> 00:07:57,701
+After the fmt.Printf,
+you put a break statement,
+
+151
+00:07:57,701 --> 00:08:00,360
+then it would skip the other
+case in the default.
+
+152
+00:08:00,360 --> 00:08:03,666
+In switch in Go lang,
+you don't have to do that,
+
+153
+00:08:03,666 --> 00:08:07,549
+it automatically breaks,
+which is a good, good thing.

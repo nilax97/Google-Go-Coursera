@@ -1,0 +1,82 @@
+Module 4, Interfaces for
+Abstraction, Topic 1.2, Interfaces. An interface is a concept used in Go and
+it helps us get polymorphisms. So we don't get inheritance, we don't need
+inheritance, we don't need overriding. We can use interfaces to basically
+accomplish the same thing. And I think it's in a better way. I think it's cleaner. But this is up to,
+this is up for argument, right? because people who are used to Java,
+or something like that, will like it the other way. They'll like their inheritance and
+want to fight to keep it, but Go does this in a different way. So an interface is basically
+a set of method signatures. So by signatures, I mean the name of
+the method, the parameters of the method, and their types, and
+their return values, and their types. So that's all it is,
+there's no implementations, implementation of a method, right? So it just defines
+the signatures to the method. So it says the methods have to
+have this name, these parameters, these return values. That's an interface. So it's not a type or
+anything, it's less than that. It's used to express conceptual
+similarity between types. So what I mean by that is say I've got
+an interface called Shape2D, right? And that's my interface, and it's supposed
+to represent two-dimensional shapes. So all two-dimensional shapes, I'm going to say they have
+to have two methods, okay? An area method and
+a perimeter method, right? If it's a two-dimensional shape,
+you gotta be able to compute the area, you gotta be able to compute perimeter. And then I call it
+a two-dimensional shape. So my two-dimensional shape
+interface just says look, gotta have these two methods
+with the arguments that I say. In this case, no arguments, right? You gotta have these two methods in order
+to be considered a two dimensional shape. But if you have those two methods,
+any type that has those two methods, it can be considered
+a two-dimensional shape. That's what an interface is saying. So it's saying that they are conceptually
+similar, a circle, a square, a rectangle, a triangle. You can compute the area of all those and
+the perimeter of all those. So I'm going to call them two-dimensional
+shapes So, satisfying interface. A type satisfies an interface if it
+actually defines all the methods specified in the interface. So remember that a method in an interface,
+an interface doesn't specify. It doesn't design, give you the method. It just gives you the signature for
+the method. It doesn't implement the method. So if a type actually implements all
+the methods in the interface with the same method signatures, so same
+arguments, same name, same return values, then that type is said to
+satisfy the interface. So for instance,
+I can have a Shape2D interface. And I have it two types,
+a Rectangle type, a Triangle type. And if the Rectangle type and
+the Triangle type both define an area and a parameter method, with the appropriate
+arguments and return values. Then you will say Rectangle and Triangle
+both satisfy the Shape2D interface. And so they can be considered
+to be two-dimensional shapes. Now Rectangle and Triangle can have lots
+of other methods besides the area and perimeter, right? Any number of other methods. Also, Rectangle and
+Triangle can have lots of other data. Maybe they're structs, and struct types,
+and they have x, y, z points. Who knows what they have, right? None of that matters. As long as they have the area and perimeter that is specified in
+the interface, then that's enough. And they can be considered to
+be satisfying the interface and considered to be two-dimensional shapes. So what that accomplishes is it
+basically accomplishes what you get from inheritance and
+overriding together, right? So now I got Rectangle and Triangle. If they're both Shape2D, if they satisfy
+that interface, then they both have area, they both have perimeter. But their area and perimeter methods can
+do completely different things, right? because when you compute
+the area of a rectangle, it is different than computing
+the area of a triangle, right? So their implementations can be different,
+but they have the same name. And at the high level they form
+the same thing, they compute area. So in this way, we're using interface to
+accomplish in Go lang what you would use inheritance and overriding to accomplish
+typically in a thing like JAVA or some other object oriented language. So how do you define an interface type? It's pretty straightforward,
+it looks sort of like a struct. There we got Shape2D, so
+I say type Shape2D interface. Just use the keyword interface
+after the name of the interface. In curly brackets, I start listing
+the signatures of the methods. So in this case is only two method and
+two signatures that I need, area and perimeter. Both of them area and perimeter take
+no arguments and they return a float, a 64 float. So that's it,
+that's how you define this interface. I just list all these method signatures
+that I want to put in the interface. Now then, say later on in my
+code I defined a type Triangle. And I don't even say what's in it. I just said it have an open curly bracket,
+close curly bracket, with some dots, just to say it doesn't matter what data
+I'm putting in that Triangle, right? Maybe that data Triangle, maybe it's
+a struct or something like that, who knows what it is. It doesn't matter, but whatever it is, as long as I define a function area
+whose receiver type is a Triangle and a function perimeter whose
+receiver type is also a Triangle. And the area and perimeter also take
+no arguments and return float64s, just like the interface. Then this type Triangle is said to
+satisfy that ShapeID interface, Shape2D interface, rather. So and it doesn't matter what
+other data is in Triangle, what other methods are using
+Triangle as a received type. As long as got area and perimeter and
+it matches and satisfies the interface. And one other thing before I go on, is that you don't have
+to state it explicitly. So in other languages that have
+interfaces, you often have to say explicitly the Triangle satisfies
+this interface, the Shape2D interface. You don't say that in Go. You just say here's the interface and
+here's my type Triangle, and here the methods for Triangle. And the compiler figure,
+it can do the matching automatically. So I see you have a area in perimeter, I
+will treat you just like I treat anything that satisfies the Shape2D interface. Thank you.

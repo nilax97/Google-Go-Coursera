@@ -1,0 +1,474 @@
+1
+00:00:00,006 --> 00:00:04,912
+So we've
+
+2
+00:00:04,912 --> 00:00:13,760
+already talked about strings.
+
+3
+00:00:13,760 --> 00:00:15,060
+Strings are a common construct.
+
+4
+00:00:15,060 --> 00:00:17,870
+You see them in every
+programming language, and
+
+5
+00:00:17,870 --> 00:00:21,760
+strings are made of unicode Unicode runes.
+
+6
+00:00:21,760 --> 00:00:25,110
+They're straight,
+basically, a raid of runes.
+
+7
+00:00:25,110 --> 00:00:29,970
+So, there's a package called the Unicode
+Package which provides a set of functions
+
+8
+00:00:29,970 --> 00:00:34,110
+that actually evaluate the properties of
+the different runes inside the strings.
+
+9
+00:00:34,110 --> 00:00:38,120
+And it's useful if you've
+ever done parsing, you know,
+
+10
+00:00:38,120 --> 00:00:40,980
+you want to parse some
+string out of whatever file.
+
+11
+00:00:40,980 --> 00:00:45,300
+Or out of a- maybe something somebody
+typed in directly as user input and
+
+12
+00:00:45,300 --> 00:00:48,160
+you want to evaluate that string
+when you're doing parsing you need
+
+13
+00:00:48,160 --> 00:00:50,890
+functions like these so
+there a long set of functions that
+
+14
+00:00:50,890 --> 00:00:55,268
+the unicode package provides to
+evaluate the runes Some of them here,
+
+15
+00:00:55,268 --> 00:00:59,747
+are IsDigit tells you if the rune
+is a digit, a numerical digit.
+
+16
+00:00:59,747 --> 00:01:02,076
+IsSpace- is it a space character?
+
+17
+00:01:02,076 --> 00:01:06,557
+isLetter is the letter lowercase,
+IsPunct- is punctuation so
+
+18
+00:01:06,557 --> 00:01:12,023
+these are all binary- boolean right so
+they return true or false depending
+
+19
+00:01:12,023 --> 00:01:17,429
+on if the rune is what it's saying it to
+be, if it's a digit or space or so on.
+
+20
+00:01:18,440 --> 00:01:21,530
+There aree also a set of other
+functions that perform conversions.
+
+21
+00:01:21,530 --> 00:01:22,980
+So some of these conversions ae possible.
+
+22
+00:01:22,980 --> 00:01:24,800
+For isntance ToUpper and ToLower.
+
+23
+00:01:24,800 --> 00:01:28,510
+You can take a lower case (r rune),turn
+it into an upper case (r rune).
+
+24
+00:01:28,510 --> 00:01:29,830
+And vice versa.
+
+25
+00:01:29,830 --> 00:01:31,210
+So they provide funtions for that.
+
+26
+00:01:31,210 --> 00:01:34,500
+So they take a (r rune), like ToUpper, it
+takes a (r rune), Which is lowercase and
+
+27
+00:01:34,500 --> 00:01:37,314
+returns a which is uppercase and so on.
+
+28
+00:01:37,314 --> 00:01:38,940
+So a unicode package is useful for that.
+
+29
+00:01:38,940 --> 00:01:43,540
+But there are other packages that are also
+involved in manipulating strings.
+
+30
+00:01:43,540 --> 00:01:44,750
+There's the strings package.
+
+31
+00:01:44,750 --> 00:01:46,980
+So the strings package.
+
+32
+00:01:46,980 --> 00:01:50,740
+The functions that it provides
+are things to directly.
+
+33
+00:01:50,740 --> 00:01:55,490
+Not looking at the individual generally,
+but look at the whole string.
+
+34
+00:01:55,490 --> 00:01:57,420
+So there are a set of search
+functions it provided.
+
+35
+00:01:57,420 --> 00:01:59,083
+Inside the strings package.
+
+36
+00:01:59,083 --> 00:02:03,637
+These are common functions that you see
+in lots of different lanugages also.
+
+37
+00:02:03,637 --> 00:02:06,383
+So for instance,
+the first one would be compare.
+
+38
+00:02:06,383 --> 00:02:11,153
+Compare (a, b), you givev it two strings
+and it compares to see if they're equal.
+
+39
+00:02:11,153 --> 00:02:14,334
+And actually this compare function,
+it returns a -1.
+
+40
+00:02:14,334 --> 00:02:18,233
+It returns 0 if they're equal,
+it returns a -1 if a is less than b,
+
+41
+00:02:18,233 --> 00:02:21,710
+meaning earlier than it,
+in In alphanumeric order.
+
+42
+00:02:21,710 --> 00:02:24,300
+And A, it returns a positive one,
+if A is greater than B, so
+
+43
+00:02:24,300 --> 00:02:27,310
+if A is later than B
+in alphanumeric order.
+
+44
+00:02:27,310 --> 00:02:32,180
+So, to compare, contains, so you give
+S a string, and then a sub string,
+
+45
+00:02:32,180 --> 00:02:36,200
+if that sub string is contained inside S,
+it returns true, otherwise false.
+
+46
+00:02:36,200 --> 00:02:39,400
+Have prefix so
+you give it a string s and a prefix.
+
+47
+00:02:39,400 --> 00:02:44,510
+If that and returns true, if that prefix
+is the, s starts with a prefix and
+
+48
+00:02:44,510 --> 00:02:48,080
+index s and you go to substring,
+what that does is a search,
+
+49
+00:02:48,080 --> 00:02:50,300
+it searches for the substring inside s.
+
+50
+00:02:50,300 --> 00:02:53,920
+And it returns you the index
+of where the first instance,
+
+51
+00:02:53,920 --> 00:02:57,720
+instance of that substring can be found
+inside a [INAUDIBLE] can be found.
+
+52
+00:02:57,720 --> 00:02:59,170
+So, this is the string's package.
+
+53
+00:02:59,170 --> 00:03:04,920
+Now, the string's package also provides a
+set of functions that manipulate strings.
+
+54
+00:03:04,920 --> 00:03:09,680
+Now, when I say manipulate, you can say
+changes string, a string is mutable.
+
+55
+00:03:09,680 --> 00:03:13,540
+But, there are a lot of functions
+that take an existing string and
+
+56
+00:03:13,540 --> 00:03:15,000
+return a new string.
+
+57
+00:03:15,000 --> 00:03:17,630
+That is some modified and some useful way.
+
+58
+00:03:17,630 --> 00:03:20,200
+So the first one will be replace.
+
+59
+00:03:20,200 --> 00:03:24,740
+With replace you basically take a string
+and it allows you to replace instances
+
+60
+00:03:24,740 --> 00:03:30,330
+whenever it finds it in a current of old
+it replaces it with currents of new.
+
+61
+00:03:30,330 --> 00:03:31,230
+So these are all strings.
+
+62
+00:03:31,230 --> 00:03:34,964
+So there's a big string S Is a substring
+old and another substring new.
+
+63
+00:03:34,964 --> 00:03:37,844
+Replaces instances of old
+with instances of new.
+
+64
+00:03:37,844 --> 00:03:39,356
+And return to a new string.
+
+65
+00:03:39,356 --> 00:03:42,236
+So s the original string
+is not actually changed.
+
+66
+00:03:42,236 --> 00:03:48,185
+It returns you to a new string
+with a replacements for ToLower,
+
+67
+00:03:48,185 --> 00:03:54,195
+ToUpper, so this'll take the whole string
+and change it to lower case or upper case.
+
+68
+00:03:54,195 --> 00:03:54,945
+I keep saying change.
+
+69
+00:03:54,945 --> 00:03:56,595
+It does not change the string.
+
+70
+00:03:56,595 --> 00:03:59,090
+It returns a new string that is modified.
+
+71
+00:03:59,090 --> 00:04:01,320
+Also, trim space is useful.
+
+72
+00:04:01,320 --> 00:04:05,040
+That gets rid of leading and
+trailing light space from a string.
+
+73
+00:04:05,040 --> 00:04:09,740
+So you get this a lot when you're
+reading from a file with, say, and maybe
+
+74
+00:04:09,740 --> 00:04:14,190
+the tokens in the file are seperatedby
+spaces, so if you just read directly
+
+75
+00:04:14,190 --> 00:04:17,270
+in the file, you'll also read these
+spaces in, but you don't need the spaces.
+
+76
+00:04:17,270 --> 00:04:18,370
+You just need the token.
+
+77
+00:04:18,370 --> 00:04:20,440
+So you may call TrimSpace
+to get rid of the spaces.
+
+78
+00:04:22,620 --> 00:04:25,760
+Another package that has
+a lot of useful functions for
+
+79
+00:04:25,760 --> 00:04:28,350
+strings is the Strconv Package.
+
+80
+00:04:28,350 --> 00:04:33,420
+So generally this provides a set of
+functions for converting strings
+
+81
+00:04:34,800 --> 00:04:38,170
+from different basic data types, to and
+from different basic data types.
+
+82
+00:04:38,170 --> 00:04:42,940
+So some of the big ones are Atoi As
+ascii to integer is what it stands for.
+
+83
+00:04:42,940 --> 00:04:47,210
+And converts a string to an integer
+if that string represents an integar.
+
+84
+00:04:48,230 --> 00:04:51,560
+Lets say,
+you are reading a string from a file and
+
+85
+00:04:51,560 --> 00:04:55,340
+the string is a number 123 one hundred and
+twenty three.
+
+86
+00:04:55,340 --> 00:04:56,560
+Now when you read that, and
+
+87
+00:04:56,560 --> 00:04:59,965
+you read that as a string,
+You can't do math on a string, right?
+
+88
+00:04:59,965 --> 00:05:04,316
+You can't take that 123 and
+add 1 to it because it's a string type,
+
+89
+00:05:04,316 --> 00:05:05,591
+it's not an Int type.
+
+90
+00:05:05,591 --> 00:05:09,042
+So you need to read that string in and
+convert it to an Int.
+
+91
+00:05:09,042 --> 00:05:10,767
+And then you can do math on it.
+
+92
+00:05:10,767 --> 00:05:13,242
+So you'd use Atoi to do a thing like that.
+
+93
+00:05:13,242 --> 00:05:14,818
+And Itoa does the reverse.
+
+94
+00:05:14,818 --> 00:05:18,159
+It converts an Int into a string,
+an equivalent string.
+
+95
+00:05:19,220 --> 00:05:21,790
+Then FormatFloat basically does
+a similar thing for float.
+
+96
+00:05:21,790 --> 00:05:25,130
+So it converts a floating point number
+into a string representation of that
+
+97
+00:05:25,130 --> 00:05:26,120
+floating point number.
+
+98
+00:05:26,120 --> 00:05:28,270
+And then ParseFloat does the opposite,
+
+99
+00:05:28,270 --> 00:05:30,160
+converts a string to
+a floating point number.
+
+100
+00:05:30,160 --> 00:05:31,981
+So a string, so if you have a string.
+
+101
+00:05:31,981 --> 00:05:37,326
+123.45, and
+in a string it can convert it into
+
+102
+00:05:37,326 --> 00:05:43,050
+a floating point the number
+you can actually do method.

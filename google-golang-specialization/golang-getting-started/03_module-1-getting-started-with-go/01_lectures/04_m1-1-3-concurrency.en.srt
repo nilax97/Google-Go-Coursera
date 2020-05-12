@@ -1,0 +1,687 @@
+1
+00:00:10,490 --> 00:00:14,180
+One of the big advantages of Go,
+
+2
+00:00:14,180 --> 00:00:17,625
+is its implementation of concurrency.
+
+3
+00:00:17,625 --> 00:00:20,850
+So, we'll talk a little bit right now about concurrency,
+
+4
+00:00:20,850 --> 00:00:23,305
+what it is, and why it's useful,
+
+5
+00:00:23,305 --> 00:00:25,670
+and how Go implements it,
+
+6
+00:00:25,670 --> 00:00:31,540
+how there are built-in constructs in the language that make it easy to use concurrency.
+
+7
+00:00:31,570 --> 00:00:36,435
+So, I'm going to start by talking about performance limitations of computers.
+
+8
+00:00:36,435 --> 00:00:39,920
+The reason for this is because a lot of the motivation for
+
+9
+00:00:39,920 --> 00:00:44,880
+concurrency comes from the need for speed.
+
+10
+00:00:44,880 --> 00:00:46,755
+A lot of the motivation,
+
+11
+00:00:46,755 --> 00:00:49,095
+not all but a lot of it does.
+
+12
+00:00:49,095 --> 00:00:53,210
+So, that's why I'm going to introduce these performance limits on
+
+13
+00:00:53,210 --> 00:00:57,874
+machines and how concurrency can help you get around these performance limitations.
+
+14
+00:00:57,874 --> 00:01:00,650
+So, Moore's law, so just to summarize,
+
+15
+00:01:00,650 --> 00:01:01,920
+you probably heard of this law.
+
+16
+00:01:01,920 --> 00:01:04,780
+But in case you have not, Moore's Law,
+
+17
+00:01:04,780 --> 00:01:10,800
+it basically says, that the number of transistors on a chip doubles every 18 months.
+
+18
+00:01:10,800 --> 00:01:13,170
+Now, this used to be the case,
+
+19
+00:01:13,170 --> 00:01:15,765
+it is not the case anymore, recently.
+
+20
+00:01:15,765 --> 00:01:19,190
+That has changed, but this used to be the case and so,
+
+21
+00:01:19,190 --> 00:01:21,610
+because of this doubling of transistors,
+
+22
+00:01:21,610 --> 00:01:23,390
+what happened would be,
+
+23
+00:01:23,390 --> 00:01:25,710
+machines would speed up just.
+
+24
+00:01:25,710 --> 00:01:30,300
+Because as the transistors got a little smaller and they would be closer to each other,
+
+25
+00:01:30,300 --> 00:01:32,690
+you could increase the clock rate
+
+26
+00:01:32,690 --> 00:01:35,700
+and so clock rates would just increase, increase, increase.
+
+27
+00:01:35,700 --> 00:01:39,085
+I remember when I was in school, which was a while ago,
+
+28
+00:01:39,085 --> 00:01:42,725
+you'd buy a machine and seriously a few months later there'd be another machine,
+
+29
+00:01:42,725 --> 00:01:45,590
+same prize, it was faster and it was frustrating.
+
+30
+00:01:45,590 --> 00:01:48,275
+So, these clock rates were just going up and up and
+
+31
+00:01:48,275 --> 00:01:51,310
+up because the number of transistors were just increasing.
+
+32
+00:01:51,310 --> 00:01:55,155
+Now, performance then that was great right and in fact,
+
+33
+00:01:55,155 --> 00:01:56,350
+what that meant was that,
+
+34
+00:01:56,350 --> 00:01:59,140
+I'm a hardware person mostly,
+
+35
+00:01:59,140 --> 00:02:00,705
+my background is a lot of hardware.
+
+36
+00:02:00,705 --> 00:02:04,575
+So, I've always felt like software designers,
+
+37
+00:02:04,575 --> 00:02:06,745
+programmers would get lazy.
+
+38
+00:02:06,745 --> 00:02:08,870
+They'd write code and it didn't have to be
+
+39
+00:02:08,870 --> 00:02:11,585
+particularly efficient in terms of memory or in terms of speed
+
+40
+00:02:11,585 --> 00:02:14,510
+because they knew that pretty soon hardware people
+
+41
+00:02:14,510 --> 00:02:18,500
+would double the number of transistors and fix all their problems for them.
+
+42
+00:02:18,500 --> 00:02:20,335
+So, that's how it used to be,
+
+43
+00:02:20,335 --> 00:02:22,180
+but that is not happening anymore,
+
+44
+00:02:22,180 --> 00:02:24,560
+because Moore's Law had to slow down.
+
+45
+00:02:24,560 --> 00:02:27,050
+There are several reasons why probably the
+
+46
+00:02:27,050 --> 00:02:31,100
+biggest would be the power consumption and therefore temperature constraints.
+
+47
+00:02:31,100 --> 00:02:36,135
+So, when you pack these transistors onto onto a chip they generate heat.
+
+48
+00:02:36,135 --> 00:02:39,725
+Every time they switch they consume power which generates heat.
+
+49
+00:02:39,725 --> 00:02:42,580
+If you keep increasing the clock rate,
+
+50
+00:02:42,580 --> 00:02:44,170
+then the switch zero to one,
+
+51
+00:02:44,170 --> 00:02:47,060
+zero to one more frequently higher rate and they
+
+52
+00:02:47,060 --> 00:02:50,535
+create more heat and the chip would physically melt.
+
+53
+00:02:50,535 --> 00:02:55,585
+So, if you've ever opened up a machine you see they got fans blowing over the chip.
+
+54
+00:02:55,585 --> 00:02:57,500
+In fact usually, when you open up a box,
+
+55
+00:02:57,500 --> 00:02:59,600
+you see on the box some big heat sink,
+
+56
+00:02:59,600 --> 00:03:04,590
+big gnarly-looking piece of metal that's actually attached to the processor.
+
+57
+00:03:04,590 --> 00:03:06,350
+That's just to distribute heat.
+
+58
+00:03:06,350 --> 00:03:08,390
+So, the wet air blows over at the fan blows
+
+59
+00:03:08,390 --> 00:03:10,840
+over it and distributes the heat so it doesn't melt.
+
+60
+00:03:10,840 --> 00:03:13,015
+So, this is air cooling, right?
+
+61
+00:03:13,015 --> 00:03:15,260
+We are basically at the limits of air cooling.
+
+62
+00:03:15,260 --> 00:03:18,155
+Air cooling can only remove so much heat per unit time.
+
+63
+00:03:18,155 --> 00:03:19,490
+So if you get,
+
+64
+00:03:19,490 --> 00:03:21,650
+if you clock these things much faster with
+
+65
+00:03:21,650 --> 00:03:24,065
+this density of transistors, you're going to melt the thing.
+
+66
+00:03:24,065 --> 00:03:26,655
+So you can't keep increasing the clock rates.
+
+67
+00:03:26,655 --> 00:03:30,020
+So, that's performance limit that's happening with machines,
+
+68
+00:03:30,020 --> 00:03:34,680
+the clock rates are not going up as fast as quickly as they used to go up over time.
+
+69
+00:03:34,680 --> 00:03:40,810
+So, how do you get performance improvement even though you can't just crank up the clock?
+
+70
+00:03:40,810 --> 00:03:43,810
+So, one way to do this is to use parallelism.
+
+71
+00:03:43,810 --> 00:03:47,540
+So, this is typically implemented simple and in
+
+72
+00:03:47,540 --> 00:03:51,665
+a number of ways but you see this as an increasing number of cores on chips,
+
+73
+00:03:51,665 --> 00:03:53,070
+this is one way that you see it, right.
+
+74
+00:03:53,070 --> 00:03:55,870
+So, you got quad core machines, these are common, right.
+
+75
+00:03:55,870 --> 00:03:58,745
+There are four copies of the core on there and you get more.
+
+76
+00:03:58,745 --> 00:04:01,915
+Heck, if you go to a GPU that thing might have a 1,000.
+
+77
+00:04:01,915 --> 00:04:05,280
+1,000 processor core is all in a inner massive array.
+
+78
+00:04:05,280 --> 00:04:09,710
+So, these cores, the number of cores on the processor increases over time
+
+79
+00:04:09,710 --> 00:04:15,080
+and that helps you because you can perform multiple tasks at the same time,
+
+80
+00:04:15,080 --> 00:04:17,295
+potentially, not always but sometimes.
+
+81
+00:04:17,295 --> 00:04:20,035
+If you've got four cores, you can do four things at once.
+
+82
+00:04:20,035 --> 00:04:21,540
+That can improve your speed,
+
+83
+00:04:21,540 --> 00:04:23,155
+you can get things done faster.
+
+84
+00:04:23,155 --> 00:04:25,310
+Now it doesn't necessarily improve your latency,
+
+85
+00:04:25,310 --> 00:04:28,040
+but your throughput will improve potentially.
+
+86
+00:04:28,040 --> 00:04:32,345
+So, difficulties with implementing parallelism, there are many.
+
+87
+00:04:32,345 --> 00:04:35,560
+But programming wise there are difficulties.
+
+88
+00:04:35,560 --> 00:04:38,120
+So, for instance, when did the tasks start and when do they stop?
+
+89
+00:04:38,120 --> 00:04:40,625
+A programmer has to decide this.
+
+90
+00:04:40,625 --> 00:04:45,385
+For tasks, these tasks are not completely independent.
+
+91
+00:04:45,385 --> 00:04:49,915
+So, what happens when one task needs to get data that's generated by another task, right?
+
+92
+00:04:49,915 --> 00:04:52,100
+How does this data transfer occur?
+
+93
+00:04:52,100 --> 00:04:55,405
+Also, if you've got multiple tasks running at the same time,
+
+94
+00:04:55,405 --> 00:04:57,355
+do these tests conflict in memory,
+
+95
+00:04:57,355 --> 00:04:58,715
+right? They should not.
+
+96
+00:04:58,715 --> 00:05:00,490
+You don't want one task to write to it's
+
+97
+00:05:00,490 --> 00:05:03,895
+variable A and that overrides variable B in another task.
+
+98
+00:05:03,895 --> 00:05:08,655
+So, these are all problems that happen when you have concurrent execution going on.
+
+99
+00:05:08,655 --> 00:05:12,085
+Because even if you got multiple cores you got to worry about the memories,
+
+100
+00:05:12,085 --> 00:05:13,410
+are they sharing memories?,
+
+101
+00:05:13,410 --> 00:05:14,775
+do they have separate memories?
+
+102
+00:05:14,775 --> 00:05:17,480
+This is all features in the hardware but the programmer
+
+103
+00:05:17,480 --> 00:05:20,470
+has to often be aware of these things and it's hard.
+
+104
+00:05:20,470 --> 00:05:22,750
+So, writing this type of code,
+
+105
+00:05:22,750 --> 00:05:26,590
+code that can execute in parallel can be difficult.
+
+106
+00:05:26,590 --> 00:05:28,935
+So, in comes concurrent programming.
+
+107
+00:05:28,935 --> 00:05:33,360
+Concurrency is the management of multiple tasks at the same time.
+
+108
+00:05:33,360 --> 00:05:34,540
+So, when I say at the same time,
+
+109
+00:05:34,540 --> 00:05:37,120
+they might not actually be executing at the same time.
+
+110
+00:05:37,120 --> 00:05:39,330
+Maybe they're executing on a single core processor.
+
+111
+00:05:39,330 --> 00:05:41,360
+So, they're not actually executing at the same time,
+
+112
+00:05:41,360 --> 00:05:43,330
+but they are alive at the same time.
+
+113
+00:05:43,330 --> 00:05:46,900
+So, they could be executing at the same time if you had the resource,
+
+114
+00:05:46,900 --> 00:05:50,090
+but they need to be going on at the same time.
+
+115
+00:05:50,090 --> 00:05:53,450
+So, maybe one is paused while the other ones running but they are all alive at
+
+116
+00:05:53,450 --> 00:05:55,370
+the same time and need to be handled
+
+117
+00:05:55,370 --> 00:05:58,240
+at least from the user's perspective at the same time.
+
+118
+00:05:58,240 --> 00:06:00,900
+So, this is key for large systems.
+
+119
+00:06:00,900 --> 00:06:03,470
+There are big systems have many things,
+
+120
+00:06:03,470 --> 00:06:07,480
+many pieces going on and they're not all executing sequentially.
+
+121
+00:06:07,480 --> 00:06:12,460
+You want them you want to be able to consider 20 things at one time.
+
+122
+00:06:12,460 --> 00:06:17,210
+Now, maybe they're not actually executing at the same time but you would
+
+123
+00:06:17,210 --> 00:06:19,370
+like to have the possibility of executing them in
+
+124
+00:06:19,370 --> 00:06:22,570
+parallel if at all possible, just for speed.
+
+125
+00:06:22,570 --> 00:06:26,605
+So, concurrent programming it enables parallelism.
+
+126
+00:06:26,605 --> 00:06:28,880
+So, if you can write program code,
+
+127
+00:06:28,880 --> 00:06:32,059
+write code so that all these tasks can be alive,
+
+128
+00:06:32,059 --> 00:06:34,770
+multiple tasks can be alive and communicating the same time,
+
+129
+00:06:34,770 --> 00:06:36,730
+then if you have the resources,
+
+130
+00:06:36,730 --> 00:06:38,750
+the parallel resources multiple cores,
+
+131
+00:06:38,750 --> 00:06:41,540
+multiple memory stuff like this then you can map them
+
+132
+00:06:41,540 --> 00:06:44,750
+onto those parallel resources and get parallelism.
+
+133
+00:06:44,750 --> 00:06:47,855
+So, you can't just take a regular piece of
+
+134
+00:06:47,855 --> 00:06:52,045
+code and say okay I'm going to run it on five cores, that won't work.
+
+135
+00:06:52,045 --> 00:06:54,945
+The programmer has to decide how to partition this code.
+
+136
+00:06:54,945 --> 00:06:57,035
+I want this running on one core, this on another,
+
+137
+00:06:57,035 --> 00:06:59,610
+I want this data here this data there and so on.
+
+138
+00:06:59,610 --> 00:07:01,860
+So, that's what concurrent programming is about.
+
+139
+00:07:01,860 --> 00:07:05,970
+The program is making these decisions that allow things to run in parallel.
+
+140
+00:07:05,970 --> 00:07:08,005
+If parallel if the hardware exists.
+
+141
+00:07:08,005 --> 00:07:11,935
+So, concurrent program includes several things,
+
+142
+00:07:11,935 --> 00:07:17,255
+we'll go into more depth and layer in the concentration, but specialization rather.
+
+143
+00:07:17,255 --> 00:07:19,310
+But management of task execution,
+
+144
+00:07:19,310 --> 00:07:21,005
+so when our test starts and stops,
+
+145
+00:07:21,005 --> 00:07:22,985
+how do two tests communicate,
+
+146
+00:07:22,985 --> 00:07:24,530
+send data back and forth,
+
+147
+00:07:24,530 --> 00:07:28,160
+share memory if they share memory and how did they synchronize?
+
+148
+00:07:28,160 --> 00:07:32,910
+So, there are times where one task has to do something for the next task can start.
+
+149
+00:07:32,910 --> 00:07:37,180
+So, there are times where two tasks can't be executed completely in parallel.
+
+150
+00:07:37,180 --> 00:07:39,290
+There has to be some sequential behavior.
+
+151
+00:07:39,290 --> 00:07:42,520
+This test can't start until this task ends and so on.
+
+152
+00:07:42,520 --> 00:07:44,645
+So, that's synchronization and
+
+153
+00:07:44,645 --> 00:07:46,940
+you have to be able to manage that inside your programming language.
+
+154
+00:07:46,940 --> 00:07:49,125
+The programming basically have to say,
+
+155
+00:07:49,125 --> 00:07:53,120
+express inside the code where synchronization needs to occur and where it doesn't.
+
+156
+00:07:53,120 --> 00:07:56,040
+So, that's what concurrent programming is and it is important
+
+157
+00:07:56,040 --> 00:08:00,120
+if you want to be able to exploit parallelism when it exists.
+
+158
+00:08:00,220 --> 00:08:02,600
+So, concurrency in Go.
+
+159
+00:08:02,600 --> 00:08:04,580
+So, basically the thing about Go,
+
+160
+00:08:04,580 --> 00:08:07,100
+is that Go has a lot of
+
+161
+00:08:07,100 --> 00:08:11,230
+concurrency primitives built-in to the language and implemented efficiently.
+
+162
+00:08:11,230 --> 00:08:13,100
+So, Go routines, each one of
+
+163
+00:08:13,100 --> 00:08:16,215
+these Go routines represents a concurrent tasks, basically a thread.
+
+164
+00:08:16,215 --> 00:08:20,750
+Channels are used for concurrent for communication between concurrent tasks.
+
+165
+00:08:20,750 --> 00:08:23,225
+Select is used to enable synchronization.
+
+166
+00:08:23,225 --> 00:08:27,050
+These are just the high level basic keywords that you can use.
+
+167
+00:08:27,050 --> 00:08:31,050
+But we'll talk more about these later on in the specialization.
+
+168
+00:08:31,050 --> 00:08:34,490
+But concurrency, having concurrency built into the language and have
+
+169
+00:08:34,490 --> 00:08:36,799
+an efficient implementation is advantageous
+
+170
+00:08:36,799 --> 00:08:39,495
+if you're doing concurrent programming which more and more,
+
+171
+00:08:39,495 --> 00:08:41,960
+especially with all the cores that exists in processes
+
+172
+00:08:41,960 --> 00:08:45,230
+these days has become more and more important.

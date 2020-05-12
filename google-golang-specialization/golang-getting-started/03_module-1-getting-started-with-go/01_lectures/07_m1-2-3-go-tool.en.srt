@@ -1,0 +1,459 @@
+1
+00:00:10,680 --> 00:00:14,385
+So, we're going to talk about the Go Tool a little bit,
+
+2
+00:00:14,385 --> 00:00:15,955
+just overview of it really.
+
+3
+00:00:15,955 --> 00:00:17,190
+It has a lot of features,
+
+4
+00:00:17,190 --> 00:00:21,945
+and we'll get to those in different courses actually during the specialization.
+
+5
+00:00:21,945 --> 00:00:23,790
+We'll talk about a little bit of it now,
+
+6
+00:00:23,790 --> 00:00:25,855
+but start off with import.
+
+7
+00:00:25,855 --> 00:00:28,715
+So, just to restate what import does.
+
+8
+00:00:28,715 --> 00:00:32,305
+It's a keyword, and it's used to access other packages.
+
+9
+00:00:32,305 --> 00:00:33,960
+Now, for the most part,
+
+10
+00:00:33,960 --> 00:00:38,025
+the packages that we're going to be importing will be the built-in packages,
+
+11
+00:00:38,025 --> 00:00:40,485
+the ones that come with the Go language,
+
+12
+00:00:40,485 --> 00:00:43,995
+to implement different functions that we're going to use in the course.
+
+13
+00:00:43,995 --> 00:00:46,025
+So, for instance, right now,
+
+14
+00:00:46,025 --> 00:00:48,000
+right off the start, we are going to use this format package,
+
+15
+00:00:48,000 --> 00:00:50,970
+fmt, and it has a printf statement built into it,
+
+16
+00:00:50,970 --> 00:00:52,715
+and we use it for printing things.
+
+17
+00:00:52,715 --> 00:00:55,680
+Now, what happens is when you do an import,
+
+18
+00:00:55,680 --> 00:00:59,130
+the Go Tool when it does a build,
+
+19
+00:00:59,130 --> 00:01:01,325
+it has to find the imported packages.
+
+20
+00:01:01,325 --> 00:01:03,620
+So, it searches through the directory specified by
+
+21
+00:01:03,620 --> 00:01:07,340
+the GOROOT and the GOPATH environment variables.
+
+22
+00:01:07,340 --> 00:01:12,110
+So, if you keep everything inside the GOPATH and the GOROOT,
+
+23
+00:01:12,110 --> 00:01:14,460
+so inside your work space, it'll find them.
+
+24
+00:01:14,460 --> 00:01:17,540
+If you decide you want to import some package from
+
+25
+00:01:17,540 --> 00:01:20,300
+some other place and maybe it's installed in a different directory,
+
+26
+00:01:20,300 --> 00:01:25,460
+something like that, then you're going to have to change your GOPATH and GOROOT paths.
+
+27
+00:01:25,460 --> 00:01:27,460
+You're going to have to increase them, change the path,
+
+28
+00:01:27,460 --> 00:01:28,795
+change the environment variables,
+
+29
+00:01:28,795 --> 00:01:30,280
+so that it can find them.
+
+30
+00:01:30,280 --> 00:01:32,490
+But, that won't be a problem for based of
+
+31
+00:01:32,490 --> 00:01:34,710
+the majority of this course, we're not doing that.
+
+32
+00:01:34,710 --> 00:01:36,165
+But I'm saying in the future,
+
+33
+00:01:36,165 --> 00:01:37,730
+when you're working with really big code,
+
+34
+00:01:37,730 --> 00:01:40,220
+you might need to alter these environment variables in order
+
+35
+00:01:40,220 --> 00:01:43,770
+to be able to find the packages that you're looking for.
+
+36
+00:01:43,840 --> 00:01:46,455
+So, the Go Tool.
+
+37
+00:01:46,455 --> 00:01:49,395
+When you download Go, you get this Go Tool,
+
+38
+00:01:49,395 --> 00:01:53,780
+and it's a general tool used to manage Go source code.
+
+39
+00:01:53,780 --> 00:01:55,640
+There are many commands,
+
+40
+00:01:55,640 --> 00:01:59,190
+a bunch of different commands that you can use the Go Tool to do.
+
+41
+00:01:59,190 --> 00:02:01,770
+The first one is going to be go build.
+
+42
+00:02:01,770 --> 00:02:05,295
+So that, it's just compiling the program.
+
+43
+00:02:05,295 --> 00:02:07,165
+The arguments to go build,
+
+44
+00:02:07,165 --> 00:02:08,330
+you can have no arguments,
+
+45
+00:02:08,330 --> 00:02:11,750
+in which case it just compiles a.go file in the local directory.
+
+46
+00:02:11,750 --> 00:02:13,860
+But you can give it a bunch of packages,
+
+47
+00:02:13,860 --> 00:02:15,130
+a bunch of package names,
+
+48
+00:02:15,130 --> 00:02:18,020
+or a bunch of.go files that you want to build.
+
+49
+00:02:18,020 --> 00:02:20,940
+You can give that as the arguments to this go build command.
+
+50
+00:02:20,940 --> 00:02:24,020
+It'll go build whatever you tell it to build,
+
+51
+00:02:24,020 --> 00:02:25,980
+or you could just say go build.
+
+52
+00:02:25,980 --> 00:02:28,450
+Actually, that's what I did in the demo.
+
+53
+00:02:28,450 --> 00:02:30,160
+I just said go build,
+
+54
+00:02:30,160 --> 00:02:34,590
+and I was already in the directory where I had my main package,
+
+55
+00:02:34,590 --> 00:02:36,685
+and so it just compiled that.
+
+56
+00:02:36,685 --> 00:02:40,035
+So, it creates an executable for the main package,
+
+57
+00:02:40,035 --> 00:02:45,005
+and the executable has the same name as the first.go file.
+
+58
+00:02:45,005 --> 00:02:46,890
+So, if you're just using one.go file,
+
+59
+00:02:46,890 --> 00:02:48,855
+you're just going to get that as the name.
+
+60
+00:02:48,855 --> 00:02:53,795
+The.exe suffix is what you're going to see for executables in Windows in general.
+
+61
+00:02:53,795 --> 00:02:55,460
+So, you'll expect to see a.exe,
+
+62
+00:02:55,460 --> 00:03:00,175
+and it's executable, and that should be in the directory where you did the build.
+
+63
+00:03:00,175 --> 00:03:01,600
+If you give it no other arguments,
+
+64
+00:03:01,600 --> 00:03:03,420
+it'll just place it in the same directory.
+
+65
+00:03:03,420 --> 00:03:05,310
+Now, there are tons of arguments to these commands,
+
+66
+00:03:05,310 --> 00:03:06,625
+and I'm not really going to go through,
+
+67
+00:03:06,625 --> 00:03:08,750
+but you can have arguments where you can tell it to build and
+
+68
+00:03:08,750 --> 00:03:10,985
+put the executable in a different directory and so on.
+
+69
+00:03:10,985 --> 00:03:12,595
+I'm not going to do that right now.
+
+70
+00:03:12,595 --> 00:03:14,950
+We'll finesse that stuff later.
+
+71
+00:03:14,950 --> 00:03:17,630
+So, some of the other Go Tool commands,
+
+72
+00:03:17,630 --> 00:03:19,380
+just go through these a little bit.
+
+73
+00:03:19,380 --> 00:03:22,770
+Go doc. Go doc prints documentation for a package.
+
+74
+00:03:22,770 --> 00:03:25,070
+Now, we'll go over this later,
+
+75
+00:03:25,070 --> 00:03:27,130
+but as a programmer,
+
+76
+00:03:27,130 --> 00:03:29,390
+you have to put the documentation in your package,
+
+77
+00:03:29,390 --> 00:03:33,500
+and go doc will just pull it out of all your packages, and print it.
+
+78
+00:03:33,500 --> 00:03:37,165
+Go format, that format source code files.
+
+79
+00:03:37,165 --> 00:03:39,990
+So, we're not going to get heavily into this,
+
+80
+00:03:39,990 --> 00:03:42,050
+but if you program at all,
+
+81
+00:03:42,050 --> 00:03:43,785
+you must have heard arguments about, "Oh,
+
+82
+00:03:43,785 --> 00:03:46,735
+you need this type of indentation and stuff like this."
+
+83
+00:03:46,735 --> 00:03:51,530
+So, this go format will just indent it the way it should be done.
+
+84
+00:03:51,530 --> 00:03:53,440
+You just give it the source code file,
+
+85
+00:03:53,440 --> 00:03:57,185
+and it'll indent it right to get past all those arguments.
+
+86
+00:03:57,185 --> 00:04:00,025
+There's a standard indentation. You don't have to use it.
+
+87
+00:04:00,025 --> 00:04:02,370
+Remember, the indentation isn't forced on you.
+
+88
+00:04:02,370 --> 00:04:04,145
+This isn't Python or something like that.
+
+89
+00:04:04,145 --> 00:04:07,575
+You don't have to, but go format will do it for you, so why not.
+
+90
+00:04:07,575 --> 00:04:10,940
+Go get downloads packages and installs them.
+
+91
+00:04:10,940 --> 00:04:13,940
+So, if you want to get new packages that
+
+92
+00:04:13,940 --> 00:04:17,060
+do interesting things that aren't standard default packages,
+
+93
+00:04:17,060 --> 00:04:19,235
+you can say go get and give the name of the package,
+
+94
+00:04:19,235 --> 00:04:22,445
+it'll go online, find the package, download it.
+
+95
+00:04:22,445 --> 00:04:26,165
+Go list, list install all the install packages.
+
+96
+00:04:26,165 --> 00:04:29,410
+Go run compiles go file,
+
+97
+00:04:29,410 --> 00:04:31,030
+and it runs the executable.
+
+98
+00:04:31,030 --> 00:04:32,480
+So if you just say go build,
+
+99
+00:04:32,480 --> 00:04:35,415
+that compiles it, and does not execute it.
+
+100
+00:04:35,415 --> 00:04:40,945
+But go run actually compiles it and then executes the executable in the end.
+
+101
+00:04:40,945 --> 00:04:42,765
+Or, if it's already compiled,
+
+102
+00:04:42,765 --> 00:04:44,285
+it will just run the executable.
+
+103
+00:04:44,285 --> 00:04:46,335
+Now, you don't need go run,
+
+104
+00:04:46,335 --> 00:04:49,880
+like in my demo, I think I did a go build to get the executable.
+
+105
+00:04:49,880 --> 00:04:51,620
+I think it was called hello.exe.
+
+106
+00:04:51,620 --> 00:04:55,010
+Then, I just typed hello.exe at the command line,
+
+107
+00:04:55,010 --> 00:04:56,290
+and it executed it.
+
+108
+00:04:56,290 --> 00:05:00,345
+So I didn't have to use go run in order to run the executable but you can.
+
+109
+00:05:00,345 --> 00:05:02,810
+Go test, actually the last course,
+
+110
+00:05:02,810 --> 00:05:05,660
+the fourth in this specialization is actually about testing,
+
+111
+00:05:05,660 --> 00:05:06,860
+and we'll get to that then.
+
+112
+00:05:06,860 --> 00:05:08,785
+Go test, it runs tests.
+
+113
+00:05:08,785 --> 00:05:10,280
+It looks stuff, basically,
+
+114
+00:05:10,280 --> 00:05:14,360
+you have a bunch of test files that end with this underscore test.go,
+
+115
+00:05:14,360 --> 00:05:18,810
+and you can run these tests using the go test command. But we'll cover that later.
