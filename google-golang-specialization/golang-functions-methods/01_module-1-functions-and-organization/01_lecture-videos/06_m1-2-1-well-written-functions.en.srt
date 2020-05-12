@@ -1,0 +1,728 @@
+1
+00:00:00,140 --> 00:00:01,988
+Module 1, Functions and Organization.
+
+2
+00:00:01,988 --> 00:00:04,171
+Topic 2.1, Well-written Functions.
+
+3
+00:00:06,667 --> 00:00:12,066
+So we're going to talk a little bit
+about how you should write functions.
+
+4
+00:00:12,066 --> 00:00:14,588
+Now, this isn't actually
+necessarily specific to Go.
+
+5
+00:00:14,588 --> 00:00:17,979
+But this is more good way
+to construct your code so
+
+6
+00:00:17,979 --> 00:00:22,624
+that your code is well-organized and
+easy to understand, okay?
+
+7
+00:00:22,624 --> 00:00:26,589
+And understandability, I'm highlighting
+this idea of understandability.
+
+8
+00:00:26,589 --> 00:00:30,378
+It is important to be able to
+understand your own code for many,
+
+9
+00:00:30,378 --> 00:00:31,741
+many reasons, okay?
+
+10
+00:00:31,741 --> 00:00:36,596
+Mostly for debugging but also maintenance,
+other people interacting with your code,
+
+11
+00:00:36,596 --> 00:00:38,375
+it needs to be understandable.
+
+12
+00:00:38,375 --> 00:00:40,187
+And the way you write your functions,
+
+13
+00:00:40,187 --> 00:00:43,589
+the way you define your functions
+really impacts understandability.
+
+14
+00:00:43,589 --> 00:00:46,610
+So if we look at a block of code,
+we could roughly
+
+15
+00:00:46,610 --> 00:00:50,780
+say that a block of code is a bunch
+of functions and a bunch of data.
+
+16
+00:00:50,780 --> 00:00:54,465
+So a bunch of functions that are the
+operations that you can perform and
+
+17
+00:00:54,465 --> 00:00:57,788
+the data that you're going to
+perform the operations on, okay?
+
+18
+00:00:57,788 --> 00:01:02,247
+So you can see really any block of code,
+any program as a pile of functions and
+
+19
+00:01:02,247 --> 00:01:04,838
+a pile of data somehow organized together.
+
+20
+00:01:04,838 --> 00:01:07,218
+So when I say understandability,
+
+21
+00:01:07,218 --> 00:01:12,231
+when I say, this program is
+understandable, here's what I mean.
+
+22
+00:01:12,231 --> 00:01:16,498
+I mean that If you're asked to find
+a feature, you can find it quickly.
+
+23
+00:01:16,498 --> 00:01:19,696
+So as an example,
+where's the function that blurs the image?
+
+24
+00:01:19,696 --> 00:01:20,967
+Let's say your writing
+some graphics program,
+
+25
+00:01:20,967 --> 00:01:22,119
+where is the function
+that blurs the image?
+
+26
+00:01:22,119 --> 00:01:23,408
+You can locate that.
+
+27
+00:01:23,408 --> 00:01:25,596
+Now, you might be asking that yourself,
+right?
+
+28
+00:01:25,596 --> 00:01:26,598
+Because you found a bug,
+
+29
+00:01:26,598 --> 00:01:29,140
+something is not working,
+you need to find that piece of code.
+
+30
+00:01:29,140 --> 00:01:31,432
+Or that could be some kind
+of code review meeting or
+
+31
+00:01:31,432 --> 00:01:34,120
+you're dealing with other
+people you're working with.
+
+32
+00:01:34,120 --> 00:01:36,041
+And they need to understand
+how your code works and
+
+33
+00:01:36,041 --> 00:01:37,424
+they ask you this type of question.
+
+34
+00:01:37,424 --> 00:01:38,603
+Maybe it's your boss, right?
+
+35
+00:01:38,603 --> 00:01:40,679
+Your boss is like, look,
+where's the code that does this?
+
+36
+00:01:40,679 --> 00:01:43,298
+And you will look like an idiot
+if you can't answer that.
+
+37
+00:01:43,298 --> 00:01:45,260
+It's your code, you wrote it,
+you should know it, right?
+
+38
+00:01:45,260 --> 00:01:48,147
+So you need to understand
+the organization of your own code.
+
+39
+00:01:48,147 --> 00:01:52,167
+Now, a lot of this is memorization, but
+it's also a matter of organization.
+
+40
+00:01:52,167 --> 00:01:55,102
+If you organize it well,
+it is much easier to find things.
+
+41
+00:01:55,102 --> 00:01:59,058
+So where's the function that does
+this operation, blurring your image?
+
+42
+00:01:59,058 --> 00:02:01,309
+Or where do you compute the average score,
+
+43
+00:02:01,309 --> 00:02:04,380
+whatever the question is where
+is the code that does this?
+
+44
+00:02:04,380 --> 00:02:05,952
+Where is the code that does that?
+
+45
+00:02:05,952 --> 00:02:08,328
+You need to be able to find that, okay?
+
+46
+00:02:08,328 --> 00:02:12,611
+And that's an understandable piece of code
+if you could find that pretty easily and
+
+47
+00:02:12,611 --> 00:02:14,763
+even better if somebody else can find it.
+
+48
+00:02:14,763 --> 00:02:16,316
+So if you write the code and
+
+49
+00:02:16,316 --> 00:02:21,128
+you give it to somebody else because
+you're probably working on a team, right?
+
+50
+00:02:21,128 --> 00:02:24,769
+And that other person can find
+where the image is blurred or
+
+51
+00:02:24,769 --> 00:02:27,081
+where the average scores computed.
+
+52
+00:02:27,081 --> 00:02:30,015
+If they can find it quickly, that's
+a real measure of understanablity, right?
+
+53
+00:02:30,015 --> 00:02:33,447
+And remember this too,
+I know a lot of students in my classes,
+
+54
+00:02:33,447 --> 00:02:36,092
+they underrate how important this is,
+right?
+
+55
+00:02:36,092 --> 00:02:40,232
+They think, look, it's my code, of course,
+I know how to understand my code, right?
+
+56
+00:02:40,232 --> 00:02:43,275
+So believe me, if you write
+a complicated piece of code and
+
+57
+00:02:43,275 --> 00:02:45,398
+you walk away from that code for a month.
+
+58
+00:02:45,398 --> 00:02:49,053
+You come back, you will lose track
+of what the heck that code did,
+
+59
+00:02:49,053 --> 00:02:51,655
+you will not understand your own code,
+okay?
+
+60
+00:02:51,655 --> 00:02:56,065
+So you really want to construct in such
+a way that it is easy to figure out where
+
+61
+00:02:56,065 --> 00:02:58,803
+these features are located
+inside your code.
+
+62
+00:02:58,803 --> 00:03:04,514
+Now, another aspect of understandability
+is finding where data is used, because
+
+63
+00:03:04,514 --> 00:03:10,063
+often you'll get some kind of problem
+where this data is incorrect, okay?
+
+64
+00:03:10,063 --> 00:03:13,023
+Or this data is not just used.
+
+65
+00:03:13,023 --> 00:03:15,347
+Actually, I said, where data is used,
+also where data is used and
+
+66
+00:03:15,347 --> 00:03:16,436
+where it's defined, right?
+
+67
+00:03:16,436 --> 00:03:19,387
+So this data is incorrect,
+how did it get incorrect?
+
+68
+00:03:19,387 --> 00:03:22,371
+What part of your code
+actually affected that data?
+
+69
+00:03:22,371 --> 00:03:24,819
+That type of question you
+want to be able to ask.
+
+70
+00:03:24,819 --> 00:03:26,658
+So you want to be able
+to trace through data.
+
+71
+00:03:26,658 --> 00:03:29,303
+You'll say this data, where is it used?
+
+72
+00:03:29,303 --> 00:03:29,865
+Where is it defined?
+So
+
+73
+00:03:29,865 --> 00:03:32,155
+where do you modify the record list,
+right?
+
+74
+00:03:32,155 --> 00:03:34,169
+So you got some record list,
+you realize that record list,
+
+75
+00:03:34,169 --> 00:03:36,644
+the contents of that list are wrong,
+right, while you're debugging.
+
+76
+00:03:36,644 --> 00:03:37,967
+Where did you modify that?
+
+77
+00:03:37,967 --> 00:03:41,093
+You've gotta find that so
+you can find where the bug is, right?
+
+78
+00:03:41,093 --> 00:03:42,695
+Where did you access the file?
+
+79
+00:03:42,695 --> 00:03:44,467
+Maybe the file has the wrong data and
+
+80
+00:03:44,467 --> 00:03:47,136
+you want to know what code
+that's affecting, right?
+
+81
+00:03:47,136 --> 00:03:48,603
+So where did you access that file?
+
+82
+00:03:48,603 --> 00:03:50,568
+Where did you access these
+different pieces of data?
+
+83
+00:03:50,568 --> 00:03:53,564
+So this is what I mean by
+understandability, you need to be able to
+
+84
+00:03:53,564 --> 00:03:57,436
+find a feature, find the code dedicated
+to a particular feature, find it quickly.
+
+85
+00:03:57,436 --> 00:04:03,659
+Also data that could be wrong, where is
+that data used and where is it written to?
+
+86
+00:04:03,659 --> 00:04:05,529
+So where is it used and
+where is it modified,
+
+87
+00:04:05,529 --> 00:04:07,153
+you need to be able to find it quickly.
+
+88
+00:04:07,153 --> 00:04:10,590
+And an organization, writing a code,
+writing a function and
+
+89
+00:04:10,590 --> 00:04:13,181
+organize where it really
+helps you with that.
+
+90
+00:04:13,181 --> 00:04:15,203
+So very basic debugging principles and
+
+91
+00:04:15,203 --> 00:04:19,442
+there are a million debugging principles
+but I'm going to just be really basic now.
+
+92
+00:04:19,442 --> 00:04:21,821
+So say you run your code,
+the code crashes.
+
+93
+00:04:21,821 --> 00:04:24,836
+And it crashes inside some
+functions somewhere, right?
+
+94
+00:04:24,836 --> 00:04:28,135
+So some function you wrote, it crashes
+on line 100, right, some function.
+
+95
+00:04:28,135 --> 00:04:33,337
+So I can broadly say that there are only
+two ways that this could go wrong,
+
+96
+00:04:33,337 --> 00:04:36,165
+two options for any kind of bug, okay?
+
+97
+00:04:36,165 --> 00:04:40,890
+It could be that the function that
+failed is written incorrectly, okay?
+
+98
+00:04:40,890 --> 00:04:42,763
+It just did the wrong thing, okay?
+
+99
+00:04:42,763 --> 00:04:45,476
+So maybe as an example,
+it's supposed to sort a slice, and
+
+100
+00:04:45,476 --> 00:04:46,898
+it sorts it in the wrong order.
+
+101
+00:04:46,898 --> 00:04:48,373
+Okay, it did the wrong thing, right?
+
+102
+00:04:48,373 --> 00:04:52,858
+So the function could do the wrong thing
+or maybe the function is written perfectly
+
+103
+00:04:52,858 --> 00:04:55,851
+well but the data that
+the function uses is incorrect.
+
+104
+00:04:55,851 --> 00:05:00,091
+So maybe this function is,
+it sorts the slice just fine but
+
+105
+00:05:00,091 --> 00:05:02,955
+the slice has wrong data in it, right?
+
+106
+00:05:02,955 --> 00:05:05,986
+So somehow the data that it got is wrong
+so when it does a sort, of course,
+
+107
+00:05:05,986 --> 00:05:07,644
+this result is going to be wrong, right?
+
+108
+00:05:07,644 --> 00:05:09,011
+Because the original data was wrong.
+
+109
+00:05:09,011 --> 00:05:13,524
+So the function that you're working on,
+it could be messed up or
+
+110
+00:05:13,524 --> 00:05:15,707
+its inputs could be messed up.
+
+111
+00:05:15,707 --> 00:05:18,588
+Now, its inputs, remember,
+can come from the parameters, right?
+
+112
+00:05:18,588 --> 00:05:20,690
+So they could be, or even sit past to it.
+
+113
+00:05:20,690 --> 00:05:22,378
+But these inputs don't
+have to come from there.
+
+114
+00:05:22,378 --> 00:05:27,445
+They could come from maybe a file or
+some user input or something like that.
+
+115
+00:05:27,445 --> 00:05:28,842
+So you gotta think of all these inputs.
+
+116
+00:05:28,842 --> 00:05:32,657
+So this is just my sort of high
+level debugging principle.
+
+117
+00:05:32,657 --> 00:05:34,946
+And notice how I'm dividing this,
+I'm saying look,
+
+118
+00:05:34,946 --> 00:05:38,001
+either function is written incorrectly,
+or it's the data is at fault.
+
+119
+00:05:38,001 --> 00:05:40,810
+So it's the function written wrong or
+the data is at fault.
+
+120
+00:05:40,810 --> 00:05:44,336
+Now, of course, when you trace that back,
+you'll see the data is probably incorrect
+
+121
+00:05:44,336 --> 00:05:46,241
+because some function
+wrote it incorrectly.
+
+122
+00:05:46,241 --> 00:05:49,392
+But locally, you can say, look,
+either this function is wrong or
+
+123
+00:05:49,392 --> 00:05:51,318
+the data that it's working on is wrong.
+
+124
+00:05:52,975 --> 00:05:56,721
+So, in order to support debugging,
+when you run into a bug like this,
+
+125
+00:05:56,721 --> 00:06:00,993
+first thing you've gotta be able to do
+is understand your own function, okay?
+
+126
+00:06:00,993 --> 00:06:02,766
+So functions need to be understandable.
+
+127
+00:06:02,766 --> 00:06:05,295
+So when you look at that function,
+look at the code,
+
+128
+00:06:05,295 --> 00:06:08,872
+you gotta be able to look through it and
+manually say look, is this right?
+
+129
+00:06:08,872 --> 00:06:10,638
+Is it doing what I think it's doing?
+
+130
+00:06:10,638 --> 00:06:15,498
+It's actual behavior, does it match
+what I want, desired behavior?
+
+131
+00:06:15,498 --> 00:06:18,821
+So your function needs to be
+written in understandable way so
+
+132
+00:06:18,821 --> 00:06:21,764
+you can determine that
+without too much difficulty.
+
+133
+00:06:21,764 --> 00:06:25,537
+The next thing though is
+the data needs to be traceable.
+
+134
+00:06:25,537 --> 00:06:30,391
+So what that means is, is maybe your
+function is perfectly fine, but there's
+
+135
+00:06:30,391 --> 00:06:35,186
+some input data that it got past that
+somehow it access that was wrong, okay?
+
+136
+00:06:35,186 --> 00:06:38,078
+So you need to be able to figure
+out where that data come from,
+
+137
+00:06:38,078 --> 00:06:41,790
+so you can follow back to where the
+original fault actually happens, right?
+
+138
+00:06:41,790 --> 00:06:45,524
+Now, this could be easy, it could be hard.
+
+139
+00:06:45,524 --> 00:06:48,314
+Global variables for one complicate this.
+
+140
+00:06:48,314 --> 00:06:53,056
+Because one thing about having no
+global variables is that the inputs to
+
+141
+00:06:53,056 --> 00:06:56,388
+the function come straight
+from the parameters.
+
+142
+00:06:56,388 --> 00:07:00,140
+So you know where every piece of data came
+from, it came from the caller, right?
+
+143
+00:07:00,140 --> 00:07:02,108
+But if you use global variables,
+
+144
+00:07:02,108 --> 00:07:05,771
+then they can come from whoever
+wrote to the global variable.
+
+145
+00:07:05,771 --> 00:07:09,134
+And since these variables are global,
+anybody could have written to it.
+
+146
+00:07:09,134 --> 00:07:13,193
+So it's much harder to trace back
+which function is at fault for
+
+147
+00:07:13,193 --> 00:07:15,656
+writing the wrong data to a variable.
+
+148
+00:07:15,656 --> 00:07:18,250
+That's exactly why global variables
+you should be careful about.
+
+149
+00:07:18,250 --> 00:07:19,741
+And I'm not going to say never use them.
+
+150
+00:07:19,741 --> 00:07:22,275
+People use them, and there are reasons,
+I use them sometimes, but
+
+151
+00:07:22,275 --> 00:07:24,200
+just understand that they
+add this complication.
+
+152
+00:07:24,200 --> 00:07:28,013
+They make it hard to debug just because
+you know this data is incorrect,
+
+153
+00:07:28,013 --> 00:07:30,378
+you don't know what
+the source of that was.
+
+154
+00:07:30,378 --> 00:07:34,181
+And then you've gotta do something
+more complicated to figure that out.
+
+155
+00:07:34,181 --> 00:07:35,820
+Thank you.

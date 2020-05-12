@@ -1,0 +1,2199 @@
+1
+00:00:01,130 --> 00:00:04,365
+Module 1: Why Use Concurrency?
+
+2
+00:00:04,365 --> 00:00:07,780
+Topic 1.1: Parallel Execution.
+
+3
+00:00:08,900 --> 00:00:12,585
+So, Go language, a big property of Go language
+
+4
+00:00:12,585 --> 00:00:15,510
+is that concurrency is built into the language.
+
+5
+00:00:15,510 --> 00:00:17,350
+Now, we're going to talk about this term concurrency.
+
+6
+00:00:17,350 --> 00:00:19,190
+Right now, I'm talking about parallel execution.
+
+7
+00:00:19,190 --> 00:00:23,100
+Concurrency and parallelism are two closely related ideas,
+
+8
+00:00:23,100 --> 00:00:26,870
+and we will be talking about the difference between them starting with parallel,
+
+9
+00:00:26,870 --> 00:00:30,085
+but an important feature and it's built into the language.
+
+10
+00:00:30,085 --> 00:00:32,520
+Now, this is, as compared to other languages
+
+11
+00:00:32,520 --> 00:00:36,010
+like C and things or anything, Python, whatever,
+
+12
+00:00:36,010 --> 00:00:40,540
+these languages you can do concurrent programming in these languages,
+
+13
+00:00:40,540 --> 00:00:42,950
+but it's not built into the language, which means,
+
+14
+00:00:42,950 --> 00:00:45,565
+usually what you do is you import some library,
+
+15
+00:00:45,565 --> 00:00:48,020
+some external library, and then you can use
+
+16
+00:00:48,020 --> 00:00:51,215
+the functions and it interacts with the operating system and so on.
+
+17
+00:00:51,215 --> 00:00:54,200
+Go lang, though, they decided to look,
+
+18
+00:00:54,200 --> 00:00:55,600
+"Concurrency is important enough.
+
+19
+00:00:55,600 --> 00:00:59,900
+We're going to actually bake it right in so the constructs are part of the language."
+
+20
+00:00:59,900 --> 00:01:02,165
+So, that's a good thing.
+
+21
+00:01:02,165 --> 00:01:04,820
+Actually, usually, the constructs are easier to use.
+
+22
+00:01:04,820 --> 00:01:06,520
+So, we're going to talk about that.
+
+23
+00:01:06,520 --> 00:01:08,150
+Right now, I'm just describing
+
+24
+00:01:08,150 --> 00:01:13,115
+a parallel execution because I really want to motivate why you need concurrency.
+
+25
+00:01:13,115 --> 00:01:16,005
+Why do you need concurrency? Now, parallel is not the same with concurrent?
+
+26
+00:01:16,005 --> 00:01:18,170
+We'll get to it, but they are similar.
+
+27
+00:01:18,170 --> 00:01:23,145
+So, parallel execution is when two programs execute at the same time,
+
+28
+00:01:23,145 --> 00:01:25,020
+exactly the same time.
+
+29
+00:01:25,020 --> 00:01:28,855
+So then, you can say these two programs are executing in parallel.
+
+30
+00:01:28,855 --> 00:01:31,515
+So, at some particular time,
+
+31
+00:01:31,515 --> 00:01:33,110
+any particular instant in time,
+
+32
+00:01:33,110 --> 00:01:36,200
+you can say there's an instruction from one executing and an instruction from
+
+33
+00:01:36,200 --> 00:01:39,770
+the other executing at the same moment than they are executing in parallel.
+
+34
+00:01:39,770 --> 00:01:46,860
+Now, generally, processor cores are made to execute one instruction at a time.
+
+35
+00:01:46,860 --> 00:01:51,875
+Now, there are different architectures that do things differently.
+
+36
+00:01:51,875 --> 00:01:53,270
+There are a wide range of architectures,
+
+37
+00:01:53,270 --> 00:01:54,755
+and this is an architecture class.
+
+38
+00:01:54,755 --> 00:01:58,575
+But generally, one core runs one thing at a time,
+
+39
+00:01:58,575 --> 00:02:00,490
+one instruction at a time.
+
+40
+00:02:00,490 --> 00:02:04,360
+So, if you want to have actual parallel execution,
+
+41
+00:02:04,360 --> 00:02:05,785
+two things running at the same time,
+
+42
+00:02:05,785 --> 00:02:08,595
+you need two processors or at least two processor cores.
+
+43
+00:02:08,595 --> 00:02:10,245
+You need replicated hardware.
+
+44
+00:02:10,245 --> 00:02:13,370
+You would need to have one CPU and another CPU 2.
+
+45
+00:02:13,370 --> 00:02:15,790
+So, for instance, you have two completely separate computers,
+
+46
+00:02:15,790 --> 00:02:18,600
+they can clearly run two different programs at the same time,
+
+47
+00:02:18,600 --> 00:02:22,730
+or they can be the same computer but maybe some multi-core processors got four cores,
+
+48
+00:02:22,730 --> 00:02:26,335
+then you could run four different instructions at the same time, one on each core.
+
+49
+00:02:26,335 --> 00:02:30,095
+But understand that in order to get actual parallel execution,
+
+50
+00:02:30,095 --> 00:02:32,410
+you need multiple versions of the hardware.
+
+51
+00:02:32,410 --> 00:02:35,070
+You need replicated hardware in order to get parallel execution.
+
+52
+00:02:35,070 --> 00:02:37,040
+Now, this is not the same as concurrency.
+
+53
+00:02:37,040 --> 00:02:38,590
+Sorry, this is not the same concurrency,
+
+54
+00:02:38,590 --> 00:02:42,100
+but we'll get to the difference in a second.
+
+55
+00:02:42,150 --> 00:02:45,800
+So, why should you do parallel execution?
+
+56
+00:02:45,800 --> 00:02:47,405
+What's good about it?
+
+57
+00:02:47,405 --> 00:02:50,920
+The best thing about it is the tasks can complete more quickly.
+
+58
+00:02:50,920 --> 00:02:52,300
+Now, by this I mean,
+
+59
+00:02:52,300 --> 00:02:54,340
+a particular task doesn't complete more
+
+60
+00:02:54,340 --> 00:02:57,780
+quickly just because you're running it in parallel with another task,
+
+61
+00:02:57,780 --> 00:03:00,820
+but you get better throughput, meaning, overall,
+
+62
+00:03:00,820 --> 00:03:03,280
+all the tasks are completed more quickly if you're doing
+
+63
+00:03:03,280 --> 00:03:06,330
+two things instead of one at a time or multiple.
+
+64
+00:03:06,330 --> 00:03:09,070
+So, parallel execution can speed things up,
+
+65
+00:03:09,070 --> 00:03:11,030
+give you a better throughput overall.
+
+66
+00:03:11,030 --> 00:03:15,650
+My simple, simple example is that say you got two piles of dishes to wash.
+
+67
+00:03:15,650 --> 00:03:19,500
+So, when you wash a dish,
+
+68
+00:03:19,500 --> 00:03:22,740
+you got to wash it and then dry it.
+
+69
+00:03:22,740 --> 00:03:25,735
+So, if you have two dishwashers,
+
+70
+00:03:25,735 --> 00:03:29,680
+they can cooperate and work as faster.
+
+71
+00:03:29,770 --> 00:03:34,250
+How they cooperate is going to depend on the hardware they have available to them.
+
+72
+00:03:34,250 --> 00:03:37,805
+So, some tasks have to perform sequentially, though.
+
+73
+00:03:37,805 --> 00:03:42,755
+So for instance, so when you're drying and you're washing a dish,
+
+74
+00:03:42,755 --> 00:03:47,365
+you clearly have to wash the dish before you dry the dish. That's sequential.
+
+75
+00:03:47,365 --> 00:03:48,865
+They have to go in that order.
+
+76
+00:03:48,865 --> 00:03:51,200
+They cannot happen at the same time.
+
+77
+00:03:51,200 --> 00:03:56,835
+So, parallel execution is not this catch-all that makes everything faster.
+
+78
+00:03:56,835 --> 00:03:58,980
+Certain things can't be executed in parallel.
+
+79
+00:03:58,980 --> 00:04:02,080
+They have to be executed sequentially one at a time.
+
+80
+00:04:02,080 --> 00:04:05,190
+So, you got to wash the dish before you can dry the dish,
+
+81
+00:04:05,190 --> 00:04:07,580
+but you can have a system.
+
+82
+00:04:07,580 --> 00:04:09,660
+Say I had one sink,
+
+83
+00:04:09,660 --> 00:04:11,465
+one sink and one drying rack.
+
+84
+00:04:11,465 --> 00:04:13,130
+So that's my hardware available to me,
+
+85
+00:04:13,130 --> 00:04:15,885
+and one dish rag for washing or for drying.
+
+86
+00:04:15,885 --> 00:04:18,770
+So, I could have these two people work where one person
+
+87
+00:04:18,770 --> 00:04:22,080
+washes the dish and hands it to the other person who dries the dish.
+
+88
+00:04:22,080 --> 00:04:23,530
+So then, in that way,
+
+89
+00:04:23,530 --> 00:04:25,070
+somebody can be washing at the same time,
+
+90
+00:04:25,070 --> 00:04:27,195
+somebody's drying, just keeps passing it over.
+
+91
+00:04:27,195 --> 00:04:32,955
+So, then you're essentially getting some kind of staggered parallel execution,
+
+92
+00:04:32,955 --> 00:04:35,435
+but both people are working at the same time.
+
+93
+00:04:35,435 --> 00:04:36,985
+So then you get speedup.
+
+94
+00:04:36,985 --> 00:04:41,960
+You get a good throughput. But even though these tasks can have to happen sequentially,
+
+95
+00:04:41,960 --> 00:04:43,735
+you can still get a speedup.
+
+96
+00:04:43,735 --> 00:04:48,725
+But I guess the key thing here is that some tasks are more parallelizable than others.
+
+97
+00:04:48,725 --> 00:04:50,625
+So, like dishwashing task,
+
+98
+00:04:50,625 --> 00:04:52,100
+you can't just say, "Okay.
+
+99
+00:04:52,100 --> 00:04:55,735
+You two guys both wash this dish at the same time and you both dry it."
+
+100
+00:04:55,735 --> 00:04:58,105
+If I only have one sink, only one person can
+
+101
+00:04:58,105 --> 00:05:01,040
+get into the sink so one person can wash at a time,
+
+102
+00:05:01,040 --> 00:05:03,705
+and I only have one drying rack so one person can dry at a time.
+
+103
+00:05:03,705 --> 00:05:06,085
+So, because I don't have the hardware,
+
+104
+00:05:06,085 --> 00:05:07,570
+I can't parallelize them.
+
+105
+00:05:07,570 --> 00:05:10,170
+I would need two sinks to parallelize that,
+
+106
+00:05:10,170 --> 00:05:11,460
+to do washing at the same time,
+
+107
+00:05:11,460 --> 00:05:13,770
+and two drying racks to do drying at the same time.
+
+108
+00:05:13,770 --> 00:05:16,060
+But in addition, I can never
+
+109
+00:05:16,060 --> 00:05:19,740
+parallelize the washing of a dish with the drying of the same dish.
+
+110
+00:05:19,740 --> 00:05:22,720
+You've got to finish the washing before you start the drying.
+
+111
+00:05:22,720 --> 00:05:25,980
+So, some parallelization even if you have extra hardware,
+
+112
+00:05:25,980 --> 00:05:28,520
+I can have a 100 washing sinks in there,
+
+113
+00:05:28,520 --> 00:05:32,530
+I still can't do washing and drying of the same dish at the same time.
+
+114
+00:05:32,530 --> 00:05:37,210
+So, some tasks cannot be parallelized even with the excess hardware,
+
+115
+00:05:37,210 --> 00:05:40,270
+and that's important to know because people often think,
+
+116
+00:05:40,270 --> 00:05:43,280
+"Well, I can just take anything and speed it up through parallelization."
+
+117
+00:05:43,280 --> 00:05:47,325
+That is not true. Some things cannot be parallelized and that's that.
+
+118
+00:05:47,325 --> 00:05:49,270
+It's just the nature of the computation.
+
+119
+00:05:49,270 --> 00:05:51,490
+Certain things have to be done in a certain order,
+
+120
+00:05:51,490 --> 00:05:53,570
+can't be done at the same time.
+
+121
+00:05:53,570 --> 00:05:56,175
+Module 1: Why Use Concurrency?
+
+122
+00:05:56,175 --> 00:05:59,330
+Topic 1.2: Von Neumann Bottleneck.
+
+123
+00:05:59,490 --> 00:06:02,480
+So, we're talking about doing things in
+
+124
+00:06:02,480 --> 00:06:05,760
+parallel using concurrent programming to execute code in parallel.
+
+125
+00:06:05,760 --> 00:06:07,645
+But why do that?
+
+126
+00:06:07,645 --> 00:06:11,130
+Coding and parallel, writing concurrent code is hard.
+
+127
+00:06:11,130 --> 00:06:12,625
+I haven't brought that up yet,
+
+128
+00:06:12,625 --> 00:06:13,880
+but as we get into it,
+
+129
+00:06:13,880 --> 00:06:16,325
+we'll see it is hard for a bunch of reasons.
+
+130
+00:06:16,325 --> 00:06:18,845
+Actually, if you look at most undergraduate curriculum,
+
+131
+00:06:18,845 --> 00:06:19,920
+students don't learn that;
+
+132
+00:06:19,920 --> 00:06:21,170
+you learned sequential programming.
+
+133
+00:06:21,170 --> 00:06:24,255
+Writing C or Python or Java or whatever language,
+
+134
+00:06:24,255 --> 00:06:26,060
+you learn sequential programming.
+
+135
+00:06:26,060 --> 00:06:28,780
+Now, maybe sometimes an undergrad will have
+
+136
+00:06:28,780 --> 00:06:32,030
+a class on parallel programming but maybe it's optional,
+
+137
+00:06:32,030 --> 00:06:33,335
+maybe they take it, maybe they don't.
+
+138
+00:06:33,335 --> 00:06:37,110
+But the vast majority of programming classes that you see at the undergrad level,
+
+139
+00:06:37,110 --> 00:06:39,120
+anyway, they are not talking about concurrent programming.
+
+140
+00:06:39,120 --> 00:06:43,420
+They're just talking about sequential regular old code runs one instruction at a time.
+
+141
+00:06:43,420 --> 00:06:48,205
+So, programming concurrently is actually very hard, so why do it?
+
+142
+00:06:48,205 --> 00:06:50,895
+Can we get a speedup without doing it?
+
+143
+00:06:50,895 --> 00:06:53,370
+Clearly, if you do things in parallel, you could get a speedup.
+
+144
+00:06:53,370 --> 00:06:55,075
+But do we need it?
+
+145
+00:06:55,075 --> 00:06:56,625
+I would argue and most people would argue,
+
+146
+00:06:56,625 --> 00:06:58,635
+"Yes, we do right now."
+
+147
+00:06:58,635 --> 00:07:01,450
+In the past, maybe we didn't need it.
+
+148
+00:07:01,450 --> 00:07:03,195
+But now, we really need it.
+
+149
+00:07:03,195 --> 00:07:10,410
+So, one way to get a speedup without parallelism is to just speed up the processor.
+
+150
+00:07:10,410 --> 00:07:14,990
+So just make a new processor that runs faster than the old processor,
+
+151
+00:07:14,990 --> 00:07:18,175
+and then you get speedups and you don't have to change the way you write your code.
+
+152
+00:07:18,175 --> 00:07:23,220
+Now, this had been the way of things until I don't know.
+
+153
+00:07:23,220 --> 00:07:26,065
+Until recently. When I say recently,
+
+154
+00:07:26,065 --> 00:07:28,355
+five, six, seven years ago, something like that.
+
+155
+00:07:28,355 --> 00:07:31,880
+Until recent years, that had been the way of things.
+
+156
+00:07:31,880 --> 00:07:33,575
+So, the way things sped up,
+
+157
+00:07:33,575 --> 00:07:37,330
+majority of the way code sped up was because the processors were being built faster.
+
+158
+00:07:37,330 --> 00:07:40,635
+Now, I'm from hardware design community and I've always felt
+
+159
+00:07:40,635 --> 00:07:46,820
+that these programmers got away with murder because their speed is all on our back.
+
+160
+00:07:46,820 --> 00:07:49,250
+We design better faster processors,
+
+161
+00:07:49,250 --> 00:07:52,450
+they don't have to do anything and they just get better, faster running code.
+
+162
+00:07:52,450 --> 00:07:55,190
+But that has really stopped now.
+
+163
+00:07:55,190 --> 00:07:57,050
+So, part of the problem,
+
+164
+00:07:57,050 --> 00:07:59,150
+there are several reasons why that stopped.
+
+165
+00:07:59,150 --> 00:08:01,010
+It used to be when I was a kid, and I'm old.
+
+166
+00:08:01,010 --> 00:08:03,270
+When I was a kid, not when I was a kid,
+
+167
+00:08:03,270 --> 00:08:04,470
+when I was in undergrad,
+
+168
+00:08:04,470 --> 00:08:06,140
+'86 to '90 I was undergrad.
+
+169
+00:08:06,140 --> 00:08:11,130
+Back then, I remember a machine would come out and you'd buy and you think,
+
+170
+00:08:11,130 --> 00:08:12,680
+"Oh, this is the fastest thing out there."
+
+171
+00:08:12,680 --> 00:08:16,210
+and seriously, a few months later, maybe half a year later,
+
+172
+00:08:16,210 --> 00:08:18,290
+they have for the same price something that was
+
+173
+00:08:18,290 --> 00:08:21,135
+significantly faster and it would just kill you.
+
+174
+00:08:21,135 --> 00:08:25,400
+You're like, "Wow, I just bought this machine and now they got something faster."
+
+175
+00:08:25,400 --> 00:08:28,170
+and when I say faster, I mean, the clock rate went up.
+
+176
+00:08:28,170 --> 00:08:32,105
+So the clock rate would be 20 percent higher than mine than the thing I just bought,
+
+177
+00:08:32,105 --> 00:08:33,840
+and that was very frustrating.
+
+178
+00:08:33,840 --> 00:08:35,815
+But this used to happen all the time.
+
+179
+00:08:35,815 --> 00:08:38,470
+Every short period of time,
+
+180
+00:08:38,470 --> 00:08:40,380
+clock rate would get faster and faster.
+
+181
+00:08:40,380 --> 00:08:41,975
+As the clock rates gets faster,
+
+182
+00:08:41,975 --> 00:08:44,190
+the code executes faster generally,
+
+183
+00:08:44,190 --> 00:08:47,760
+modulo, memory bottlenecks which we'll talk about now.
+
+184
+00:08:47,760 --> 00:08:50,760
+But processors will get faster and faster.
+
+185
+00:08:50,760 --> 00:08:54,780
+Now, another limitation on the speed that
+
+186
+00:08:54,780 --> 00:08:59,250
+you have now even now is this what you call the Von Neumann Bottleneck.
+
+187
+00:08:59,250 --> 00:09:01,515
+So, it's the delayed access memory.
+
+188
+00:09:01,515 --> 00:09:04,595
+So, if you think about the way processor executes code,
+
+189
+00:09:04,595 --> 00:09:08,330
+it is the CPU is executing the instructions and there's memory,
+
+190
+00:09:08,330 --> 00:09:11,810
+and the CPU has to go to memory to get the instructions,
+
+191
+00:09:11,810 --> 00:09:13,510
+also to get data that you want to use.
+
+192
+00:09:13,510 --> 00:09:14,760
+You want to say x plus y equals z,
+
+193
+00:09:14,760 --> 00:09:17,350
+you got to go to memory, grab the data out, add them together,
+
+194
+00:09:17,350 --> 00:09:20,010
+put the result into z or rather into x,
+
+195
+00:09:20,010 --> 00:09:21,520
+but you have to access memory.
+
+196
+00:09:21,520 --> 00:09:24,905
+So, the CPU is regularly reading from memory writing back to memory,
+
+197
+00:09:24,905 --> 00:09:27,635
+and memories are always slower than the CPU.
+
+198
+00:09:27,635 --> 00:09:31,770
+So even if you crank up the clock speed make that thing work a lot faster,
+
+199
+00:09:31,770 --> 00:09:33,590
+the memory is still slow.
+
+200
+00:09:33,590 --> 00:09:35,810
+Now, memory speedup slowly over time,
+
+201
+00:09:35,810 --> 00:09:38,885
+but a lot slower than the clock rates would speedup.
+
+202
+00:09:38,885 --> 00:09:43,750
+So, you get what's referred to as a Von Neumann Bottleneck where even if you
+
+203
+00:09:43,750 --> 00:09:45,150
+crank up your clock or you could double
+
+204
+00:09:45,150 --> 00:09:48,750
+your clock speed but your code only runs a little bit faster,
+
+205
+00:09:48,750 --> 00:09:51,930
+and that would be because even as you crank up the clock speed,
+
+206
+00:09:51,930 --> 00:09:53,400
+you're still waiting on memory.
+
+207
+00:09:53,400 --> 00:09:56,985
+So, you'd waste a lot of time just waiting for memory access.
+
+208
+00:09:56,985 --> 00:10:00,875
+So, what people do for that or have done in the past with that,
+
+209
+00:10:00,875 --> 00:10:02,790
+and they can do less so now,
+
+210
+00:10:02,790 --> 00:10:06,260
+what they have done for past that for that is they built cache.
+
+211
+00:10:06,260 --> 00:10:09,840
+So, fast memory on the chip so you don't have to go to main memory,
+
+212
+00:10:09,840 --> 00:10:12,000
+which is too slow, you go to fast cache.
+
+213
+00:10:12,000 --> 00:10:16,645
+So, they like to pack more and more cache onto the chip and it speeds things up.
+
+214
+00:10:16,645 --> 00:10:20,770
+So, that's what traditionally had been done until,
+
+215
+00:10:20,770 --> 00:10:22,830
+when I say recently five, six,
+
+216
+00:10:22,830 --> 00:10:25,480
+seven years, something like that, that's what happened.
+
+217
+00:10:25,480 --> 00:10:27,530
+So, clock rates would go up,
+
+218
+00:10:27,530 --> 00:10:29,585
+memory and cache capacity would go up,
+
+219
+00:10:29,585 --> 00:10:30,800
+and so speed would go up.
+
+220
+00:10:30,800 --> 00:10:33,710
+These performances on these processors will just go up and up and up,
+
+221
+00:10:33,710 --> 00:10:35,130
+and as a programmer,
+
+222
+00:10:35,130 --> 00:10:36,755
+you don't really have to do anything.
+
+223
+00:10:36,755 --> 00:10:38,730
+You could just write your code the same way you wrote
+
+224
+00:10:38,730 --> 00:10:40,840
+your code and expect that it would speed
+
+225
+00:10:40,840 --> 00:10:45,295
+up magically because the processor themselves are getting improved.
+
+226
+00:10:45,295 --> 00:10:47,055
+So, that's how it used to be.
+
+227
+00:10:47,055 --> 00:10:48,905
+That's not how it is now.
+
+228
+00:10:48,905 --> 00:10:52,620
+It's changed for a couple of reasons.
+
+229
+00:10:52,620 --> 00:10:56,040
+First thing is that Moore's law, which I'm about to describe,
+
+230
+00:10:56,040 --> 00:10:58,715
+has really died, I don't know what the right term is,
+
+231
+00:10:58,715 --> 00:11:00,135
+it doesn't really happen anymore.
+
+232
+00:11:00,135 --> 00:11:01,395
+Okay. So, Moore's law,
+
+233
+00:11:01,395 --> 00:11:06,635
+it basically predicted that transistor density would double every two years.
+
+234
+00:11:06,635 --> 00:11:09,465
+Eighteen months, no, two years was the number.
+
+235
+00:11:09,465 --> 00:11:11,420
+Transistor density would double every two years.
+
+236
+00:11:11,420 --> 00:11:14,264
+Now, these processors, they're all packet transistors,
+
+237
+00:11:14,264 --> 00:11:17,125
+lots of transistors that are used to do computation.
+
+238
+00:11:17,125 --> 00:11:20,310
+So, if you can double the transistor density,
+
+239
+00:11:20,310 --> 00:11:23,210
+then the transistors are getting
+
+240
+00:11:23,210 --> 00:11:26,000
+smaller and smaller and they switch faster when they're smaller.
+
+241
+00:11:26,000 --> 00:11:27,790
+Meaning, they can go high to low faster.
+
+242
+00:11:27,790 --> 00:11:29,985
+So as they get smaller, they get faster.
+
+243
+00:11:29,985 --> 00:11:32,495
+So, as the density increases,
+
+244
+00:11:32,495 --> 00:11:35,980
+you get this speedup or this natural speedup in the transistors.
+
+245
+00:11:35,980 --> 00:11:38,440
+Now, this Moore's law is not really a law,
+
+246
+00:11:38,440 --> 00:11:39,710
+law is sort of a bad term.
+
+247
+00:11:39,710 --> 00:11:41,050
+It is not a physical law,
+
+248
+00:11:41,050 --> 00:11:42,630
+it's just an observation.
+
+249
+00:11:42,630 --> 00:11:47,190
+So, what was observed was that if you draw,
+
+250
+00:11:47,190 --> 00:11:48,520
+actually you can see this in,
+
+251
+00:11:48,520 --> 00:11:49,850
+I don't have a picture of this image,
+
+252
+00:11:49,850 --> 00:11:52,780
+but you can see processor speeds clock rates over time.
+
+253
+00:11:52,780 --> 00:11:54,385
+So, if you have time going up,
+
+254
+00:11:54,385 --> 00:11:58,055
+clock rates going up, and they were going up very fast.
+
+255
+00:11:58,055 --> 00:11:59,510
+Now, they've tapered off now.
+
+256
+00:11:59,510 --> 00:12:01,430
+If you look recently, you can see that it's
+
+257
+00:12:01,430 --> 00:12:04,140
+tapered off and the clock rates just can't get any higher,
+
+258
+00:12:04,140 --> 00:12:06,255
+it can't get much higher than they are.
+
+259
+00:12:06,255 --> 00:12:11,455
+But what we were getting for awhile is this exponential increase in density over time.
+
+260
+00:12:11,455 --> 00:12:15,450
+So you get an exponential or roughly exponential increase in speed.
+
+261
+00:12:15,450 --> 00:12:20,520
+So, Moore's law was sort of doing everything for us or most of the things for us.
+
+262
+00:12:20,520 --> 00:12:22,550
+It was just given us the speedup,
+
+263
+00:12:22,550 --> 00:12:24,620
+programmers didn't have to worry about things.
+
+264
+00:12:24,620 --> 00:12:27,975
+Now, of course, in order to make Moore's law happen,
+
+265
+00:12:27,975 --> 00:12:33,240
+hardware designers had to work our butts off in order to achieve this.
+
+266
+00:12:33,240 --> 00:12:34,600
+I mean, it's not magic that
+
+267
+00:12:34,600 --> 00:12:39,400
+transistor would just get smaller every few years, that was work.
+
+268
+00:12:39,400 --> 00:12:41,385
+Hard work on the part of hardware designers.
+
+269
+00:12:41,385 --> 00:12:43,730
+Figuring out how to get these transistors smaller
+
+270
+00:12:43,730 --> 00:12:45,820
+and still accurately made and all these.
+
+271
+00:12:45,820 --> 00:12:48,895
+Very hard work but they were consistently doing it.
+
+272
+00:12:48,895 --> 00:12:51,030
+So, software people had an easy time of it,
+
+273
+00:12:51,030 --> 00:12:52,880
+but that's not how it is anymore.
+
+274
+00:12:52,880 --> 00:12:54,320
+That type of thing has gone away.
+
+275
+00:12:54,320 --> 00:12:57,350
+So, software, in order to continue getting speedups has to do
+
+276
+00:12:57,350 --> 00:13:01,210
+something else to keep achieving those speedups over time.
+
+277
+00:13:01,210 --> 00:13:04,230
+Module one: why use concurrency.
+
+278
+00:13:04,230 --> 00:13:06,685
+Topic 1.3: Power Wall.
+
+279
+00:13:06,685 --> 00:13:09,450
+So, as I was saying,
+
+280
+00:13:09,450 --> 00:13:12,225
+the speedup that you get from Moore's law,
+
+281
+00:13:12,225 --> 00:13:14,845
+so density increase which leads to a speedup
+
+282
+00:13:14,845 --> 00:13:17,995
+and performance improvement, it can't continue.
+
+283
+00:13:17,995 --> 00:13:19,100
+So you might say, "Well, why?
+
+284
+00:13:19,100 --> 00:13:20,635
+Why can't that just go on forever."
+
+285
+00:13:20,635 --> 00:13:24,710
+The reason why is because these transistors consume power.
+
+286
+00:13:24,710 --> 00:13:29,825
+So, sure, the density of transistors can go up and up and up on these processors,
+
+287
+00:13:29,825 --> 00:13:32,235
+but these transistors consume a chunk of power,
+
+288
+00:13:32,235 --> 00:13:38,345
+and the power has now is becoming a critical issue and they call it a power wall.
+
+289
+00:13:38,345 --> 00:13:41,770
+So, as you increase the number of transistors on a chip,
+
+290
+00:13:41,770 --> 00:13:43,500
+increasing the density, that would naturally
+
+291
+00:13:43,500 --> 00:13:45,860
+lead to increased power consumption on the chip.
+
+292
+00:13:45,860 --> 00:13:47,290
+Now back in the old days,
+
+293
+00:13:47,290 --> 00:13:51,720
+power consumption was really low and people didn't use battery power so much.
+
+294
+00:13:51,720 --> 00:13:55,220
+So, nowadays though, everything's portable running off of a battery.
+
+295
+00:13:55,220 --> 00:13:57,685
+Also, the density has gotten so darn high,
+
+296
+00:13:57,685 --> 00:13:59,825
+the power use has gotten high.
+
+297
+00:13:59,825 --> 00:14:04,675
+Now, power use even if you are plugged into the wall and you have access to power,
+
+298
+00:14:04,675 --> 00:14:06,900
+high power leads to high temperature.
+
+299
+00:14:06,900 --> 00:14:08,140
+If something is running,
+
+300
+00:14:08,140 --> 00:14:09,450
+it is consuming a lot of power,
+
+301
+00:14:09,450 --> 00:14:11,090
+it's going to be physically hot.
+
+302
+00:14:11,090 --> 00:14:14,680
+So, I don't know if you've ever opened up a desktop computer.
+
+303
+00:14:14,680 --> 00:14:17,005
+You look inside, if you look at the motherboard,
+
+304
+00:14:17,005 --> 00:14:21,565
+there's at least a bunch of cooling fans.
+
+305
+00:14:21,565 --> 00:14:24,460
+Actually, you can see this picture it's a fan.
+
+306
+00:14:24,460 --> 00:14:26,145
+Actually, this is a very common thing.
+
+307
+00:14:26,145 --> 00:14:28,530
+Inside the board, there's a processor,
+
+308
+00:14:28,530 --> 00:14:30,795
+the main processor, say I'm using an i7.
+
+309
+00:14:30,795 --> 00:14:32,840
+So, on the board, there's going to be an i7,
+
+310
+00:14:32,840 --> 00:14:37,635
+but on top of it will be a fan just screwed on top of the thing.
+
+311
+00:14:37,635 --> 00:14:39,735
+A fan with a bunch of cooling
+
+312
+00:14:39,735 --> 00:14:43,685
+aluminum fans just to release the heat to let the heat dissipate,
+
+313
+00:14:43,685 --> 00:14:46,320
+and then a bunch of other fan just to air cool it,
+
+314
+00:14:46,320 --> 00:14:48,275
+to blow the heat away.
+
+315
+00:14:48,275 --> 00:14:50,525
+So, this is necessary because
+
+316
+00:14:50,525 --> 00:14:55,210
+these chips are running at such high-power that they're heating up,
+
+317
+00:14:55,210 --> 00:14:57,305
+and you need the cooling.
+
+318
+00:14:57,305 --> 00:15:00,770
+If you don't have the cooling, if you don't have this heat sink to
+
+319
+00:15:00,770 --> 00:15:04,175
+dissipate the heat and the fan to blow away the heat,
+
+320
+00:15:04,175 --> 00:15:05,370
+then it'll hurt the chip.
+
+321
+00:15:05,370 --> 00:15:07,840
+Eventually, the chip just melts, physically melts.
+
+322
+00:15:07,840 --> 00:15:10,945
+So, this is basically what you're calling the power wall.
+
+323
+00:15:10,945 --> 00:15:14,120
+So, even if you could put more transistors on there,
+
+324
+00:15:14,120 --> 00:15:15,200
+you got to be careful about
+
+325
+00:15:15,200 --> 00:15:20,365
+power and specifically in power and its impact on temperature.
+
+326
+00:15:20,365 --> 00:15:22,410
+Temperature is probably the biggest wall there,
+
+327
+00:15:22,410 --> 00:15:25,460
+but power is also an important thing because if you want to have portable devices,
+
+328
+00:15:25,460 --> 00:15:28,260
+you have battery, you don't want to run out your battery instantly.
+
+329
+00:15:28,260 --> 00:15:30,170
+So, power all by itself is important,
+
+330
+00:15:30,170 --> 00:15:33,260
+but the temperature is probably the biggest limitation because you will melt
+
+331
+00:15:33,260 --> 00:15:37,515
+the chip if you don't cool the thing.
+
+332
+00:15:37,515 --> 00:15:40,565
+Just to note, air cooling is the standard.
+
+333
+00:15:40,565 --> 00:15:42,140
+I mean, anybody who has desktop,
+
+334
+00:15:42,140 --> 00:15:43,670
+laptop, you air cool it.
+
+335
+00:15:43,670 --> 00:15:45,305
+Or server, too, you air cool it.
+
+336
+00:15:45,305 --> 00:15:47,980
+Now, you could go to extreme where you say,
+
+337
+00:15:47,980 --> 00:15:49,765
+"Look, I'm going to water cool it."
+
+338
+00:15:49,765 --> 00:15:53,695
+Actually, supercomputers do this. They have pipes.
+
+339
+00:15:53,695 --> 00:15:57,125
+They're plugged into a liquid cooling system,
+
+340
+00:15:57,125 --> 00:15:58,720
+and they typically don't use water,
+
+341
+00:15:58,720 --> 00:16:00,805
+they probably use liquid nitrogen.
+
+342
+00:16:00,805 --> 00:16:06,535
+Some super cool fluid they pump that through the device to cool it much better,
+
+343
+00:16:06,535 --> 00:16:07,750
+it gives you much better cooling.
+
+344
+00:16:07,750 --> 00:16:14,750
+But nobody wants that on your laptop or desktop to have to plug it into a water system.
+
+345
+00:16:14,750 --> 00:16:17,185
+Maybe the supercomputer, that's okay.
+
+346
+00:16:17,185 --> 00:16:19,330
+But air cooling is the best we're going to do.
+
+347
+00:16:19,330 --> 00:16:21,510
+In practice, people want air cooling,
+
+348
+00:16:21,510 --> 00:16:23,130
+they don't want to have to go to liquid cooling.
+
+349
+00:16:23,130 --> 00:16:27,520
+So, you had this limit where you can only dissipate so much heat.
+
+350
+00:16:27,550 --> 00:16:31,070
+So, to be a little bit more specific about
+
+351
+00:16:31,070 --> 00:16:34,540
+these limitations that happened due to power use,
+
+352
+00:16:34,540 --> 00:16:40,530
+one shown up here is this generic equation for power, P, P power.
+
+353
+00:16:40,750 --> 00:16:44,805
+There's an alpha. So alpha is that percent of time switching.
+
+354
+00:16:44,805 --> 00:16:49,420
+So, what that means is that these transistors they consume power,
+
+355
+00:16:49,420 --> 00:16:51,030
+or it was called dynamic power,
+
+356
+00:16:51,030 --> 00:16:53,295
+they consume power when they switch.
+
+357
+00:16:53,295 --> 00:16:56,140
+So when they go from zero to one or one to zero, they consume power.
+
+358
+00:16:56,140 --> 00:16:58,645
+If they're just holding constant, if they're switching,
+
+359
+00:16:58,645 --> 00:16:59,770
+if they're not switching at all,
+
+360
+00:16:59,770 --> 00:17:01,520
+then they don't consume dynamic power.
+
+361
+00:17:01,520 --> 00:17:06,715
+So, that alpha is a number from zero to one which indicates how often they're switching.
+
+362
+00:17:06,715 --> 00:17:10,140
+Now, note that if you design your system well,
+
+363
+00:17:10,140 --> 00:17:11,725
+they're switching a heck of a lot.
+
+364
+00:17:11,725 --> 00:17:14,720
+Yeah. I mean, you probably want to use the transistor to do
+
+365
+00:17:14,720 --> 00:17:18,230
+computation so that alpha should be fairly high.
+
+366
+00:17:18,230 --> 00:17:20,230
+C is the capacitance.
+
+367
+00:17:20,230 --> 00:17:21,865
+We don't want to go into detail what that is but
+
+368
+00:17:21,865 --> 00:17:23,870
+it's related to the size of the transistor.
+
+369
+00:17:23,870 --> 00:17:27,775
+So capacitance goes down as the transistor shrinks, which is a good thing.
+
+370
+00:17:27,775 --> 00:17:29,925
+So power will go down to some extent.
+
+371
+00:17:29,925 --> 00:17:31,650
+F is the clock frequency.
+
+372
+00:17:31,650 --> 00:17:33,785
+That is what you want to increase, right?
+
+373
+00:17:33,785 --> 00:17:35,240
+To make your device work faster,
+
+374
+00:17:35,240 --> 00:17:37,220
+you want increase the frequency but note
+
+375
+00:17:37,220 --> 00:17:39,770
+that if you increase the frequency, you're increasing the power.
+
+376
+00:17:39,770 --> 00:17:41,910
+Then there's V squared.
+
+377
+00:17:41,910 --> 00:17:45,775
+V, that V is the voltage swing, from low to high.
+
+378
+00:17:45,775 --> 00:17:49,930
+So what that means is that basically whenever transistor goes from zero to one,
+
+379
+00:17:49,930 --> 00:17:52,550
+one to zero; those binary values,
+
+380
+00:17:52,550 --> 00:17:54,495
+those are actually analog voltages.
+
+381
+00:17:54,495 --> 00:17:58,815
+So zero is typically zero volts and a one might be five volts.
+
+382
+00:17:58,815 --> 00:18:00,895
+Like for instance with an Arduino or something like that,
+
+383
+00:18:00,895 --> 00:18:02,400
+it goes from zero to five volts.
+
+384
+00:18:02,400 --> 00:18:03,865
+Now, in a real processor,
+
+385
+00:18:03,865 --> 00:18:07,115
+they're going to reduce that so that v is important because,
+
+386
+00:18:07,115 --> 00:18:09,305
+notice that v is a squared factor, right?
+
+387
+00:18:09,305 --> 00:18:11,500
+So if you reduce the voltage,
+
+388
+00:18:11,500 --> 00:18:13,910
+you can significantly reduce the power.
+
+389
+00:18:13,910 --> 00:18:17,380
+So maybe you're going to use voltage swing from 0 to 1.3 volts,
+
+390
+00:18:17,380 --> 00:18:19,585
+0 to 1.1 volts something like that.
+
+391
+00:18:19,585 --> 00:18:25,700
+So voltage is sort of the first thing that you want to reduce if you want to save power.
+
+392
+00:18:25,700 --> 00:18:30,040
+So Dennard scaling is another thing.
+
+393
+00:18:30,040 --> 00:18:33,670
+It's sort of, it's paired together with Moore's Law.
+
+394
+00:18:33,670 --> 00:18:37,045
+Dennard scaling is what gave us these speed ups so we get over time.
+
+395
+00:18:37,045 --> 00:18:39,520
+The idea with Dennard scaling is that voltage,
+
+396
+00:18:39,520 --> 00:18:41,920
+the voltage swing should scale with the transistor size.
+
+397
+00:18:41,920 --> 00:18:44,910
+So as the transistors get smaller and you get more density,
+
+398
+00:18:44,910 --> 00:18:46,215
+more transistors on a chip,
+
+399
+00:18:46,215 --> 00:18:49,535
+you would also like to scale down the voltage at the same time.
+
+400
+00:18:49,535 --> 00:18:53,225
+Because basically for the power reason I just told you, that equation,
+
+401
+00:18:53,225 --> 00:18:55,885
+voltage has a big impact so if you can scale down the voltage,
+
+402
+00:18:55,885 --> 00:19:00,760
+then you can keep power consumption and then temperature low or within limits.
+
+403
+00:19:00,760 --> 00:19:02,295
+So that's what you want to do.
+
+404
+00:19:02,295 --> 00:19:04,400
+You want to, you would like to have Dennard scaling.
+
+405
+00:19:04,400 --> 00:19:07,275
+The problem is Dennard scaling can't continue forever.
+
+406
+00:19:07,275 --> 00:19:11,575
+Voltage can't go too low for physical reasons.
+
+407
+00:19:11,575 --> 00:19:14,780
+First reason is that the voltage swing between low and high
+
+408
+00:19:14,780 --> 00:19:18,475
+has to be higher than the threshold voltage of the transistor.
+
+409
+00:19:18,475 --> 00:19:20,960
+So transistors have what's called a threshold voltage.
+
+410
+00:19:20,960 --> 00:19:22,535
+Below a certain voltage,
+
+411
+00:19:22,535 --> 00:19:23,865
+they cannot switch on.
+
+412
+00:19:23,865 --> 00:19:28,000
+So you got to have at least enough voltage to hit the threshold.
+
+413
+00:19:28,000 --> 00:19:30,075
+Now, as you shrink it, you can manipulate
+
+414
+00:19:30,075 --> 00:19:33,420
+the threshold voltage but it can only go physically so low.
+
+415
+00:19:33,420 --> 00:19:36,525
+Then another thing is that noise problems occur.
+
+416
+00:19:36,525 --> 00:19:39,355
+So one good thing about having a big voltage swing,
+
+417
+00:19:39,355 --> 00:19:42,590
+from zero to five volts is if there's some kind of noise on your signal,
+
+418
+00:19:42,590 --> 00:19:45,030
+right in your system which altered your voltage.
+
+419
+00:19:45,030 --> 00:19:47,580
+Say your voltage goes plus and minus 0.5 volts.
+
+420
+00:19:47,580 --> 00:19:48,825
+So instead of five volts,
+
+421
+00:19:48,825 --> 00:19:50,470
+you get 4.5 volts.
+
+422
+00:19:50,470 --> 00:19:53,820
+That's okay, because you know it's only plus,
+
+423
+00:19:53,820 --> 00:19:55,765
+it's only minus 0.5 volts.
+
+424
+00:19:55,765 --> 00:19:58,220
+So you know even though the voltage is 4.5,
+
+425
+00:19:58,220 --> 00:20:00,180
+you know it had to have been five.
+
+426
+00:20:00,180 --> 00:20:01,425
+That's a high, right?
+
+427
+00:20:01,425 --> 00:20:02,780
+If instead of zero volts,
+
+428
+00:20:02,780 --> 00:20:04,105
+you get 0.5 volts.
+
+429
+00:20:04,105 --> 00:20:06,660
+You say, "Look, it's not exactly zero but it's close."
+
+430
+00:20:06,660 --> 00:20:08,240
+Right? So you can tell the difference.
+
+431
+00:20:08,240 --> 00:20:10,430
+But the reason why that's okay is because
+
+432
+00:20:10,430 --> 00:20:13,240
+the voltage swing from zero to five volts is pretty big.
+
+433
+00:20:13,240 --> 00:20:16,040
+If you have your voltage swing come down to say one volt,
+
+434
+00:20:16,040 --> 00:20:19,260
+say zero volt is a low and one volt is high.
+
+435
+00:20:19,260 --> 00:20:21,720
+Then if you have the same noise in their,
+
+436
+00:20:21,720 --> 00:20:23,535
+0.5 volts of noise.
+
+437
+00:20:23,535 --> 00:20:25,665
+Then when the voltage is 0.5 volts,
+
+438
+00:20:25,665 --> 00:20:28,240
+you can't tell if it was high or if it was low.
+
+439
+00:20:28,240 --> 00:20:30,225
+So you can't recover from the errors.
+
+440
+00:20:30,225 --> 00:20:32,565
+So you become less noise tolerant,
+
+441
+00:20:32,565 --> 00:20:36,230
+and that's a big problem because there's always noise in any kind of practical system.
+
+442
+00:20:36,230 --> 00:20:39,665
+So for these reasons, Dennard scaling can't continue.
+
+443
+00:20:39,665 --> 00:20:42,775
+You can keep scaling the voltage down, there's a limit to that.
+
+444
+00:20:42,775 --> 00:20:48,420
+In addition, none of this considers leakage power.
+
+445
+00:20:48,420 --> 00:20:51,950
+So the equation that I showed for power is what's called Dynamic power.
+
+446
+00:20:51,950 --> 00:20:54,290
+The power that the transistor uses when it switches.
+
+447
+00:20:54,290 --> 00:20:56,350
+When it goes from low to high high to low.
+
+448
+00:20:56,350 --> 00:20:58,830
+There's also another kind of power called Leakage power,
+
+449
+00:20:58,830 --> 00:21:02,965
+which the transistor leaks off power even when it's not switching.
+
+450
+00:21:02,965 --> 00:21:04,250
+Now in the old days,
+
+451
+00:21:04,250 --> 00:21:11,010
+leakage power was pretty low compared to dynamic power mostly because everything was big.
+
+452
+00:21:11,010 --> 00:21:14,605
+So leakage happens when you have sort of thin insulators, right?
+
+453
+00:21:14,605 --> 00:21:17,580
+So if you think about basically how leakage happens is there's
+
+454
+00:21:17,580 --> 00:21:20,650
+conductor and a conductor and current leaks from one to the other.
+
+455
+00:21:20,650 --> 00:21:24,270
+There's insulator in between and the insulator is not thick enough.
+
+456
+00:21:24,270 --> 00:21:26,125
+Then in the old days, everything was big.
+
+457
+00:21:26,125 --> 00:21:28,825
+When I say big I mean, scaling was different.
+
+458
+00:21:28,825 --> 00:21:31,980
+It's not big, it's still microscopic but relatively big.
+
+459
+00:21:31,980 --> 00:21:33,720
+So you have thick insulators.
+
+460
+00:21:33,720 --> 00:21:35,505
+So it's hard for leakage to happen.
+
+461
+00:21:35,505 --> 00:21:37,445
+But as you scale everything down,
+
+462
+00:21:37,445 --> 00:21:40,870
+these insulators become thinner and thinner and leakage can occur.
+
+463
+00:21:40,870 --> 00:21:43,625
+So leakage power has been growing over time.
+
+464
+00:21:43,625 --> 00:21:48,270
+So leakage power even scaling the voltage doesn't save you with the leakage power.
+
+465
+00:21:48,270 --> 00:21:51,045
+Leakage power is actually increase over time.
+
+466
+00:21:51,045 --> 00:21:53,010
+So for these reasons,
+
+467
+00:21:53,010 --> 00:21:55,215
+the power you just can't even,
+
+468
+00:21:55,215 --> 00:21:57,000
+you can't continue the Dennard scaling,
+
+469
+00:21:57,000 --> 00:22:00,490
+you can keep scaling the voltage down so that power equation keeps going up,
+
+470
+00:22:00,490 --> 00:22:02,805
+and that's what they mean by Power Wall.
+
+471
+00:22:02,805 --> 00:22:06,605
+Basically, we are at a place where if you get this thing running any faster,
+
+472
+00:22:06,605 --> 00:22:11,310
+the temperature is going to go so high that things are going to actually melt.
+
+473
+00:22:11,310 --> 00:22:13,645
+The device will actually melt in the system.
+
+474
+00:22:13,645 --> 00:22:16,085
+So what happens is,
+
+475
+00:22:16,085 --> 00:22:17,885
+so there's our power equation again.
+
+476
+00:22:17,885 --> 00:22:19,710
+You can't increase the frequency,
+
+477
+00:22:19,710 --> 00:22:21,445
+not without melting things.
+
+478
+00:22:21,445 --> 00:22:23,000
+So what do you do?
+
+479
+00:22:23,000 --> 00:22:24,940
+So what do designers do in order to improve
+
+480
+00:22:24,940 --> 00:22:28,960
+performance even though they can't increase the frequency?
+
+481
+00:22:28,960 --> 00:22:30,545
+Beyond just improving performance,
+
+482
+00:22:30,545 --> 00:22:32,925
+say you are in Intel, you want to sell chips, right?
+
+483
+00:22:32,925 --> 00:22:36,100
+So if you say you come up with a generation chips that's running at
+
+484
+00:22:36,100 --> 00:22:39,350
+four gigahertz and the next generation is also at four gigahertz,
+
+485
+00:22:39,350 --> 00:22:41,075
+people may not buy the chip, right?
+
+486
+00:22:41,075 --> 00:22:42,900
+They need some reason to buy this thing.
+
+487
+00:22:42,900 --> 00:22:44,220
+It's got to be some improvement.
+
+488
+00:22:44,220 --> 00:22:47,800
+So what do people do, they increase the number of cores in the chips.
+
+489
+00:22:47,800 --> 00:22:49,695
+This is way, you get multi-core systems.
+
+490
+00:22:49,695 --> 00:22:52,625
+So you probably heard of this, a processor core,
+
+491
+00:22:52,625 --> 00:22:56,640
+it basically executes a program roughly and you can have multiple of them.
+
+492
+00:22:56,640 --> 00:22:57,765
+So I say seven,
+
+493
+00:22:57,765 --> 00:22:59,885
+might have four processor cores, or something like this.
+
+494
+00:22:59,885 --> 00:23:01,450
+There are variable numbers of cores.
+
+495
+00:23:01,450 --> 00:23:03,770
+But they're still increasing density.
+
+496
+00:23:03,770 --> 00:23:08,765
+They're putting, they're just having more of this replicating hardware on the chip.
+
+497
+00:23:08,765 --> 00:23:12,420
+But they don't increase the frequency, they don't increase the clock frequency.
+
+498
+00:23:12,420 --> 00:23:14,225
+They keep it roughly the same.
+
+499
+00:23:14,225 --> 00:23:15,910
+So for instance, clock frequencies,
+
+500
+00:23:15,910 --> 00:23:18,900
+they go up slowly but much more slowly than they used to
+
+501
+00:23:18,900 --> 00:23:22,520
+go up but the number of cores still continues to increase.
+
+502
+00:23:22,520 --> 00:23:24,985
+Now, the thing about having a multi-core system,
+
+503
+00:23:24,985 --> 00:23:28,745
+having lots of cores is that you have to have parallel execution,
+
+504
+00:23:28,745 --> 00:23:32,020
+parallel slash concurrent execution to exploit multi-core systems.
+
+505
+00:23:32,020 --> 00:23:33,735
+Meaning, if you got four cores in
+
+506
+00:23:33,735 --> 00:23:37,925
+your processor and you can't run anything in parallel, right?
+
+507
+00:23:37,925 --> 00:23:39,645
+Then what's the point of having four cores.
+
+508
+00:23:39,645 --> 00:23:42,760
+When you're using one core and the other three cores are sitting idle.
+
+509
+00:23:42,760 --> 00:23:47,630
+So in order to exploit these multi-core systems and get speedup.
+
+510
+00:23:47,630 --> 00:23:50,700
+You have to be able to take your program divided amongst a bunch of
+
+511
+00:23:50,700 --> 00:23:54,930
+cores and execute different code concurrently on the different cores.
+
+512
+00:23:54,930 --> 00:23:58,150
+Okay, so this is where parallel execution becomes necessary.
+
+513
+00:23:58,150 --> 00:24:01,650
+In order to keep achieving speedup in the presence of multi-core systems,
+
+514
+00:24:01,650 --> 00:24:03,750
+you've got to be able to use,
+
+515
+00:24:03,750 --> 00:24:06,055
+to exploit this parallel hardware.
+
+516
+00:24:06,055 --> 00:24:09,760
+So you need to be able to write concurrent code just to exploit it.
+
+517
+00:24:09,760 --> 00:24:12,365
+So that is really the motivation.
+
+518
+00:24:12,365 --> 00:24:15,090
+This is why concurrency is so important nowadays.
+
+519
+00:24:15,090 --> 00:24:18,125
+Because the programmer has to tell
+
+520
+00:24:18,125 --> 00:24:22,280
+the program how it's going to be divided amongst cores, right?
+
+521
+00:24:22,280 --> 00:24:23,930
+That's really what concurrent programming is doing.
+
+522
+00:24:23,930 --> 00:24:26,110
+It's saying, "Look, here's a big piece of code.
+
+523
+00:24:26,110 --> 00:24:27,410
+You can put this on one core,
+
+524
+00:24:27,410 --> 00:24:29,050
+this on another core, this on another core."
+
+525
+00:24:29,050 --> 00:24:31,055
+Right? These things can all run together.
+
+526
+00:24:31,055 --> 00:24:34,400
+That's what the program is doing when you're doing concurrent coding,
+
+527
+00:24:34,400 --> 00:24:36,280
+and you have to do that.
+
+528
+00:24:36,280 --> 00:24:37,620
+Meaning, there are, actually it's funny,
+
+529
+00:24:37,620 --> 00:24:40,200
+there are things called Parallel compilers, okay.
+
+530
+00:24:40,200 --> 00:24:42,990
+There's a big research field or there was anyway, there still is,
+
+531
+00:24:42,990 --> 00:24:45,745
+in parallel compilers and what they supposed to do is they
+
+532
+00:24:45,745 --> 00:24:48,815
+take sequential code or regular C program or whatever language,
+
+533
+00:24:48,815 --> 00:24:50,390
+and they parallelize it.
+
+534
+00:24:50,390 --> 00:24:53,490
+So they do concurrent programming automatically for you.
+
+535
+00:24:53,490 --> 00:24:55,020
+They say, "Look, here's a big piece of code.
+
+536
+00:24:55,020 --> 00:24:59,505
+I'm going to chop it up into these different tasks that can all run concurrently."
+
+537
+00:24:59,505 --> 00:25:01,970
+That is an extremely hard problem.
+
+538
+00:25:01,970 --> 00:25:06,040
+It basically, I hate to say it but it doesn't work that well.
+
+539
+00:25:06,040 --> 00:25:08,700
+Now, I know and I say that I'm going to offend a bunch of
+
+540
+00:25:08,700 --> 00:25:11,365
+researchers but it doesn't work that well,
+
+541
+00:25:11,365 --> 00:25:14,645
+and so what has to happen is since you can't automate that easily,
+
+542
+00:25:14,645 --> 00:25:17,720
+you need the programmer to actually do that.
+
+543
+00:25:17,720 --> 00:25:18,940
+That's what concurrent programming is.
+
+544
+00:25:18,940 --> 00:25:20,145
+The programmer is saying, "Look,
+
+545
+00:25:20,145 --> 00:25:23,085
+I can decompose this task in the following way."
+
+546
+00:25:23,085 --> 00:25:25,240
+It's hard but it's important now.
+
+547
+00:25:25,240 --> 00:25:27,625
+Because if you don't, if the core programmer doesn't do it,
+
+548
+00:25:27,625 --> 00:25:28,770
+then it's not going to get done,
+
+549
+00:25:28,770 --> 00:25:32,190
+everything runs on one core and then what's the point of having four cores if
+
+550
+00:25:32,190 --> 00:25:36,790
+you're running everything on one core? Thank you.

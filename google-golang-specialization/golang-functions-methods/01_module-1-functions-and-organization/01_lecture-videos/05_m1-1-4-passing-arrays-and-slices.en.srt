@@ -1,0 +1,467 @@
+1
+00:00:00,000 --> 00:00:02,202
+Module 1, Functions and Organization.
+
+2
+00:00:02,202 --> 00:00:04,684
+Topic 1.4, Passing Arrays and Slices.
+
+3
+00:00:07,185 --> 00:00:11,042
+So say you want to pass an array
+as an argument to a function.
+
+4
+00:00:11,042 --> 00:00:13,180
+Maybe you want to do some
+processing on the array or
+
+5
+00:00:13,180 --> 00:00:14,964
+something like that inside a function.
+
+6
+00:00:14,964 --> 00:00:18,621
+So the arguments are all copied,
+because this is called by value, so
+
+7
+00:00:18,621 --> 00:00:21,551
+the whole array has to be
+copied to the parameters.
+
+8
+00:00:21,551 --> 00:00:25,973
+And if the array is big, then it's a
+problem, it'll take a lot of time to copy,
+
+9
+00:00:25,973 --> 00:00:28,152
+also use an excessive amount of space.
+
+10
+00:00:28,152 --> 00:00:31,413
+So as an example of that,
+we've got this function, foo, and
+
+11
+00:00:31,413 --> 00:00:34,131
+it takes as an argument
+an array of three integers.
+
+12
+00:00:34,131 --> 00:00:36,064
+Three is small, but
+this is just an example.
+
+13
+00:00:36,064 --> 00:00:38,404
+You could imagine that could be 300,000,
+right?
+
+14
+00:00:38,404 --> 00:00:42,022
+So it takes in an array of three integers,
+and so
+
+15
+00:00:42,022 --> 00:00:47,372
+that's declared there, (x [3] int) and
+it returns an integer.
+
+16
+00:00:47,372 --> 00:00:51,093
+And just returns the first
+element of the array, x [0].
+
+17
+00:00:51,093 --> 00:00:56,481
+So the function main,
+that first defines an array,
+
+18
+00:00:56,481 --> 00:01:00,161
+a: = [3]int(1, 2, 3).
+
+19
+00:01:00,161 --> 00:01:02,431
+And then it prints out
+whatever foo it returns.
+
+20
+00:01:02,431 --> 00:01:06,132
+So it calls foo with that array, a,
+which returns the first element,
+
+21
+00:01:06,132 --> 00:01:08,532
+which would be a 1,
+then it prints that out.
+
+22
+00:01:08,532 --> 00:01:11,843
+So in this case it has to
+copy that whole array over,
+
+23
+00:01:11,843 --> 00:01:16,792
+when it makes a function call, it copies
+that into x, the parameter of foo.
+
+24
+00:01:16,792 --> 00:01:19,842
+And that wastes time if it's a long array.
+
+25
+00:01:19,842 --> 00:01:21,065
+So what do you do?
+
+26
+00:01:21,065 --> 00:01:23,579
+So one thing you can do about
+that is you can employ,
+
+27
+00:01:23,579 --> 00:01:25,520
+basically call by reference, right?
+
+28
+00:01:25,520 --> 00:01:28,772
+So you can,
+instead of passing the array to foo.
+
+29
+00:01:28,772 --> 00:01:32,201
+You can change food so
+that it takes a pointer to an array.
+
+30
+00:01:32,201 --> 00:01:34,145
+So that's what we've done here.
+
+31
+00:01:34,145 --> 00:01:38,610
+Function foo, if you look at its argument,
+
+32
+00:01:38,610 --> 00:01:44,292
+it's parameter list,
+it says foo(x*[3]int).
+
+33
+00:01:44,292 --> 00:01:47,653
+So as a pointer to a three
+element array of integers.
+
+34
+00:01:47,653 --> 00:01:51,094
+And then inside the function
+foo all it does is,
+
+35
+00:01:51,094 --> 00:01:56,524
+it takes *x which is pointed to the array,
+so *x is x of the array, right?
+
+36
+00:01:56,524 --> 00:02:00,674
+And it looks at the zeroth element and
+adds one to it.
+
+37
+00:02:00,674 --> 00:02:03,651
+So it increments,
+it should increment to zeroth element.
+
+38
+00:02:03,651 --> 00:02:07,651
+Then if I look at the main,
+it defines the array, a.
+
+39
+00:02:07,651 --> 00:02:11,691
+Then when it calls foo, it doesn't
+pass at a, it passes at ampersand a,
+
+40
+00:02:11,691 --> 00:02:15,022
+it passes on the point into a,
+and then it just prints out a.
+
+41
+00:02:15,022 --> 00:02:19,587
+And what should happen is
+since foo got the pointer to
+
+42
+00:02:19,587 --> 00:02:23,133
+a it can actually modify that array, a.
+
+43
+00:02:23,133 --> 00:02:25,892
+And it should modify it by
+incrementing the first value.
+
+44
+00:02:25,892 --> 00:02:30,241
+So if the array starts out as 1, 2, 3, it
+should increment that 1 so it's 2, 2, 3,
+
+45
+00:02:30,241 --> 00:02:34,700
+and then prints out, prints the array
+when prints it, it prints 2, 2, 3.
+
+46
+00:02:34,700 --> 00:02:38,605
+So you could this,
+you could deference use referencing and
+
+47
+00:02:38,605 --> 00:02:43,539
+dereferencing operations to pass array
+pointers and use array pointers.
+
+48
+00:02:43,539 --> 00:02:46,250
+But that's messy and
+it is not necessary in GO lang.
+
+49
+00:02:46,250 --> 00:02:49,363
+This isn't the way,
+the neat way to do it in GO.
+
+50
+00:02:49,363 --> 00:02:54,060
+So the way you do it in GO,
+is you use slices instead.
+
+51
+00:02:54,060 --> 00:02:57,959
+In fact, in general in GO get used
+to using slices instead of arrays,
+
+52
+00:02:57,959 --> 00:02:58,981
+just in general.
+
+53
+00:02:58,981 --> 00:03:02,500
+So a slice is like window on an array,
+right?
+
+54
+00:03:02,500 --> 00:03:06,576
+But remember that when you declare a
+slice, if you declare a slice from scratch
+
+55
+00:03:06,576 --> 00:03:10,422
+or however you make it, it'll make
+the backing array behind it, right?
+
+56
+00:03:10,422 --> 00:03:14,424
+So you can almost always use
+a slice instead of an array.
+
+57
+00:03:14,424 --> 00:03:17,751
+So passing a slice copies the pointer.
+
+58
+00:03:17,751 --> 00:03:21,453
+So we pass an array,
+it copies the whole array.
+
+59
+00:03:21,453 --> 00:03:25,251
+But a slice is not actually an array.
+
+60
+00:03:25,251 --> 00:03:29,052
+It's really a structure
+that contains three things.
+
+61
+00:03:29,052 --> 00:03:34,168
+A pointer to the array or a pointer to
+the start to the slice in the array,
+
+62
+00:03:34,168 --> 00:03:37,252
+and the length, and the capacity, okay?
+
+63
+00:03:37,252 --> 00:03:39,881
+So it is really a structure with
+those three pieces of data,
+
+64
+00:03:39,881 --> 00:03:41,362
+one of which is a pointer, okay?
+
+65
+00:03:41,362 --> 00:03:46,379
+So so still rhe GO lang is still call
+by value, but when you pass a slice,
+
+66
+00:03:46,379 --> 00:03:50,659
+since the slice contains pointer
+your copying the pointer.
+
+67
+00:03:50,659 --> 00:03:55,176
+So the called function, when you pass
+a slice you actually gets the pointer and
+
+68
+00:03:55,176 --> 00:03:57,172
+also the length and the capacity.
+
+69
+00:03:57,172 --> 00:04:01,410
+So it can use that pointer directly to
+modify the slice without you having to
+
+70
+00:04:01,410 --> 00:04:05,662
+explicitly dereference and reference
+like we did with the array example.
+
+71
+00:04:05,662 --> 00:04:07,241
+So here's an example like that.
+
+72
+00:04:07,241 --> 00:04:11,813
+Here with this foo function, this time
+it takes a slice, I'm calling sli.
+
+73
+00:04:11,813 --> 00:04:16,522
+And notice that when you declare the
+slice, you don't have to specify the size.
+
+74
+00:04:16,522 --> 00:04:18,547
+In fact you can't specify the size.
+
+75
+00:04:18,547 --> 00:04:20,346
+You just give the square brackets.
+
+76
+00:04:20,346 --> 00:04:24,449
+So it says sli [ int ], there's no
+number inside the square brackets,
+
+77
+00:04:24,449 --> 00:04:26,415
+because that means it's a slice.
+
+78
+00:04:26,415 --> 00:04:28,532
+So you do that and it knows, okay,
+
+79
+00:04:28,532 --> 00:04:31,598
+this function foo takes
+a slice as its parameter.
+
+80
+00:04:31,598 --> 00:04:36,570
+And then what it does, it takes a slice
+and just adds one to slice element 0.
+
+81
+00:04:36,570 --> 00:04:40,050
+Then if we look at the main,
+this time what we do is, when we declare,
+
+82
+00:04:40,050 --> 00:04:43,300
+we don't declare an array,
+we declare a slice.
+
+83
+00:04:43,300 --> 00:04:44,993
+And it's only slightly different.
+
+84
+00:04:44,993 --> 00:04:49,343
+So this time when we declare a,
+make that array, or rather not a, and
+
+85
+00:04:49,343 --> 00:04:51,222
+not array, it is a slice now.
+
+86
+00:04:51,222 --> 00:04:58,372
+A := []int(1, 2, 3), the only difference
+is I didn't specify a size, right?
+
+87
+00:04:58,372 --> 00:05:02,070
+Inside the square brackets I didn't put
+a 3 like I did when I declared an array.
+
+88
+00:05:02,070 --> 00:05:04,022
+This time I just put square brackets so
+
+89
+00:05:04,022 --> 00:05:06,343
+now it recognizes that
+a is actually a slice.
+
+90
+00:05:06,343 --> 00:05:10,484
+So then I can just call foo past
+the slice of a, which now slice and
+
+91
+00:05:10,484 --> 00:05:13,492
+it works exactly the same
+as the last program.
+
+92
+00:05:13,492 --> 00:05:17,651
+And so when you print a, it will
+have incremented the first element,
+
+93
+00:05:17,651 --> 00:05:21,323
+which was 1 and now is 2, so
+it'll print that 2, 2, 3.
+
+94
+00:05:21,323 --> 00:05:27,800
+So in general, in GO,
+try to use slices instead of arrays, okay?
+
+95
+00:05:27,800 --> 00:05:31,599
+And specifically when you want to
+pass an argument, an array argument,
+
+96
+00:05:31,599 --> 00:05:34,593
+don't pass an array argument,
+pass a slice argument.
+
+97
+00:05:34,593 --> 00:05:39,535
+Because then you don't have to do all
+the copying that would be associated
+
+98
+00:05:39,535 --> 00:05:40,578
+with an array.
+
+99
+00:05:40,578 --> 00:05:41,078
+Thank you.

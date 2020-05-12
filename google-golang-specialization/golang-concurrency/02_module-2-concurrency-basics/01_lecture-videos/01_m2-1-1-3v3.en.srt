@@ -1,0 +1,1779 @@
+1
+00:00:00,000 --> 00:00:02,675
+Module two, Concurrency Basics.
+
+2
+00:00:02,675 --> 00:00:05,200
+Topic 1.1, Processes.
+
+3
+00:00:05,200 --> 00:00:08,805
+So, we're going to start talking about what a process is.
+
+4
+00:00:08,805 --> 00:00:10,530
+A lot of concurrent execution,
+
+5
+00:00:10,530 --> 00:00:14,175
+a lot of these ideas came from operating systems.
+
+6
+00:00:14,175 --> 00:00:18,170
+The job of an operating system is really to give concurrency,
+
+7
+00:00:18,170 --> 00:00:23,245
+we'll talk about this, to allow programs to run concurrently.
+
+8
+00:00:23,245 --> 00:00:26,750
+So, for instance, take the machine that I'm staring at right here.
+
+9
+00:00:26,750 --> 00:00:28,825
+This run this PowerPoint presentation.
+
+10
+00:00:28,825 --> 00:00:30,460
+It is running PowerPoint on it,
+
+11
+00:00:30,460 --> 00:00:34,680
+but at the same time is doing other things in the background
+
+12
+00:00:34,680 --> 00:00:37,160
+and the operating system is allowing
+
+13
+00:00:37,160 --> 00:00:40,100
+them all to be running concurrently at the same time.
+
+14
+00:00:40,100 --> 00:00:44,715
+So, concurrency issue, a lot of concurrency starts with this idea of processes,
+
+15
+00:00:44,715 --> 00:00:45,960
+and then we'll talk about threads,
+
+16
+00:00:45,960 --> 00:00:47,275
+and how they're related to processes,
+
+17
+00:00:47,275 --> 00:00:48,930
+and then we'll get to Go,
+
+18
+00:00:48,930 --> 00:00:50,790
+and how it implements those things.
+
+19
+00:00:50,790 --> 00:00:55,005
+So, a process is basically an instance of a running program.
+
+20
+00:00:55,005 --> 00:00:58,560
+There are things that every process has this unique to it,
+
+21
+00:00:58,560 --> 00:00:59,970
+a big chunk of memory.
+
+22
+00:00:59,970 --> 00:01:02,750
+So, if you've got multiple processes running on a machine,
+
+23
+00:01:02,750 --> 00:01:04,160
+every process has it's own memory,
+
+24
+00:01:04,160 --> 00:01:05,900
+it's virtual address space,
+
+25
+00:01:05,900 --> 00:01:07,140
+and we're not going to talk about virtual memory,
+
+26
+00:01:07,140 --> 00:01:09,035
+but it has an address space.
+
+27
+00:01:09,035 --> 00:01:11,455
+It has addresses zero to two gig.
+
+28
+00:01:11,455 --> 00:01:13,650
+This process owns them.
+
+29
+00:01:13,650 --> 00:01:15,750
+It has code.
+
+30
+00:01:15,750 --> 00:01:17,565
+Every process is going to have it's own code.
+
+31
+00:01:17,565 --> 00:01:18,920
+It's going to have it's own stack.
+
+32
+00:01:18,920 --> 00:01:21,900
+Stack is a region of memory that handles function calls mostly.
+
+33
+00:01:21,900 --> 00:01:26,040
+Heap, which is another region of memory where you do memory allocation, stuff like that.
+
+34
+00:01:26,040 --> 00:01:29,400
+Shared libraries, actually, shared libraries are shared.
+
+35
+00:01:29,400 --> 00:01:30,780
+So, sometimes in fact,
+
+36
+00:01:30,780 --> 00:01:32,450
+usually, those are shared between processes.
+
+37
+00:01:32,450 --> 00:01:35,870
+So, the shared libraries are actually not unique to a process,
+
+38
+00:01:35,870 --> 00:01:37,360
+they're shared by definition.
+
+39
+00:01:37,360 --> 00:01:38,650
+So, they are shared by processes.
+
+40
+00:01:38,650 --> 00:01:41,060
+But each process is going to have it's own stack,
+
+41
+00:01:41,060 --> 00:01:42,680
+it's own code, it's own virtual address space,
+
+42
+00:01:42,680 --> 00:01:43,995
+and a bunch of other things.
+
+43
+00:01:43,995 --> 00:01:47,905
+Also, a process is going to have registers unique to it.
+
+44
+00:01:47,905 --> 00:01:50,380
+Registers in case you don't know, basically,
+
+45
+00:01:50,380 --> 00:01:52,680
+they're just store values inside the machine.
+
+46
+00:01:52,680 --> 00:01:54,965
+They're like tiny little super fast memories.
+
+47
+00:01:54,965 --> 00:01:57,415
+They just store one value, one word, say.
+
+48
+00:01:57,415 --> 00:01:59,840
+A program counter. Program counter,
+
+49
+00:01:59,840 --> 00:02:03,110
+it's the register that tells you what instruction you're
+
+50
+00:02:03,110 --> 00:02:06,770
+executing right now or really the next instruction was the next one you're going execute.
+
+51
+00:02:06,770 --> 00:02:09,200
+Data registers, the stack pointer,
+
+52
+00:02:09,200 --> 00:02:12,080
+that's another register that tells you where you are on the stack, stuff like that.
+
+53
+00:02:12,080 --> 00:02:14,430
+So, every process has this unique,
+
+54
+00:02:14,430 --> 00:02:16,035
+was typically called context.
+
+55
+00:02:16,035 --> 00:02:18,950
+A bunch of memory, a bunch of register values that are unique to
+
+56
+00:02:18,950 --> 00:02:22,790
+the process and they're all needed to execute the program correctly.
+
+57
+00:02:22,790 --> 00:02:26,400
+So, every processes in executing or running program.
+
+58
+00:02:26,400 --> 00:02:30,230
+Now, an operating system does a lot of things.
+
+59
+00:02:30,230 --> 00:02:33,760
+But what essentially an operating system is?
+
+60
+00:02:33,760 --> 00:02:38,005
+Is something that allows multiple processes to execute concurrently.
+
+61
+00:02:38,005 --> 00:02:41,750
+There's a lot of complexity behind that because they have to
+
+62
+00:02:41,750 --> 00:02:45,635
+execute concurrently without bumping into each other.
+
+63
+00:02:45,635 --> 00:02:47,960
+So, one process might say, look,
+
+64
+00:02:47,960 --> 00:02:50,360
+I have addresses zero to two gig.
+
+65
+00:02:50,360 --> 00:02:53,170
+The next process thinks it has the same set of addresses.
+
+66
+00:02:53,170 --> 00:02:55,510
+The next process thinks it has the same set of addresses.
+
+67
+00:02:55,510 --> 00:02:57,885
+So, they have to be able to access addresses.
+
+68
+00:02:57,885 --> 00:02:59,900
+Maybe they all accessing address 1,000,
+
+69
+00:02:59,900 --> 00:03:02,665
+but they're not accessing the same address 1,000.
+
+70
+00:03:02,665 --> 00:03:04,550
+The operating system has to make sure this
+
+71
+00:03:04,550 --> 00:03:06,410
+guy's 1,000 is different than this guy's 1,000,
+
+72
+00:03:06,410 --> 00:03:08,405
+so they don't interfere with each other.
+
+73
+00:03:08,405 --> 00:03:11,150
+So, nothing the operating system has to do is to make sure that
+
+74
+00:03:11,150 --> 00:03:14,045
+these processes get fair use of the processor.
+
+75
+00:03:14,045 --> 00:03:15,825
+Meaning this is concurrency.
+
+76
+00:03:15,825 --> 00:03:18,200
+These processes are not actually executing in
+
+77
+00:03:18,200 --> 00:03:20,805
+parallel or that's our assumption right now anyway.
+
+78
+00:03:20,805 --> 00:03:24,980
+So, since they're concurrently executing, this process,
+
+79
+00:03:24,980 --> 00:03:27,625
+and a process might get the CPU for a certain amount of time,
+
+80
+00:03:27,625 --> 00:03:29,595
+and then the next process should get it's turn.
+
+81
+00:03:29,595 --> 00:03:31,430
+So, a processes that switch quickly.
+
+82
+00:03:31,430 --> 00:03:33,770
+So, like 20 milliseconds, that's typical number.
+
+83
+00:03:33,770 --> 00:03:35,810
+I think that's a standard number and default number in
+
+84
+00:03:35,810 --> 00:03:38,620
+Linux where process gets to use the processor,
+
+85
+00:03:38,620 --> 00:03:41,420
+CPU core for 20 milliseconds,
+
+86
+00:03:41,420 --> 00:03:42,580
+then the operating system says,
+
+87
+00:03:42,580 --> 00:03:44,465
+"Okay. Next guy's turn."
+
+88
+00:03:44,465 --> 00:03:46,460
+You can change that number, of course,
+
+89
+00:03:46,460 --> 00:03:49,010
+but what happens is it's just moving them
+
+90
+00:03:49,010 --> 00:03:51,740
+in and out so quickly that to a user's perspective,
+
+91
+00:03:51,740 --> 00:03:53,525
+it looks like they're all running at the same time.
+
+92
+00:03:53,525 --> 00:03:56,345
+So, that's the main job of an operating system
+
+93
+00:03:56,345 --> 00:03:59,800
+and this task just to give it a name, it's called scheduling.
+
+94
+00:03:59,800 --> 00:04:02,660
+Deciding which process runs at which time,
+
+95
+00:04:02,660 --> 00:04:06,005
+that's called the scheduling task and operating systems do that.
+
+96
+00:04:06,005 --> 00:04:10,280
+The user has the impression of parallelism even if it's not parallel.
+
+97
+00:04:10,280 --> 00:04:13,450
+Although, operating systems can apply parallelism,
+
+98
+00:04:13,450 --> 00:04:16,930
+the operating system can map something to a different core but generally,
+
+99
+00:04:16,930 --> 00:04:20,025
+certainly, right now, we're talking about single core operating system.
+
+100
+00:04:20,025 --> 00:04:24,035
+The operating system needs to give fair access to resources.
+
+101
+00:04:24,035 --> 00:04:25,810
+So, when I say resources,
+
+102
+00:04:25,810 --> 00:04:29,780
+I mean things in the system other than the processor itself.
+
+103
+00:04:29,780 --> 00:04:31,620
+So, there's a processor itself.
+
+104
+00:04:31,620 --> 00:04:34,250
+Maybe you give this guy 20 millisecond slice,
+
+105
+00:04:34,250 --> 00:04:35,965
+that guy 20 millisecond slice,
+
+106
+00:04:35,965 --> 00:04:37,950
+but also, other things like memory.
+
+107
+00:04:37,950 --> 00:04:39,690
+This one gets to use this region of memory,
+
+108
+00:04:39,690 --> 00:04:41,445
+this one gets to use that region of memory.
+
+109
+00:04:41,445 --> 00:04:43,990
+IO devices, you get to use the screen now,
+
+110
+00:04:43,990 --> 00:04:46,265
+now, you get your turn to using the screen, so on.
+
+111
+00:04:46,265 --> 00:04:50,240
+So, the operating system is basically managing a pile of processes,
+
+112
+00:04:50,240 --> 00:04:52,550
+and making sure they don't interfere with each other,
+
+113
+00:04:52,550 --> 00:04:54,340
+and they get fair use of the resources,
+
+114
+00:04:54,340 --> 00:04:57,125
+so they can all complete in a timely manner.
+
+115
+00:04:57,125 --> 00:05:00,080
+Now, this is a picture of the test manager.
+
+116
+00:05:00,080 --> 00:05:01,690
+So, if you have a Windows machine,
+
+117
+00:05:01,690 --> 00:05:03,880
+you hit control, alt, delete,
+
+118
+00:05:03,880 --> 00:05:06,680
+and you'll get a little prompt,
+
+119
+00:05:06,680 --> 00:05:08,400
+the middle of the screen, it'll give you a bunch of options,
+
+120
+00:05:08,400 --> 00:05:09,850
+you can select task manager.
+
+121
+00:05:09,850 --> 00:05:13,170
+This is the task manager at the time when I made this slide.
+
+122
+00:05:13,170 --> 00:05:19,015
+Now, task manager, what the task manager does is it shows you all the running processes.
+
+123
+00:05:19,015 --> 00:05:21,630
+You can see there are many running processes.
+
+124
+00:05:21,630 --> 00:05:24,470
+So, I can't even read it from here,
+
+125
+00:05:24,470 --> 00:05:26,095
+but there are a lot of processes.
+
+126
+00:05:26,095 --> 00:05:30,410
+So, typically, like if I were to look at the task manager for the machine,
+
+127
+00:05:30,410 --> 00:05:34,210
+I'm looking at right now that's running the PowerPoint slides, it's got PowerPoint.
+
+128
+00:05:34,210 --> 00:05:35,885
+That would be one of it's processes that's running,
+
+129
+00:05:35,885 --> 00:05:38,540
+but there would be sort of 30 other processes running,
+
+130
+00:05:38,540 --> 00:05:40,565
+doing other background things.
+
+131
+00:05:40,565 --> 00:05:44,580
+Maybe reading email, maybe serving a web server on it,
+
+132
+00:05:44,580 --> 00:05:45,970
+all kinds of background things,
+
+133
+00:05:45,970 --> 00:05:48,400
+some security thing, checking for a tax,
+
+134
+00:05:48,400 --> 00:05:51,290
+all that stuff would be going on at the same time.
+
+135
+00:05:51,290 --> 00:05:52,830
+Now, when I say at the same time,
+
+136
+00:05:52,830 --> 00:05:56,110
+it's all concurrent execution and maybe there's only one foreground task,
+
+137
+00:05:56,110 --> 00:05:58,330
+like this machine right here that I'm looking at,
+
+138
+00:05:58,330 --> 00:05:59,900
+it's got PowerPoint running on it,
+
+139
+00:05:59,900 --> 00:06:01,135
+that's the foreground task,
+
+140
+00:06:01,135 --> 00:06:02,710
+that's the foreground process.
+
+141
+00:06:02,710 --> 00:06:04,910
+But in the background, it's got a bunch of other things that
+
+142
+00:06:04,910 --> 00:06:07,475
+get their turn and they do their thing at same time.
+
+143
+00:06:07,475 --> 00:06:10,505
+So, you can only see the processes running
+
+144
+00:06:10,505 --> 00:06:13,665
+just by looking at the task manager on a Windows machine anyway.
+
+145
+00:06:13,665 --> 00:06:16,920
+Now, let's say, you can see this on any machine, macOS,
+
+146
+00:06:16,920 --> 00:06:20,450
+Linux, macOS just for your information, it's basically a Linux.
+
+147
+00:06:20,450 --> 00:06:22,370
+So, you can look at that.
+
+148
+00:06:22,370 --> 00:06:25,305
+If you wanted to see that, go to the command line, type PS,
+
+149
+00:06:25,305 --> 00:06:28,020
+it lists all the processes running or do a PS-L,
+
+150
+00:06:28,020 --> 00:06:31,150
+you can see them all and you will see similar information of this.
+
+151
+00:06:31,150 --> 00:06:33,520
+Although, in a less easily readable format,
+
+152
+00:06:33,520 --> 00:06:34,910
+you'll see the same information.
+
+153
+00:06:34,910 --> 00:06:36,260
+But this is the idea that
+
+154
+00:06:36,260 --> 00:06:38,840
+an operating system is allowing all these different processes to
+
+155
+00:06:38,840 --> 00:06:43,670
+execute at the same time or virtually at same time concurrently.
+
+156
+00:06:44,110 --> 00:06:47,225
+Thank you. Module two,
+
+157
+00:06:47,225 --> 00:06:48,660
+Concurrency Basics.
+
+158
+00:06:48,660 --> 00:06:51,570
+Topic 1.2, Scheduling.
+
+159
+00:06:51,570 --> 00:06:55,450
+So, we're talking about how an operating system allows
+
+160
+00:06:55,450 --> 00:06:58,740
+these processes to all execute concurrently,
+
+161
+00:06:58,740 --> 00:07:00,610
+virtually at the same time,
+
+162
+00:07:00,610 --> 00:07:04,090
+giving the illusion of parallel execution to a user.
+
+163
+00:07:04,090 --> 00:07:08,410
+So, what happens is the main task of an operating system is scheduling.
+
+164
+00:07:08,410 --> 00:07:11,650
+So, you might have many processes that are running like in this case,
+
+165
+00:07:11,650 --> 00:07:13,735
+I have three processes that I want to run,
+
+166
+00:07:13,735 --> 00:07:15,210
+process one, two, and three.
+
+167
+00:07:15,210 --> 00:07:18,450
+This little chart that I'm showing is execution over time.
+
+168
+00:07:18,450 --> 00:07:22,435
+So, time is decreasing down.
+
+169
+00:07:22,435 --> 00:07:23,965
+These little vertical bars,
+
+170
+00:07:23,965 --> 00:07:26,650
+they're colored, and they're each one's aligned with a process.
+
+171
+00:07:26,650 --> 00:07:29,270
+They're just showing how basically
+
+172
+00:07:29,270 --> 00:07:32,050
+the operating system is making sure that one process gets a turn,
+
+173
+00:07:32,050 --> 00:07:34,005
+so process one first,
+
+174
+00:07:34,005 --> 00:07:35,775
+then it gives process two a turn,
+
+175
+00:07:35,775 --> 00:07:37,115
+then it gives process three a turn,
+
+176
+00:07:37,115 --> 00:07:39,700
+then maybe goes back to one again, so on.
+
+177
+00:07:39,700 --> 00:07:41,560
+Now, the scheduling decisions,
+
+178
+00:07:41,560 --> 00:07:43,820
+there are many different scheduling algorithms,
+
+179
+00:07:43,820 --> 00:07:45,580
+ways of doing scheduling.
+
+180
+00:07:45,580 --> 00:07:48,885
+Like for instance, what we're showing here is basically what's called round robin.
+
+181
+00:07:48,885 --> 00:07:51,075
+So, you give each one a fair amount of time.
+
+182
+00:07:51,075 --> 00:07:52,710
+Like in this case, I'm just going 1, 2,
+
+183
+00:07:52,710 --> 00:07:54,390
+3, 1, 2, 3, 1, 2, 3,
+
+184
+00:07:54,390 --> 00:07:57,280
+over and over, everybody gets the same slice over time,
+
+185
+00:07:57,280 --> 00:07:59,025
+sort of a fair way to distribute.
+
+186
+00:07:59,025 --> 00:08:01,220
+This is not necessarily how scheduling is done.
+
+187
+00:08:01,220 --> 00:08:04,890
+Like for instance, maybe you have a higher priority process.
+
+188
+00:08:04,890 --> 00:08:06,480
+Some processes are more important than others.
+
+189
+00:08:06,480 --> 00:08:11,809
+For instance, some processes maybe they're interacting with the human,
+
+190
+00:08:11,809 --> 00:08:15,710
+so they need to be prioritized better than something in the background.
+
+191
+00:08:15,710 --> 00:08:17,380
+So, in that case,
+
+192
+00:08:17,380 --> 00:08:20,380
+the scheduling algorithm built in the operating system might consider that and say,
+
+193
+00:08:20,380 --> 00:08:21,520
+"Well, you're higher priority.
+
+194
+00:08:21,520 --> 00:08:24,880
+I will let you have more time than I let this other priority task run or
+
+195
+00:08:24,880 --> 00:08:28,240
+something like that or I'll let you maybe process one's higher priority,
+
+196
+00:08:28,240 --> 00:08:31,385
+so it occurs, it gets to be scheduled
+
+197
+00:08:31,385 --> 00:08:34,750
+more frequently than process two or three, something like that."
+
+198
+00:08:34,750 --> 00:08:37,250
+There are many different scheduling algorithms and you get
+
+199
+00:08:37,250 --> 00:08:40,490
+a lot of this especially with embedded systems where you get
+
+200
+00:08:40,490 --> 00:08:44,110
+these certain tasks in an embedded system or
+
+201
+00:08:44,110 --> 00:08:48,030
+an IoT device that are critical like if you take like a car.
+
+202
+00:08:48,030 --> 00:08:51,680
+Let's take a car. Cars got many processors actually and lots of things running.
+
+203
+00:08:51,680 --> 00:08:55,860
+Say, it's got a processor that is processors doing anti-lock braking.
+
+204
+00:08:55,860 --> 00:08:59,570
+So, you hit the brake, and the car's got the pedals,
+
+205
+00:08:59,570 --> 00:09:02,650
+the brake pads have to come down on the wheel, and break it.
+
+206
+00:09:02,650 --> 00:09:06,630
+Anti-lock braking, that would be considered a high priority process.
+
+207
+00:09:06,630 --> 00:09:09,305
+Now, on the other hand, maybe you got a stereo running.
+
+208
+00:09:09,305 --> 00:09:11,090
+That is a low priority process.
+
+209
+00:09:11,090 --> 00:09:15,050
+So, what the processor should do if they were both running on the same processor,
+
+210
+00:09:15,050 --> 00:09:16,100
+which they typically are not,
+
+211
+00:09:16,100 --> 00:09:20,070
+but if they were, then you would say that anti-lock braking thing,
+
+212
+00:09:20,070 --> 00:09:21,430
+that's got to have higher priority.
+
+213
+00:09:21,430 --> 00:09:24,560
+So, even if you're in the middle of playing some stereo music,
+
+214
+00:09:24,560 --> 00:09:27,100
+that task would have to be stopped.
+
+215
+00:09:27,100 --> 00:09:28,440
+So, the operating system will say, "Okay.
+
+216
+00:09:28,440 --> 00:09:29,660
+I'm putting you aside.
+
+217
+00:09:29,660 --> 00:09:30,910
+Somebody just hit the brakes.
+
+218
+00:09:30,910 --> 00:09:34,370
+We've got to go to the high priority task, the anti-lock braking."
+
+219
+00:09:34,370 --> 00:09:37,640
+So, there are many different scheduling algorithms
+
+220
+00:09:37,640 --> 00:09:40,390
+for operating systems to handle prioritization,
+
+221
+00:09:40,390 --> 00:09:42,030
+and meeting deadlines, and all this,
+
+222
+00:09:42,030 --> 00:09:47,070
+and we won't go into it, but scheduling is the main task in operating system.
+
+223
+00:09:48,720 --> 00:09:54,495
+Now, when the operating system moves from one process to another,
+
+224
+00:09:54,495 --> 00:09:59,550
+when it starts a process running and then it starts another process running,
+
+225
+00:09:59,550 --> 00:10:03,565
+that act of switching is called a context switch.
+
+226
+00:10:03,565 --> 00:10:05,430
+So, what we've shown here,
+
+227
+00:10:05,430 --> 00:10:07,430
+we'll graph where times increasing down,
+
+228
+00:10:07,430 --> 00:10:09,880
+you got process A, is one column on the left,
+
+229
+00:10:09,880 --> 00:10:11,735
+process B is another column on the right.
+
+230
+00:10:11,735 --> 00:10:15,830
+Now, when you get the vertical line like at the beginning process A is running,
+
+231
+00:10:15,830 --> 00:10:17,790
+vertical line on a process A.
+
+232
+00:10:17,790 --> 00:10:21,435
+Then there's this blue area that's labeled context switch,
+
+233
+00:10:21,435 --> 00:10:24,760
+and that's where it's switching from process A to process B,
+
+234
+00:10:24,760 --> 00:10:26,425
+that's the operating system,
+
+235
+00:10:26,425 --> 00:10:28,625
+changing from process A to process B.
+
+236
+00:10:28,625 --> 00:10:32,160
+Then you can see process B runs at vertical line on the process B and
+
+237
+00:10:32,160 --> 00:10:36,020
+then there's another context switch from process B back to process A again,
+
+238
+00:10:36,020 --> 00:10:37,390
+that's the operating system.
+
+239
+00:10:37,390 --> 00:10:41,030
+So, basically what's happening here is that,
+
+240
+00:10:41,030 --> 00:10:42,409
+when you're running a process,
+
+241
+00:10:42,409 --> 00:10:44,780
+when you want to stop it like you are running process A,
+
+242
+00:10:44,780 --> 00:10:46,445
+you want to start running process B,
+
+243
+00:10:46,445 --> 00:10:49,190
+what you have to do is take the state,
+
+244
+00:10:49,190 --> 00:10:55,205
+the current state of process A and save it somewhere for later use.
+
+245
+00:10:55,205 --> 00:10:58,070
+Then you have to bring in the state of process B,
+
+246
+00:10:58,070 --> 00:11:02,405
+let process B run and then later when process B is running you want go back to A,
+
+247
+00:11:02,405 --> 00:11:05,050
+you take that state of process A that you saved and you
+
+248
+00:11:05,050 --> 00:11:08,190
+bring that back in so it can start from where it left off.
+
+249
+00:11:08,190 --> 00:11:10,215
+Now, when I said the state,
+
+250
+00:11:10,215 --> 00:11:11,715
+that's called the Context.
+
+251
+00:11:11,715 --> 00:11:16,770
+Okay? It includes all those things that are unique to a process.
+
+252
+00:11:16,770 --> 00:11:21,215
+So, it's virtual memory system like which parts of memory it can access which I can't,
+
+253
+00:11:21,215 --> 00:11:22,460
+or this register values,
+
+254
+00:11:22,460 --> 00:11:23,600
+the program counter value,
+
+255
+00:11:23,600 --> 00:11:26,035
+stack pointer, all that stuff, it's code.
+
+256
+00:11:26,035 --> 00:11:28,625
+Right? All that stuff is unique to a process.
+
+257
+00:11:28,625 --> 00:11:30,135
+So, we call that the state,
+
+258
+00:11:30,135 --> 00:11:33,310
+memory and registers associated uniquely with the process.
+
+259
+00:11:33,310 --> 00:11:35,400
+When you do a context switch,
+
+260
+00:11:35,400 --> 00:11:36,480
+you take that context,
+
+261
+00:11:36,480 --> 00:11:37,535
+all that state information,
+
+262
+00:11:37,535 --> 00:11:42,340
+you save it to memory somewhere for the process that you're throwing out.
+
+263
+00:11:42,340 --> 00:11:44,710
+Then for process B if you're bringing that one in,
+
+264
+00:11:44,710 --> 00:11:48,055
+you would find its state and memory and bring it all back in,
+
+265
+00:11:48,055 --> 00:11:53,210
+bring in its virtual address system and bring in its register values and all that so,
+
+266
+00:11:53,210 --> 00:11:55,700
+the process B can continue from where it left off.
+
+267
+00:11:55,700 --> 00:11:57,120
+Then when you go back to process A,
+
+268
+00:11:57,120 --> 00:11:58,205
+you do a swap again,
+
+269
+00:11:58,205 --> 00:12:02,090
+process B state, its context is saved to memory somewhere.
+
+270
+00:12:02,090 --> 00:12:05,360
+Then process A state is brought in from memory back
+
+271
+00:12:05,360 --> 00:12:09,210
+into the registers where it belongs and process A can continue where I left off.
+
+272
+00:12:09,210 --> 00:12:13,320
+So, this context switch is performed by the operating system.
+
+273
+00:12:13,320 --> 00:12:16,955
+So, if we look at the chart that show there, right?
+
+274
+00:12:16,955 --> 00:12:19,340
+There's a time when process A is running,
+
+275
+00:12:19,340 --> 00:12:20,850
+then there is context switch,
+
+276
+00:12:20,850 --> 00:12:23,435
+then process B then the context switch in process A.
+
+277
+00:12:23,435 --> 00:12:25,000
+Those two contexts which times,
+
+278
+00:12:25,000 --> 00:12:28,020
+that's the operating system itself running, what's called the Kernel.
+
+279
+00:12:28,020 --> 00:12:29,200
+The Kernel of the operating system is
+
+280
+00:12:29,200 --> 00:12:32,225
+sort of main code of the operating system was thinking like that.
+
+281
+00:12:32,225 --> 00:12:35,885
+The context switch is the Kernel of the operating system running,
+
+282
+00:12:35,885 --> 00:12:39,920
+it's executing at that time and typically what happens is, you got a timer.
+
+283
+00:12:39,920 --> 00:12:42,055
+So, these processes all have timers.
+
+284
+00:12:42,055 --> 00:12:46,170
+When the operating system starts process A running,
+
+285
+00:12:46,170 --> 00:12:48,320
+it sets a timer, maybe 10,
+
+286
+00:12:48,320 --> 00:12:49,815
+maybe 20 millisecond timer,
+
+287
+00:12:49,815 --> 00:12:51,515
+and when that timer goes off,
+
+288
+00:12:51,515 --> 00:12:56,095
+process A is stopped and the operating system is executed.
+
+289
+00:12:56,095 --> 00:13:01,410
+Then it does the context switch and then it starts process B and it sets a timer again.
+
+290
+00:13:01,410 --> 00:13:03,380
+So, when the timer runs out again then it does,
+
+291
+00:13:03,380 --> 00:13:05,250
+the operating system runs again does
+
+292
+00:13:05,250 --> 00:13:08,585
+the context switch and the process continues wherever,
+
+293
+00:13:08,585 --> 00:13:10,600
+they are in the process.
+
+294
+00:13:10,600 --> 00:13:13,630
+This whole procedure continues forever or
+
+295
+00:13:13,630 --> 00:13:17,155
+as long as the machine is powered on. Thank you.
+
+296
+00:13:17,155 --> 00:13:19,530
+Module two, Concurrency Basics,
+
+297
+00:13:19,530 --> 00:13:22,990
+topic 1.3: Threads and Goroutines.
+
+298
+00:13:22,990 --> 00:13:25,710
+So, we talked about what a process is,
+
+299
+00:13:25,710 --> 00:13:28,555
+now I want to define what a thread is.
+
+300
+00:13:28,555 --> 00:13:33,624
+So, threads versus processes used to be that there were only processes.
+
+301
+00:13:33,624 --> 00:13:38,100
+Now, this is way back when Units was first created, right?
+
+302
+00:13:38,100 --> 00:13:40,925
+They just had processes first and they used to say, "Look,
+
+303
+00:13:40,925 --> 00:13:42,640
+it it one downside of processes,
+
+304
+00:13:42,640 --> 00:13:45,910
+is it that the context switching time?" Can be long.
+
+305
+00:13:45,910 --> 00:13:50,110
+Now because the context switch requires taking data,
+
+306
+00:13:50,110 --> 00:13:53,660
+writing it to memory and then reading stuff from memory back into registers.
+
+307
+00:13:53,660 --> 00:13:57,190
+So, there's a lot of memory access and memory access can be slow.
+
+308
+00:13:57,190 --> 00:14:00,564
+So, switching during a context switch between two processes,
+
+309
+00:14:00,564 --> 00:14:04,500
+that can be slow, and you want the operating system to be fast,
+
+310
+00:14:04,500 --> 00:14:05,895
+don't want to waste time doing that.
+
+311
+00:14:05,895 --> 00:14:09,930
+So, the switching process rather,
+
+312
+00:14:09,930 --> 00:14:12,020
+often way to speed it up.
+
+313
+00:14:12,020 --> 00:14:14,220
+People said look, let's make threads.
+
+314
+00:14:14,220 --> 00:14:17,510
+Now, they were called the actually originally called lightweight processes
+
+315
+00:14:17,510 --> 00:14:19,650
+but what a thread is,
+
+316
+00:14:19,650 --> 00:14:23,050
+it's like a process but it has less context.
+
+317
+00:14:23,050 --> 00:14:26,910
+It shares some of the contexts with other threads in the process.
+
+318
+00:14:26,910 --> 00:14:31,220
+So, one process can have multiple threads inside it, okay?
+
+319
+00:14:31,220 --> 00:14:34,015
+This thread share a decent amount of context.
+
+320
+00:14:34,015 --> 00:14:36,300
+So, if you look at the top picture,
+
+321
+00:14:36,300 --> 00:14:39,090
+I show a process and it's got these two blocks of
+
+322
+00:14:39,090 --> 00:14:42,100
+things that are unique to the process, is virtual memory,
+
+323
+00:14:42,100 --> 00:14:46,540
+would page table that sort of thing, file descriptors,
+
+324
+00:14:46,540 --> 00:14:49,545
+it's stack, it's program counter,
+
+325
+00:14:49,545 --> 00:14:51,284
+always there is registers,
+
+326
+00:14:51,284 --> 00:14:52,915
+those are all unique to a process.
+
+327
+00:14:52,915 --> 00:14:54,820
+The nodes I separated them to two,
+
+328
+00:14:54,820 --> 00:14:57,590
+I have those little orange block and the green block, right?
+
+329
+00:14:57,590 --> 00:14:59,770
+All of those are unique to a process.
+
+330
+00:14:59,770 --> 00:15:03,105
+Now, once you start having threads,
+
+331
+00:15:03,105 --> 00:15:06,015
+you can have multiple threads in one process.
+
+332
+00:15:06,015 --> 00:15:08,380
+So, you can see the green chunk,
+
+333
+00:15:08,380 --> 00:15:11,210
+the green rectangle as a thread.
+
+334
+00:15:11,210 --> 00:15:12,870
+So, you could think that first but
+
+335
+00:15:12,870 --> 00:15:16,650
+that process picture is just a process with one thread in it,
+
+336
+00:15:16,650 --> 00:15:19,200
+one green thread and with one code,
+
+337
+00:15:19,200 --> 00:15:22,365
+and each thread is associated with a piece of code that is executing.
+
+338
+00:15:22,365 --> 00:15:26,560
+So, since the stack is associated with the code executing,
+
+339
+00:15:26,560 --> 00:15:29,020
+you got a stack and you got some register,
+
+340
+00:15:29,020 --> 00:15:31,375
+data registers that are unique to thread.
+
+341
+00:15:31,375 --> 00:15:33,085
+But in the bottom picture,
+
+342
+00:15:33,085 --> 00:15:36,650
+what I'm showing is one process with three threads inside it.
+
+343
+00:15:36,650 --> 00:15:39,515
+Now, each one of these threads does have unique context,
+
+344
+00:15:39,515 --> 00:15:41,350
+the stack is unique for every thread,
+
+345
+00:15:41,350 --> 00:15:42,880
+the code is unique for every thread,
+
+346
+00:15:42,880 --> 00:15:44,865
+the data registers are unique for every thread.
+
+347
+00:15:44,865 --> 00:15:47,340
+So, there is unique context between different threads
+
+348
+00:15:47,340 --> 00:15:50,070
+but they also share contexts like that stuff in orange.
+
+349
+00:15:50,070 --> 00:15:51,910
+That's the virtual memory system,
+
+350
+00:15:51,910 --> 00:15:53,090
+that's the same, right?
+
+351
+00:15:53,090 --> 00:15:55,025
+The file descriptors those are the same.
+
+352
+00:15:55,025 --> 00:16:00,790
+So, this is an exhaustive list these pictures but the point though is that these threads,
+
+353
+00:16:00,790 --> 00:16:02,590
+they have unique context but is much
+
+354
+00:16:02,590 --> 00:16:06,970
+less than the unique context between two different processes.
+
+355
+00:16:06,970 --> 00:16:10,165
+So, when you do a context switch between two processes,
+
+356
+00:16:10,165 --> 00:16:13,610
+that might take you a long time because there's a lot of context, this unique.
+
+357
+00:16:13,610 --> 00:16:15,810
+But with two threads, when you go from one thread to the
+
+358
+00:16:15,810 --> 00:16:18,370
+next in the same process, it's much faster,
+
+359
+00:16:18,370 --> 00:16:19,800
+because there's less contexts,
+
+360
+00:16:19,800 --> 00:16:21,750
+less data that you have to write to memory and
+
+361
+00:16:21,750 --> 00:16:24,110
+read back from memory when you do a context switch.
+
+362
+00:16:24,110 --> 00:16:26,830
+So, and now what happens in operating systems
+
+363
+00:16:26,830 --> 00:16:29,820
+is that they instead of scheduling processes,
+
+364
+00:16:29,820 --> 00:16:31,690
+they scheduled thread by thread.
+
+365
+00:16:31,690 --> 00:16:34,955
+So, they say, okay, this thread runs and that's red ones then that one,
+
+366
+00:16:34,955 --> 00:16:36,160
+where in the old days,
+
+367
+00:16:36,160 --> 00:16:40,000
+it used to be process by process now they've gone to this thread level granularity,
+
+368
+00:16:40,000 --> 00:16:43,070
+it's the same problem but the level granularity is different,
+
+369
+00:16:43,070 --> 00:16:46,595
+they do one thread at a time and they schedule accordingly.
+
+370
+00:16:46,595 --> 00:16:49,675
+Now, Goroutines then we'll move into Go.
+
+371
+00:16:49,675 --> 00:16:51,060
+All that other stuff that I talked about,
+
+372
+00:16:51,060 --> 00:16:53,745
+it was generic independent of a particular language,
+
+373
+00:16:53,745 --> 00:16:56,095
+it was talking about operating systems in general.
+
+374
+00:16:56,095 --> 00:16:57,825
+Now we're going to talk a little bit about Go.
+
+375
+00:16:57,825 --> 00:16:59,525
+Go has what are called Goroutines.
+
+376
+00:16:59,525 --> 00:17:03,135
+Goroutines are basically a thread but in Go.
+
+377
+00:17:03,135 --> 00:17:07,595
+Many Goroutines execute within a single operating system thread.
+
+378
+00:17:07,595 --> 00:17:10,030
+So, remember there was this hierarchy where I said
+
+379
+00:17:10,030 --> 00:17:12,605
+look there's a process and it's got many threads in it,
+
+380
+00:17:12,605 --> 00:17:14,470
+that's from the operating system point of view.
+
+381
+00:17:14,470 --> 00:17:16,100
+You can have many threads inside a process,
+
+382
+00:17:16,100 --> 00:17:19,140
+maybe process only has one thread which is called main thread,
+
+383
+00:17:19,140 --> 00:17:21,310
+but it might have multiple threads.
+
+384
+00:17:21,310 --> 00:17:23,350
+Now, what Go does is it says look,
+
+385
+00:17:23,350 --> 00:17:25,830
+it takes process with one thread in it,
+
+386
+00:17:25,830 --> 00:17:28,130
+one main thread and you can have
+
+387
+00:17:28,130 --> 00:17:31,460
+multiple Goroutine that are all executing in that same thread.
+
+388
+00:17:31,460 --> 00:17:33,905
+So, from the operating system point of view,
+
+389
+00:17:33,905 --> 00:17:40,210
+all it does is schedule the main thread but then within Go,
+
+390
+00:17:40,210 --> 00:17:42,435
+you can have multiple Goroutines that are
+
+391
+00:17:42,435 --> 00:17:45,750
+executing within that thread all alternating within that thread.
+
+392
+00:17:45,750 --> 00:17:47,850
+So, maybe Goroutine one executes,
+
+393
+00:17:47,850 --> 00:17:49,290
+then two, then three,
+
+394
+00:17:49,290 --> 00:17:51,695
+or the while from the operating system point of view,
+
+395
+00:17:51,695 --> 00:17:54,365
+nothing is changing, it's got its main thread running.
+
+396
+00:17:54,365 --> 00:17:56,205
+But inside a Go,
+
+397
+00:17:56,205 --> 00:17:57,625
+Go can start switching
+
+398
+00:17:57,625 --> 00:18:02,390
+basically these Goroutines which are like threads inside the main thread.
+
+399
+00:18:02,760 --> 00:18:05,610
+So, that process of doing
+
+400
+00:18:05,610 --> 00:18:08,585
+the switching determining which Goroutine executing and what time,
+
+401
+00:18:08,585 --> 00:18:13,655
+that scheduling process, that's done by what's called the Go Runtime Scheduler.
+
+402
+00:18:13,655 --> 00:18:17,945
+The Go Runtime Scheduler, it does scheduling within an operating system thread.
+
+403
+00:18:17,945 --> 00:18:21,190
+So, you see how the scheduling task is separated
+
+404
+00:18:21,190 --> 00:18:24,070
+between the operating system and the Go Runtime Scheduling.
+
+405
+00:18:24,070 --> 00:18:26,350
+The operating system schedules which thread,
+
+406
+00:18:26,350 --> 00:18:28,670
+which operating system thread runs at a time.
+
+407
+00:18:28,670 --> 00:18:31,510
+Then once the main thread is running,
+
+408
+00:18:31,510 --> 00:18:35,280
+your Go program is running within a main thread, an operating system thread.
+
+409
+00:18:35,280 --> 00:18:38,990
+Once that's running, the Runtime Scheduler can
+
+410
+00:18:38,990 --> 00:18:43,670
+choose different Goroutines to execute at different times underneath that main thread.
+
+411
+00:18:43,670 --> 00:18:48,760
+Now, the Go Runtime Scheduler use a logical processor.
+
+412
+00:18:48,760 --> 00:18:53,455
+This logical processor is mapped to a thread.
+
+413
+00:18:53,455 --> 00:18:55,405
+So, typically like default,
+
+414
+00:18:55,405 --> 00:18:59,050
+you're going to have one logical process are mapped to a main thread and then
+
+415
+00:18:59,050 --> 00:19:00,490
+the Goroutine is going to run on
+
+416
+00:19:00,490 --> 00:19:03,295
+that logical processor which means it's running in that main thread.
+
+417
+00:19:03,295 --> 00:19:07,765
+Then notice it since all these Goroutines are basically running in one thread,
+
+418
+00:19:07,765 --> 00:19:10,920
+one main thread, there is not an opportunity
+
+419
+00:19:10,920 --> 00:19:14,450
+for actual parallelism like this, it's all concurrent.
+
+420
+00:19:14,450 --> 00:19:15,810
+You're executing one Goroutine,
+
+421
+00:19:15,810 --> 00:19:17,835
+or the next, or the next at a time.
+
+422
+00:19:17,835 --> 00:19:20,720
+But what you can do and we'll touch on this later,
+
+423
+00:19:20,720 --> 00:19:22,775
+is you can as a programmer, you can say look,
+
+424
+00:19:22,775 --> 00:19:27,310
+I don't want one logical process I want to logical processors or three or four,
+
+425
+00:19:27,310 --> 00:19:29,270
+and you would do this according to how many cores
+
+426
+00:19:29,270 --> 00:19:31,460
+you had presumably that would be sort of the obvious way.
+
+427
+00:19:31,460 --> 00:19:34,825
+You might say look I got four cores I'm going to have four logical processes.
+
+428
+00:19:34,825 --> 00:19:39,535
+Then what will happen is the Go Runtime Scheduler,
+
+429
+00:19:39,535 --> 00:19:44,480
+it will take these Goroutine and map them to different logical processes,
+
+430
+00:19:44,480 --> 00:19:45,980
+each logical processor can be mapped to
+
+431
+00:19:45,980 --> 00:19:49,815
+a different operating system thread and the operating system combat those,
+
+432
+00:19:49,815 --> 00:19:51,970
+made those threads to different cores.
+
+433
+00:19:51,970 --> 00:19:55,524
+So, you can allow,
+
+434
+00:19:55,524 --> 00:19:57,500
+there is a way to change the setting.
+
+435
+00:19:57,500 --> 00:20:00,260
+So, that you don't have just one logical process and you have multiple,
+
+436
+00:20:00,260 --> 00:20:02,300
+assuming and if you had cores,
+
+437
+00:20:02,300 --> 00:20:07,205
+multiple cores that would allow you to exploit those cores during execution.
+
+438
+00:20:07,205 --> 00:20:09,580
+Now still this task of hardware mapping,
+
+439
+00:20:09,580 --> 00:20:12,800
+determining this Goroutine which core is at on,
+
+440
+00:20:12,800 --> 00:20:16,520
+that task is still not done by the programmer,
+
+441
+00:20:16,520 --> 00:20:22,310
+but the programmer can determine how many logical processors that are going to be used.
+
+442
+00:20:22,310 --> 00:20:25,070
+So, and by default it'll be one in which case it's got
+
+443
+00:20:25,070 --> 00:20:27,920
+to be concurrent behavior but you can increase that if you
+
+444
+00:20:27,920 --> 00:20:32,360
+want to which would allow the Go Runtime and
+
+445
+00:20:32,360 --> 00:20:37,670
+the operating system to do parallel scheduling if it wanted to. Thank you.

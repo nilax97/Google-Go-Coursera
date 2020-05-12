@@ -1,0 +1,150 @@
+Module 4, Synchronized Communication,
+Topic 1.1 Blocking on Channels. So a common operation on a channel
+is to iterate through the channel, so iteratively read from the channel. So this would happen in a scenario
+where you had a producer and consumer, the consumer is receiving
+from a channel, and it just wants to continually receive data from the channel
+and then process it in some way. Very common scenario, receive data
+process, receive data process, and you just continue as long
+as the code is running. So there's a concept made to do
+specifically that, this for for range. So we've already seen for loops, but you can use this range keyword to
+continually just read from a channel. So, for instance,
+here we say for i = range c. What that'll do is, that for
+loop will just continually iterate one path for every piece of
+data that is received on that channel. So every time a piece of data
+is received on that channel, i is assigned to that data, and what's in
+the curly brackets is executed, right, the for loop is executed in one pass. And, it'll just continue forever, or
+not forever, until a close happens, I'll talk about that in a second. But it'll just continually read
+data off of that channel and assign it to this variable, i, or
+whatever variable you want to call it. Now in this case, and to our example, I'm
+not doing anything useful with the data, I'm just printing it, but you could
+be doing anything in there, right? You just process the data and
+use it in some way. So this is a very common thing to do. Now, this for loop,
+it could be an infinite loop, right? So what has to happen is, in other to end
+of this loop, when does it actually quit? It quits when you close the channel. So this is another method on a channel. You can close a channel,
+so you can see it, I have it in the last line,
+highlighted in red. The sender, the person who's doing the
+sending, it can call close on the channel. And if they call close on the channel,
+then the receiver realizes close, and this for loop will end. Now, you don't have to ever
+call close on a channel. It's not like a file, you don't have to call close on a channel,
+unless you're doing what I'm showing here. Unless you're using a range construct. If you use this range keyword
+to forever read from a channel you need to close the channel,
+the sender needs to close the channel. So that the receiver eventually
+knows I can quit this loop because now this channel is done. So the only time you would call close on
+a channel is if, as a sender, you knew I am never going to send more data on this
+channel again, then you can call close. And that basically sends a message to
+the receiver to say now this channel is closed so you can jump out of the loop
+whose range you're iterating through. So this is sort of a very common
+thing to read from channels. Now, another thing that you might want to
+do is read from multiple Goroutines, okay? From multiple channels really, which can
+be associated with multiple Goroutines. There might be attributes associated
+with the same Goroutine but reading from multiple channels,
+put it like that. So, let's say in this example,
+I got these three Goroutines, T1, T2, T3. T3 is receiving data from T1 and T2. And, from T1, it's receiving on Channel 1,
+C1, and T2 is receiving on Channel, on C2. So T3 has these two channels
+that it's receiving data from. Now, there are different scenarios
+about reading from multiple channels. Maybe, like in the case I'm showing here,
+maybe you need data on both channels. So for instance, totally it depends on the
+application, but let's say T3 is trying to compute the product of the two numbers
+we're starting from T1 and T2, okay? So if that's the case then
+you do what I'm doing here, just read the two channels sequentially. A = arrow c1, b = arrow c2. So you read from both channels, and then once you get them both
+then you print the product. Fine, it does the product. So in this case, T3 actually
+needed data from both c1 and c2, it needed both channels to complete
+it's task, the product, right? And these are blocking, right? These are blocking, so the first read will
+wait until something is written under c1, but eventually, T2 will read from
+both of them and it'll do its task. But this is an example where you
+need data from multiple channels. But sometimes you have a choice. So sometimes you got a Goroutine which
+can read from different channels, but it doesn't have to read from all
+of them, it just needs one of them. One or the other, so
+sort of there's an or relationship. You can get from this one, or this one, or
+that one, you don't need all the channels. So if you have a situation like that where
+you have a choice of which data to use, and whichever data comes in first
+that's the one you want to use, right? So, say you got two channels, c1 and
+c2, data could come in on c1, data could come in on c2. In this scenario,
+whichever one comes in first first come, first serve that's the one I'm going
+to use and do something with, okay? In that situation, you don't want to read
+from both channel 1 and channel 2, right? If you read from both of them then
+you're blocked on one of them. So say data gets sent on c1,
+that read will work. But then the read on c2 will never
+happen because maybe data never gets sent on c2, right? So you don't want to wait on c2 when
+no data is going to come, right? And vice versa. Maybe data comes in on c2 but
+not on c1, right? So you don't want to have
+to wait on both of them. In the last slide, we waited on both
+channels, c1 and c2, because we needed data from both channels and we knew
+the data would come in on both channels. In this scenario, we just need
+data from one of the channel and we don't know that data is going
+to come in on all channels. Data might just come in on one of
+the channels, and so we don't want to wait on all of them, we want to wait on
+one of them, but we don't know which one. So that's the case we use a select
+statement like I'm showing here. So select statement allows you to wait for
+the first data from a set of channels. So in this case [COUGH] we
+got two cases actually. So in the select you got the first case,
+the second case. First case is waiting on c1 to write
+it to a, second case is waiting on c2. And whichever one of
+those two happens first, that's the one that's
+going to get executed. So if the data comes on c1 first
+it will do the first case and it'll skip the second case,
+and visa versa. Thank you. Module 4, Synchronized Communication. Topic 1.2, Select. So we've been talking about select, and I showed how select allows you to choose
+data from one of several channels. You don't have to block
+on all the channels, you can just block on
+the first one that comes in. The first one that satisfies when
+data comes in, then you just wait for that and you can continue
+your execution more quickly. Now, the way I described it before, I was assuming that we were
+blocking on receiving data. But we can also block on sending data too. So, with select, your case can either
+be receiving data from a channel or sending data on a channel. So I have that here. Let's say my first case I say a is
+assigned to be arrow inchan, right? So I have some input
+channel called inchan. And if something comes in on that,
+they're eager to sign to that, and you print received a. Now the other case, instead of
+a receiving it's a sending thing. So in the other case I'm taking some
+number, b, I don't know what that is. I'm taking the number, b, and
+I'm writing it to outchan. Now, note that either one of
+these two cases can block, right? So reading from inchan, that will block if
+nobody's actually sent anything on inchan. And outchan, write into outchan will
+block if nobody is receiving on outchan. So either one of these
+two cases can block. And what happens with select is,
+whether it's a read or is a write, whichever one of the cases is unblocked
+first, that's the case that's executed. So, in this case, if some data
+came in on inchan first before outchan became available,
+then you would execute the first case. Otherwise if some other Goroutine
+did a read on outchan then the second case would be executed first. So I'll select either send or receive. You can block on either sends or
+receives and select one of them, whichever one completes first,
+that's the one you execute. Now, one common use of a select is to have a separate Abort channel, okay? So say there's some task that you're doing
+over and over, you're reading data and processing it, right? So this is producer-consumer
+scenario again, right? Something is producing some data and
+sending it on a channel to you, the consumer. And your consumer, his job is
+basically to receive the data and then do something with it. So let's assume that the code I have
+here is for a consumer like that. Now, notice that first thing it's a for
+loop, an infinite for loop, right? It's an infinite for loop,
+because that's typical for our consumer, it's just going to keep receiving,
+receiving, receiving. Now, then in there I select,
+the first case is to receive data on the c channel and
+assign it to a, and then I process it. In this case, I just print a. And so I'll keep doing that, receiving
+data, processing, receiving data, process, until eventually there's an abort signal. So somehow an abort happens, and
+that can happen any number of ways. Maybe another Goroutine
+receives user input, the input user types in
+something that says quit. Who knows, right? So, normally what it wants
+to do is that first case, receive data, process the data. But at some point there is an abort
+that comes in on another channel. So you have this separate abort channel,
+and if anything comes in on the abort channel,
+then you just return. Right, you just quit the whole process. Quit the whole loop. So basically this is normally an infinite
+for loop until that abort happens. So if some data comes in, and
+notice that we are not paying attention to the date of that comes
+in on the abort channel. Notice that it just says case arrow abort. I didn't say case x equals arrow abort,
+I just said case arrow abort. So I don't care what data is coming into
+the abort channel, if something comes in on the abort channel, that means
+the user wants to abort, or somebody is ordering you to quit this loop, and
+then you just return at that point. So this is a common use of select. So you can have this separate channel
+that happens probably infrequently. So most of the time, you're going
+through the first case, reading data and processing it off the normal channel,
+but every once in a while, at some point somebody is going to
+want to abort your procedure, and so you have a separate abort
+channel that you select from. Another thing that's done with
+select is to have a default case. So this is a lot like a case switch in c,
+it looks like it. It's not the same, but
+it has similar structure. You can have a default case. So in this case, we got the regular
+cases are waiting on channel 1, then the second one is
+waiting on channel 2. The default says, look,
+I don't want to wait on anything. If none of those other
+cases are satisfied, then I will execute the default, so I won't
+wait, I won't block at all in this case. When I have a default,
+you don't block, you just go and execute the default if none of
+the previous cases are ready. Thank you.

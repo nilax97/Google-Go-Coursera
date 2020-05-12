@@ -1,0 +1,639 @@
+1
+00:00:00,110 --> 00:00:02,670
+Module 1 : Functions and Organization.
+
+2
+00:00:02,670 --> 00:00:05,130
+Topic 2.3 : Function Guidelines.
+
+3
+00:00:05,130 --> 00:00:08,312
+So another thing that you want to do with
+functions is you want them to be not too
+
+4
+00:00:08,312 --> 00:00:08,969
+complicated.
+
+5
+00:00:08,969 --> 00:00:12,660
+You want them to be understandable,
+they shouldn't be too complex.
+
+6
+00:00:12,660 --> 00:00:17,110
+Now this term complexity, when you
+measure the complexity of a function,
+
+7
+00:00:17,110 --> 00:00:18,360
+this is definitely arguable.
+
+8
+00:00:18,360 --> 00:00:21,140
+People have different opinions
+on what comprises complexity,
+
+9
+00:00:21,140 --> 00:00:23,450
+what makes up the complexity
+of a function.
+
+10
+00:00:23,450 --> 00:00:25,619
+So we'll start out off
+with function length,
+
+11
+00:00:25,619 --> 00:00:27,990
+because that's sort of the most obvious.
+
+12
+00:00:27,990 --> 00:00:33,030
+Everybody uses that as a very rough
+approximation of function complexity.
+
+13
+00:00:33,030 --> 00:00:36,000
+So functions need to be simple, and
+
+14
+00:00:36,000 --> 00:00:39,340
+one way to make them simple
+is make them short, okay.
+
+15
+00:00:39,340 --> 00:00:42,200
+Now this doesn't always work, because
+short functions can be complicated.
+
+16
+00:00:42,200 --> 00:00:44,670
+I have definitely seen that,
+especially in a C or
+
+17
+00:00:44,670 --> 00:00:47,720
+something, you can put
+everything into one line, right.
+
+18
+00:00:47,720 --> 00:00:50,120
+Yeah, I'm not counting lines that are,
+
+19
+00:00:50,120 --> 00:00:53,160
+you could technically write a whole
+go program in one line, right?
+
+20
+00:00:53,160 --> 00:00:55,830
+Assuming you use regular line separations,
+
+21
+00:00:55,830 --> 00:00:58,950
+that's what I'm talking about when
+I'm talking about function length.
+
+22
+00:00:58,950 --> 00:01:02,349
+And you could rely on number of lines,
+line count.
+
+23
+00:01:03,660 --> 00:01:08,460
+In fact, I remember one professor here,
+he basically insists for NC that all his
+
+24
+00:01:08,460 --> 00:01:12,992
+students write their code, every function,
+is no longer than 10 lines.
+
+25
+00:01:12,992 --> 00:01:16,750
+I think that's too strict,
+sometimes you gotta go over that.
+
+26
+00:01:16,750 --> 00:01:18,910
+But I see where he's going with the idea,
+right?
+
+27
+00:01:18,910 --> 00:01:24,180
+It forces you to have some measure of
+simplicity in each individual function.
+
+28
+00:01:26,010 --> 00:01:30,990
+So the question then is, so how do
+you write a complicated piece of code
+
+29
+00:01:30,990 --> 00:01:32,600
+with these really simple functions, right?
+
+30
+00:01:32,600 --> 00:01:35,350
+I mean, some code you write
+it has to be complicated.
+
+31
+00:01:35,350 --> 00:01:37,610
+And there's no real avoiding it, right?
+
+32
+00:01:37,610 --> 00:01:40,810
+So what you can do is,
+when you define your functions,
+
+33
+00:01:40,810 --> 00:01:44,090
+you can make sure that each individual
+function isn't too complex.
+
+34
+00:01:44,090 --> 00:01:48,223
+You can make attempts to limit
+the complexity of an individual function.
+
+35
+00:01:48,223 --> 00:01:50,275
+And what's going to happen is,
+in your code in general,
+
+36
+00:01:50,275 --> 00:01:53,130
+there's always what I'm calling
+here a function call hierarchy.
+
+37
+00:01:53,130 --> 00:01:54,600
+Meaning you've got a function, and
+
+38
+00:01:54,600 --> 00:01:58,310
+it calls some other functions,
+which call some other functions and so on.
+
+39
+00:01:58,310 --> 00:01:59,640
+I'll call that a hierarchy, right?
+
+40
+00:01:59,640 --> 00:02:02,000
+This calls that,
+which calls that and so on.
+
+41
+00:02:02,000 --> 00:02:04,470
+So you can use that hierarchy to
+
+42
+00:02:04,470 --> 00:02:08,140
+simplify the complexity of
+each individual function.
+
+43
+00:02:08,140 --> 00:02:10,390
+So, as an example, I've got Option 1.
+
+44
+00:02:10,390 --> 00:02:12,814
+Option 1 you write
+everything in 1 function,
+
+45
+00:02:12,814 --> 00:02:15,400
+1 big fat function 100 lines long.
+
+46
+00:02:15,400 --> 00:02:17,230
+Or I can go to Option 2.
+
+47
+00:02:17,230 --> 00:02:20,210
+Now, Option 2, now I have 3 functions.
+
+48
+00:02:20,210 --> 00:02:22,390
+Instead of 1, I've divided it into 3.
+
+49
+00:02:22,390 --> 00:02:24,948
+The first function, in this case,
+is really short, right,
+
+50
+00:02:24,948 --> 00:02:27,700
+with just a few lines,
+but it calls the other 2.
+
+51
+00:02:27,700 --> 00:02:30,770
+And then, the other 2 functions
+are each 50 lines long, right?
+
+52
+00:02:30,770 --> 00:02:33,660
+So this is an approximation
+of what you'd do.
+
+53
+00:02:33,660 --> 00:02:38,130
+But in Option 1, you've got one big
+complicated piece of code 100 lines long.
+
+54
+00:02:38,130 --> 00:02:42,060
+In Option 2, you've got 3 pieces of code,
+2 of which are 50 lines long.
+
+55
+00:02:42,060 --> 00:02:45,470
+But the complexity of each individual
+function, if you're measuring in terms of
+
+56
+00:02:45,470 --> 00:02:49,360
+lines of code,
+is less in Option 2 than in Option 1.
+
+57
+00:02:49,360 --> 00:02:53,450
+So presumably,
+Option 2 would be easier to debug.
+
+58
+00:02:53,450 --> 00:02:57,420
+Now, this all depends on
+a bunch of other factors.
+
+59
+00:02:57,420 --> 00:03:01,012
+So for instance, you don't want to take
+a piece of code that's 100 lines long and
+
+60
+00:03:01,012 --> 00:03:02,362
+just chop it straight in half.
+
+61
+00:03:02,362 --> 00:03:06,170
+And say, the top half's function 1,
+bottom half's function 2, right?
+
+62
+00:03:06,170 --> 00:03:08,660
+You've gotta group the functions
+in a reasonable way.
+
+63
+00:03:08,660 --> 00:03:10,190
+We already talked about this.
+
+64
+00:03:10,190 --> 00:03:15,180
+Each function should map to an operation
+that makes sense in your application.
+
+65
+00:03:15,180 --> 00:03:17,480
+So you can't,
+typically you can't just cut it in half.
+
+66
+00:03:17,480 --> 00:03:21,270
+But you might be able to take this 100
+line piece of code and say, well, the fist
+
+67
+00:03:21,270 --> 00:03:25,490
+30 lines do this and the next 70 lines
+do that and maybe chop it up like that.
+
+68
+00:03:25,490 --> 00:03:27,320
+And even that's an improvement, right?
+
+69
+00:03:27,320 --> 00:03:30,430
+And then you can take the 70 line piece
+of code, that 70 line function, and
+
+70
+00:03:30,430 --> 00:03:34,460
+chop that up into a 30 line chunk and
+a 40 line chunk and so on.
+
+71
+00:03:34,460 --> 00:03:36,360
+So there's this decomposition and
+
+72
+00:03:36,360 --> 00:03:39,920
+hierarchy that you're making implicitly
+when you define these functions.
+
+73
+00:03:39,920 --> 00:03:42,062
+And the goal is, part of the goal is,
+
+74
+00:03:42,062 --> 00:03:46,225
+to make sure that each individual
+function isn't too complex, okay?
+
+75
+00:03:46,225 --> 00:03:47,930
+So you limit the complexity.
+
+76
+00:03:47,930 --> 00:03:50,450
+Now, in this case, we're talking about
+complexity in terms of lines of code.
+
+77
+00:03:50,450 --> 00:03:53,489
+But we'll talk about another
+form of complexity next.
+
+78
+00:03:54,760 --> 00:03:59,389
+Control-flow complexity, so
+another way to look at the complexity of
+
+79
+00:03:59,389 --> 00:04:03,730
+a piece of code is to look at how
+complicated its control-flow is.
+
+80
+00:04:03,730 --> 00:04:07,304
+So when I say control-flow, I'm talking
+about the paths from the top of
+
+81
+00:04:07,304 --> 00:04:11,760
+the function to the bottom, from the start
+to the end, the control-flow paths.
+
+82
+00:04:11,760 --> 00:04:13,400
+So how many options there are?
+
+83
+00:04:13,400 --> 00:04:17,590
+So, for instance, if you had a piece
+of code that had no if statements,
+
+84
+00:04:17,590 --> 00:04:19,060
+just straight line code.
+
+85
+00:04:19,060 --> 00:04:22,530
+Just a sequence of assignments, let's say,
+assign, assign, assign, assign, assign.
+
+86
+00:04:22,530 --> 00:04:25,440
+That has exactly 1 control-flow
+path from top to bottom.
+
+87
+00:04:25,440 --> 00:04:28,700
+There is 1 sequence of instructions
+that you will execute in that code, so
+
+88
+00:04:28,700 --> 00:04:30,380
+1 control-flow path.
+
+89
+00:04:30,380 --> 00:04:33,750
+But if you put an if statement in there,
+if this is true, you do one thing.
+
+90
+00:04:33,750 --> 00:04:35,010
+If that's true you do the other.
+
+91
+00:04:35,010 --> 00:04:36,979
+If you put 1 if then you've got 2 paths.
+
+92
+00:04:38,050 --> 00:04:39,873
+Now code gets more complicated than that.
+
+93
+00:04:39,873 --> 00:04:42,036
+You can have nested if statements,
+you could have loops,
+
+94
+00:04:42,036 --> 00:04:45,170
+which are implicitly conditional
+statements, and things like this.
+
+95
+00:04:45,170 --> 00:04:48,230
+So a typical function can have
+many different control paths, many
+
+96
+00:04:48,230 --> 00:04:52,470
+different sequences of instructions that
+are executed when you execute that code.
+
+97
+00:04:52,470 --> 00:04:57,955
+Many different sequences that execute
+depending on the input parameters, right?
+
+98
+00:04:57,955 --> 00:05:03,010
+So here I got this function,
+foo, and it's got 2 conditions.
+
+99
+00:05:03,010 --> 00:05:04,100
+Well, actually,
+one is nested within the other.
+
+100
+00:05:04,100 --> 00:05:09,810
+So if a == 1 than you go into
+this next conditional if b == 1.
+
+101
+00:05:09,810 --> 00:05:13,572
+So if I look at this code,
+I would say this has 3 control-flow paths.
+
+102
+00:05:13,572 --> 00:05:18,075
+Assuming there's no other control-flow
+operations here, you got 3 paths, 3 paths.
+
+103
+00:05:18,075 --> 00:05:25,230
+1 is where a == 0, a is not equal to 1.
+
+104
+00:05:25,230 --> 00:05:30,910
+If a is not equal to 1, then you skip
+that whole inner conditional, if b == 1.
+
+105
+00:05:30,910 --> 00:05:33,380
+And you just finish and
+go to the end, okay?
+
+106
+00:05:33,380 --> 00:05:37,140
+So that's one path, a is not equal to 1.
+
+107
+00:05:37,140 --> 00:05:40,750
+Then another path is a == 1,
+but b is not equal to 1.
+
+108
+00:05:40,750 --> 00:05:44,050
+Then another path is a == 1 and b == 1.
+
+109
+00:05:44,050 --> 00:05:46,608
+And each one of those
+3 sets of conditions,
+
+110
+00:05:46,608 --> 00:05:51,186
+you are executing a different sequence
+of instructions inside this program.
+
+111
+00:05:51,186 --> 00:05:55,480
+So there are 3 control-flow paths
+inside this piece of the code.
+
+112
+00:05:55,480 --> 00:05:58,108
+Now, one way to measure
+the complexity of a piece of
+
+113
+00:05:58,108 --> 00:06:00,506
+code is how many
+control-flow paths it have?
+
+114
+00:06:00,506 --> 00:06:02,830
+So I can say, look this has 3.
+
+115
+00:06:02,830 --> 00:06:05,820
+So, say I want to simplify that,
+and I might be able to use
+
+116
+00:06:05,820 --> 00:06:09,709
+functional partitioning to reduce
+the control-flow complexity a little bit.
+
+117
+00:06:10,960 --> 00:06:13,755
+So, say I take that function,
+foo and now I take,
+
+118
+00:06:13,755 --> 00:06:16,570
+remember it had 2 conditionals, right?
+
+119
+00:06:16,570 --> 00:06:19,540
+So now what I've done is
+I defined 2 functions.
+
+120
+00:06:19,540 --> 00:06:23,820
+And I've separated the conditionals, split
+them out across the 2 different functions.
+
+121
+00:06:23,820 --> 00:06:27,218
+So now foo still has the first
+conditional, if a == 1.
+
+122
+00:06:27,218 --> 00:06:28,290
+Still got that, but
+
+123
+00:06:28,290 --> 00:06:32,750
+then the next conditional check doesn't
+exist anymore inside that function.
+
+124
+00:06:32,750 --> 00:06:34,595
+Instead it calls a function called CheckB.
+
+125
+00:06:34,595 --> 00:06:38,738
+Now if you look at CheckB on the other
+side, that has the other conditional,
+
+126
+00:06:38,738 --> 00:06:40,380
+if b == 1, then whatever.
+
+127
+00:06:40,380 --> 00:06:45,278
+So I've separated these 2 conditionals,
+now, now that I've done this,
+
+128
+00:06:45,278 --> 00:06:49,730
+the foo function now has 2 paths
+through it, a == 1, and a is not.
+
+129
+00:06:49,730 --> 00:06:54,534
+And then CheckB, it has 2 paths,
+b == 1 and b is not.
+
+130
+00:06:54,534 --> 00:06:58,504
+So now each 1 of these functions
+has 2 control-flow paths instead of
+
+131
+00:06:58,504 --> 00:07:02,692
+the 3 control-flow paths that I had
+when I merged them together, okay?
+
+132
+00:07:02,692 --> 00:07:04,683
+So this is just a tiny example, but
+
+133
+00:07:04,683 --> 00:07:09,150
+the idea is you could separate the
+conditionals into different functions and
+
+134
+00:07:09,150 --> 00:07:13,628
+reduce the max complexity, right,
+the max number of control-flow paths.
+
+135
+00:07:13,628 --> 00:07:20,541
+You can reduce that overall, making
+the code easier to debug, typically.
+
+136
+00:07:20,541 --> 00:07:21,353
+Thank you.

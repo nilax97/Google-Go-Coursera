@@ -1,0 +1,97 @@
+Module 1 : Functions and Organization. Topic 2.3 : Function Guidelines. So another thing that you want to do with
+functions is you want them to be not too complicated. You want them to be understandable,
+they shouldn't be too complex. Now this term complexity, when you
+measure the complexity of a function, this is definitely arguable. People have different opinions
+on what comprises complexity, what makes up the complexity
+of a function. So we'll start out off
+with function length, because that's sort of the most obvious. Everybody uses that as a very rough
+approximation of function complexity. So functions need to be simple, and one way to make them simple
+is make them short, okay. Now this doesn't always work, because
+short functions can be complicated. I have definitely seen that,
+especially in a C or something, you can put
+everything into one line, right. Yeah, I'm not counting lines that are, you could technically write a whole
+go program in one line, right? Assuming you use regular line separations, that's what I'm talking about when
+I'm talking about function length. And you could rely on number of lines,
+line count. In fact, I remember one professor here,
+he basically insists for NC that all his students write their code, every function,
+is no longer than 10 lines. I think that's too strict,
+sometimes you gotta go over that. But I see where he's going with the idea,
+right? It forces you to have some measure of
+simplicity in each individual function. So the question then is, so how do
+you write a complicated piece of code with these really simple functions, right? I mean, some code you write
+it has to be complicated. And there's no real avoiding it, right? So what you can do is,
+when you define your functions, you can make sure that each individual
+function isn't too complex. You can make attempts to limit
+the complexity of an individual function. And what's going to happen is,
+in your code in general, there's always what I'm calling
+here a function call hierarchy. Meaning you've got a function, and it calls some other functions,
+which call some other functions and so on. I'll call that a hierarchy, right? This calls that,
+which calls that and so on. So you can use that hierarchy to simplify the complexity of
+each individual function. So, as an example, I've got Option 1. Option 1 you write
+everything in 1 function, 1 big fat function 100 lines long. Or I can go to Option 2. Now, Option 2, now I have 3 functions. Instead of 1, I've divided it into 3. The first function, in this case,
+is really short, right, with just a few lines,
+but it calls the other 2. And then, the other 2 functions
+are each 50 lines long, right? So this is an approximation
+of what you'd do. But in Option 1, you've got one big
+complicated piece of code 100 lines long. In Option 2, you've got 3 pieces of code,
+2 of which are 50 lines long. But the complexity of each individual
+function, if you're measuring in terms of lines of code,
+is less in Option 2 than in Option 1. So presumably,
+Option 2 would be easier to debug. Now, this all depends on
+a bunch of other factors. So for instance, you don't want to take
+a piece of code that's 100 lines long and just chop it straight in half. And say, the top half's function 1,
+bottom half's function 2, right? You've gotta group the functions
+in a reasonable way. We already talked about this. Each function should map to an operation
+that makes sense in your application. So you can't,
+typically you can't just cut it in half. But you might be able to take this 100
+line piece of code and say, well, the fist 30 lines do this and the next 70 lines
+do that and maybe chop it up like that. And even that's an improvement, right? And then you can take the 70 line piece
+of code, that 70 line function, and chop that up into a 30 line chunk and
+a 40 line chunk and so on. So there's this decomposition and hierarchy that you're making implicitly
+when you define these functions. And the goal is, part of the goal is, to make sure that each individual
+function isn't too complex, okay? So you limit the complexity. Now, in this case, we're talking about
+complexity in terms of lines of code. But we'll talk about another
+form of complexity next. Control-flow complexity, so
+another way to look at the complexity of a piece of code is to look at how
+complicated its control-flow is. So when I say control-flow, I'm talking
+about the paths from the top of the function to the bottom, from the start
+to the end, the control-flow paths. So how many options there are? So, for instance, if you had a piece
+of code that had no if statements, just straight line code. Just a sequence of assignments, let's say,
+assign, assign, assign, assign, assign. That has exactly 1 control-flow
+path from top to bottom. There is 1 sequence of instructions
+that you will execute in that code, so 1 control-flow path. But if you put an if statement in there,
+if this is true, you do one thing. If that's true you do the other. If you put 1 if then you've got 2 paths. Now code gets more complicated than that. You can have nested if statements,
+you could have loops, which are implicitly conditional
+statements, and things like this. So a typical function can have
+many different control paths, many different sequences of instructions that
+are executed when you execute that code. Many different sequences that execute
+depending on the input parameters, right? So here I got this function,
+foo, and it's got 2 conditions. Well, actually,
+one is nested within the other. So if a == 1 than you go into
+this next conditional if b == 1. So if I look at this code,
+I would say this has 3 control-flow paths. Assuming there's no other control-flow
+operations here, you got 3 paths, 3 paths. 1 is where a == 0, a is not equal to 1. If a is not equal to 1, then you skip
+that whole inner conditional, if b == 1. And you just finish and
+go to the end, okay? So that's one path, a is not equal to 1. Then another path is a == 1,
+but b is not equal to 1. Then another path is a == 1 and b == 1. And each one of those
+3 sets of conditions, you are executing a different sequence
+of instructions inside this program. So there are 3 control-flow paths
+inside this piece of the code. Now, one way to measure
+the complexity of a piece of code is how many
+control-flow paths it have? So I can say, look this has 3. So, say I want to simplify that,
+and I might be able to use functional partitioning to reduce
+the control-flow complexity a little bit. So, say I take that function,
+foo and now I take, remember it had 2 conditionals, right? So now what I've done is
+I defined 2 functions. And I've separated the conditionals, split
+them out across the 2 different functions. So now foo still has the first
+conditional, if a == 1. Still got that, but then the next conditional check doesn't
+exist anymore inside that function. Instead it calls a function called CheckB. Now if you look at CheckB on the other
+side, that has the other conditional, if b == 1, then whatever. So I've separated these 2 conditionals,
+now, now that I've done this, the foo function now has 2 paths
+through it, a == 1, and a is not. And then CheckB, it has 2 paths,
+b == 1 and b is not. So now each 1 of these functions
+has 2 control-flow paths instead of the 3 control-flow paths that I had
+when I merged them together, okay? So this is just a tiny example, but the idea is you could separate the
+conditionals into different functions and reduce the max complexity, right,
+the max number of control-flow paths. You can reduce that overall, making
+the code easier to debug, typically. Thank you.

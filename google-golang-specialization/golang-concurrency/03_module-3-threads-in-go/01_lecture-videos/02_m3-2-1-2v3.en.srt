@@ -1,0 +1,1335 @@
+1
+00:00:00,000 --> 00:00:02,215
+Module 3, Threads in Go.
+
+2
+00:00:02,215 --> 00:00:05,680
+Topic 2.1: Basic Synchronization.
+
+3
+00:00:06,000 --> 00:00:13,860
+So, synchronization is when multiple threads agree on the timing of an event.
+
+4
+00:00:13,860 --> 00:00:15,960
+So you have these global events.
+
+5
+00:00:15,960 --> 00:00:20,040
+Synchronization means you synchronize on these global events whose execution is viewed by
+
+6
+00:00:20,040 --> 00:00:25,245
+all threads at the same time so they can agree on the timing of this particular event.
+
+7
+00:00:25,245 --> 00:00:27,900
+Now, why this is interesting is because in
+
+8
+00:00:27,900 --> 00:00:31,370
+threads using threads in Go routines are basically threads.
+
+9
+00:00:31,370 --> 00:00:33,945
+So when you're using Go routines, they typically,
+
+10
+00:00:33,945 --> 00:00:39,035
+one Go routine doesn't know anything about the timing of it's fellow Go routines.
+
+11
+00:00:39,035 --> 00:00:42,290
+So if a Go routine is executing some code,
+
+12
+00:00:42,290 --> 00:00:44,035
+it knows what line of code it's at,
+
+13
+00:00:44,035 --> 00:00:45,980
+it doesn't have any idea what line of
+
+14
+00:00:45,980 --> 00:00:48,555
+code the other Go routines are at and it doesn't care.
+
+15
+00:00:48,555 --> 00:00:51,770
+For the most part because they are largely independent,
+
+16
+00:00:51,770 --> 00:00:54,385
+not completely and we'll get to that but largely independent.
+
+17
+00:00:54,385 --> 00:00:57,920
+So normally, these Go routines don't have any understanding
+
+18
+00:00:57,920 --> 00:01:01,820
+of the timing going on in the other Go routines.
+
+19
+00:01:01,820 --> 00:01:04,535
+But synchronization basically breaks that.
+
+20
+00:01:04,535 --> 00:01:08,000
+Synchronization says, look, we're going to make some kind of a global event
+
+21
+00:01:08,000 --> 00:01:12,885
+that every thread sees or every Go routine sees at the same time.
+
+22
+00:01:12,885 --> 00:01:16,540
+These are important to restrict ordering,
+
+23
+00:01:16,540 --> 00:01:20,660
+to restrict some of the different interleavings that are possible.
+
+24
+00:01:20,660 --> 00:01:25,590
+We have this small example here where we're ordering,
+
+25
+00:01:25,590 --> 00:01:28,160
+relative ordering between two different Go routines
+
+26
+00:01:28,160 --> 00:01:29,980
+or two different threads in this case,
+
+27
+00:01:29,980 --> 00:01:31,970
+is actually very important.
+
+28
+00:01:31,970 --> 00:01:34,955
+So it's important for them to synchronize on certain events.
+
+29
+00:01:34,955 --> 00:01:37,500
+So just to explain this picture.
+
+30
+00:01:37,500 --> 00:01:41,630
+On the left, I got a left column and a right column. I've got two little tables.
+
+31
+00:01:41,630 --> 00:01:43,745
+One, on the left column and a right column,
+
+32
+00:01:43,745 --> 00:01:46,850
+left column is one simple thread and it doesn't do much.
+
+33
+00:01:46,850 --> 00:01:48,450
+It has two instructions, x equals one,
+
+34
+00:01:48,450 --> 00:01:50,750
+x equals x plus one, very simple.
+
+35
+00:01:50,750 --> 00:01:55,360
+Then on the right, that thread just does one thing, print x.
+
+36
+00:01:55,360 --> 00:01:58,170
+Now what I'm showing here in these two different tables,
+
+37
+00:01:58,170 --> 00:01:59,260
+one at the top, one at the bottom,
+
+38
+00:01:59,260 --> 00:02:01,400
+I'm showing two different possible interleavings of
+
+39
+00:02:01,400 --> 00:02:05,705
+the instructions and there are other interleavings but I'm just showing two.
+
+40
+00:02:05,705 --> 00:02:09,080
+So in the top one, the print x happens after
+
+41
+00:02:09,080 --> 00:02:13,520
+the first instruction on the left thread but before the second structure.
+
+42
+00:02:13,520 --> 00:02:15,950
+So if you print x at that point,
+
+43
+00:02:15,950 --> 00:02:17,515
+x is going to equal one.
+
+44
+00:02:17,515 --> 00:02:20,275
+Where if you look at the bottom,
+
+45
+00:02:20,275 --> 00:02:22,770
+you got this time in this interleaving,
+
+46
+00:02:22,770 --> 00:02:26,300
+the print x happens after the second instruction on the left thread.
+
+47
+00:02:26,300 --> 00:02:27,470
+So at that point,
+
+48
+00:02:27,470 --> 00:02:29,005
+x is going to equal two.
+
+49
+00:02:29,005 --> 00:02:34,370
+So, what I'm showing here is basically a race condition where the output,
+
+50
+00:02:34,370 --> 00:02:39,135
+what's printed is going to depend on the interleaving of the instructions.
+
+51
+00:02:39,135 --> 00:02:43,440
+The interleaving remember is not deterministic, it is determined.
+
+52
+00:02:43,440 --> 00:02:46,404
+When I say non-deterministic, in reality it is not non-deterministic,
+
+53
+00:02:46,404 --> 00:02:48,370
+there is a Go runtime schedule is
+
+54
+00:02:48,370 --> 00:02:51,245
+an operating system scheduler and they are deterministic programs.
+
+55
+00:02:51,245 --> 00:02:53,000
+But from our point of view,
+
+56
+00:02:53,000 --> 00:02:56,060
+it is not deterministic because we don't understand their algorithms,
+
+57
+00:02:56,060 --> 00:02:58,330
+we don't know of weird things like interrupts are
+
+58
+00:02:58,330 --> 00:03:00,770
+happening and things like this that can alter the scheduling.
+
+59
+00:03:00,770 --> 00:03:02,305
+So from our point of view,
+
+60
+00:03:02,305 --> 00:03:03,810
+the scheduling is non-deterministic.
+
+61
+00:03:03,810 --> 00:03:06,700
+So we don't know, as a programmer we can't tell which one of
+
+62
+00:03:06,700 --> 00:03:09,025
+these two interleavings it'll execute
+
+63
+00:03:09,025 --> 00:03:11,440
+and remember every time it might run a different interleaving.
+
+64
+00:03:11,440 --> 00:03:12,550
+One time it might run on the top,
+
+65
+00:03:12,550 --> 00:03:15,080
+one time it might right on the bottom and so on.
+
+66
+00:03:17,040 --> 00:03:22,360
+So, in order to understand what the correct operation of this whole program is,
+
+67
+00:03:22,360 --> 00:03:24,370
+we have to know what the intention of the programmer was.
+
+68
+00:03:24,370 --> 00:03:27,240
+So let's assume that you want to do the print,
+
+69
+00:03:27,240 --> 00:03:29,515
+you want the print to occur after the update of x,
+
+70
+00:03:29,515 --> 00:03:31,665
+after the x equals x plus one.
+
+71
+00:03:31,665 --> 00:03:36,375
+So that means the bottom interleaving is okay but the top one is bad.
+
+72
+00:03:36,375 --> 00:03:38,920
+But remember that since we have
+
+73
+00:03:38,920 --> 00:03:41,739
+no control over their relative ordering that's all up to the scheduler,
+
+74
+00:03:41,739 --> 00:03:43,480
+we can't control which one of those two happens.
+
+75
+00:03:43,480 --> 00:03:48,120
+Well synchronization allows us to control that.
+
+76
+00:03:48,120 --> 00:03:53,085
+We're going use synchronization to make it so that the top interleaving is impossible.
+
+77
+00:03:53,085 --> 00:03:55,990
+In order to do it, we need some kind of a global event,
+
+78
+00:03:55,990 --> 00:03:58,660
+some sort of event and there are lots of different forms of this
+
+79
+00:03:58,660 --> 00:04:01,780
+which we'll get into in later modules.
+
+80
+00:04:01,780 --> 00:04:04,595
+But we need some sort of a global event
+
+81
+00:04:04,595 --> 00:04:08,960
+that both of these threads see happening at the same moment.
+
+82
+00:04:08,960 --> 00:04:11,480
+Then we can have conditional execution.
+
+83
+00:04:11,480 --> 00:04:13,750
+One of them could say look, if this event happens,
+
+84
+00:04:13,750 --> 00:04:16,180
+then I execute or else I wait, something like that.
+
+85
+00:04:16,180 --> 00:04:17,860
+So let's show that right here.
+
+86
+00:04:17,860 --> 00:04:20,260
+So here's my synchronization example,
+
+87
+00:04:20,260 --> 00:04:21,730
+I got those same two tasks.
+
+88
+00:04:21,730 --> 00:04:23,270
+Though task one on the left,
+
+89
+00:04:23,270 --> 00:04:24,610
+it just does the x equals one,
+
+90
+00:04:24,610 --> 00:04:25,915
+x equals x plus one.
+
+91
+00:04:25,915 --> 00:04:30,310
+Task two on the right, it does a print x but notice I've got this global event now.
+
+92
+00:04:30,310 --> 00:04:34,135
+So, I didn't specify what the global event is, we'll get to that later.
+
+93
+00:04:34,135 --> 00:04:38,975
+But in task one after doing x equals one and x equals x plus one,
+
+94
+00:04:38,975 --> 00:04:42,595
+it executes this global event, whatever it is.
+
+95
+00:04:42,595 --> 00:04:44,980
+So that event is seen by all task,
+
+96
+00:04:44,980 --> 00:04:47,675
+all threads including our task number two.
+
+97
+00:04:47,675 --> 00:04:52,555
+In task number two, it says if global event has happened, then print x.
+
+98
+00:04:52,555 --> 00:04:55,870
+So what happens here is that that print x in task two
+
+99
+00:04:55,870 --> 00:04:59,395
+can't happen until the global event has happened in task one.
+
+100
+00:04:59,395 --> 00:05:02,940
+So, that has restricted away some of the possible interleavings.
+
+101
+00:05:02,940 --> 00:05:07,605
+Now, print x has to wait until after x equals x plus one.
+
+102
+00:05:07,605 --> 00:05:10,840
+You can see that x equals x plus one has to happen first before
+
+103
+00:05:10,840 --> 00:05:12,850
+the global event and print x has to happen after
+
+104
+00:05:12,850 --> 00:05:15,265
+the global event and so the ordering is restricted.
+
+105
+00:05:15,265 --> 00:05:18,415
+So, this is an example of synchronization.
+
+106
+00:05:18,415 --> 00:05:23,140
+Now we need the synchronization in an example like this because of our intent.
+
+107
+00:05:23,140 --> 00:05:26,330
+We needed this print x to happen at a certain time relative to
+
+108
+00:05:26,330 --> 00:05:31,040
+the print x in the task two which has to happen after certain instructions in task one.
+
+109
+00:05:31,040 --> 00:05:32,595
+There are examples like that,
+
+110
+00:05:32,595 --> 00:05:35,735
+actually we'll come up with more of these examples in a later module but there's
+
+111
+00:05:35,735 --> 00:05:39,340
+many examples like that where certain events have to happen in a certain order.
+
+112
+00:05:39,340 --> 00:05:43,205
+Now notice that this is the opposite of concurrency.
+
+113
+00:05:43,205 --> 00:05:46,310
+So concurrency, the beauty of concurrency and
+
+114
+00:05:46,310 --> 00:05:49,660
+parallelism is that the interleaving is arbitrary.
+
+115
+00:05:49,660 --> 00:05:51,030
+In fact if it's parallel,
+
+116
+00:05:51,030 --> 00:05:52,580
+things can run exactly at the same time
+
+117
+00:05:52,580 --> 00:05:54,665
+but even if it's not parallel, it's just concurrent,
+
+118
+00:05:54,665 --> 00:05:56,230
+the ordering is arbitrary,
+
+119
+00:05:56,230 --> 00:05:59,250
+we don't care about the ordering and that gives us a lot of advantages,
+
+120
+00:05:59,250 --> 00:06:01,625
+it allows us to speed up the execution of the code.
+
+121
+00:06:01,625 --> 00:06:05,655
+Like with concurrency, if a thread is ever waiting blocked waiting,
+
+122
+00:06:05,655 --> 00:06:07,800
+then since the order doesn't matter,
+
+123
+00:06:07,800 --> 00:06:09,460
+the scheduler can just move in
+
+124
+00:06:09,460 --> 00:06:12,365
+another thread in the meantime while the first one's waiting.
+
+125
+00:06:12,365 --> 00:06:14,210
+So we get a lot of optimization,
+
+126
+00:06:14,210 --> 00:06:19,330
+a lot of speed improvement when we don't restrict the scheduling.
+
+127
+00:06:19,330 --> 00:06:20,600
+But by doing this,
+
+128
+00:06:20,600 --> 00:06:23,890
+by using synchronization, we are restricting the scheduling.
+
+129
+00:06:23,890 --> 00:06:26,860
+So understand that every time we use synchronization,
+
+130
+00:06:26,860 --> 00:06:29,400
+we are reducing the efficiency,
+
+131
+00:06:29,400 --> 00:06:32,020
+we're reducing the amount of possible concurrency.
+
+132
+00:06:32,020 --> 00:06:35,080
+So we're reducing the options for the scheduler so the scheduler
+
+133
+00:06:35,080 --> 00:06:38,160
+won't be able to use the hardware as well as effectively.
+
+134
+00:06:38,160 --> 00:06:40,030
+So there might be times when nothing can
+
+135
+00:06:40,030 --> 00:06:42,850
+execute because we're waiting on the synchronization events.
+
+136
+00:06:42,850 --> 00:06:49,480
+So in general, synchronization is bad because it reduces your performance and
+
+137
+00:06:49,480 --> 00:06:52,010
+your efficiency in general but it is
+
+138
+00:06:52,010 --> 00:06:56,100
+necessary for cases like this where you have to restrict the ordering.
+
+139
+00:06:56,100 --> 00:06:58,330
+Certain things have to happen in certain orders.
+
+140
+00:06:58,330 --> 00:06:59,630
+Well, there a lot of tasks where that's
+
+141
+00:06:59,630 --> 00:07:01,710
+the case and we'll bring up more examples like that.
+
+142
+00:07:01,710 --> 00:07:08,310
+So synchronization is necessary even and I also mentioned that it is complicated to use,
+
+143
+00:07:08,310 --> 00:07:12,705
+it can be, although Golang makes it pretty easy.
+
+144
+00:07:12,705 --> 00:07:14,410
+You have pretty straightforward constructs.
+
+145
+00:07:14,410 --> 00:07:20,830
+So it's easier to use in Golang than it might be saying Pthreads or something like that.
+
+146
+00:07:20,830 --> 00:07:23,625
+Anyway this is an example of synchronization,
+
+147
+00:07:23,625 --> 00:07:26,490
+it is bad but necessary.
+
+148
+00:07:26,490 --> 00:07:30,795
+Thank you. Module 3: Threads in Go.
+
+149
+00:07:30,795 --> 00:07:33,660
+Topic 2.2: Wait Groups.
+
+150
+00:07:34,020 --> 00:07:39,740
+So, WaitGroups are particular type of synchronization that are common.
+
+151
+00:07:39,740 --> 00:07:41,250
+So, we're going to start talking.
+
+152
+00:07:41,250 --> 00:07:43,550
+Right now, we'll talk a little bit about the Sync Package.
+
+153
+00:07:43,550 --> 00:07:45,290
+Sync package, you have to import that.
+
+154
+00:07:45,290 --> 00:07:48,715
+But Sync package, it includes WaitGroups.
+
+155
+00:07:48,715 --> 00:07:51,270
+WaitGroups are useful for synchronization.
+
+156
+00:07:51,270 --> 00:07:54,620
+We're going to cover other parts of the Sync Package later, but right now,
+
+157
+00:07:54,620 --> 00:07:56,220
+let's use WaitGroups just to deal with
+
+158
+00:07:56,220 --> 00:07:58,270
+the problem that we were dealing with earlier about the
+
+159
+00:07:58,270 --> 00:08:02,510
+main ending early before the goroutine that the main started guess it's finish.
+
+160
+00:08:02,510 --> 00:08:05,810
+So, the Sync Package has a lot of
+
+161
+00:08:05,810 --> 00:08:09,260
+different synchronization functions built into it, synchronization methods.
+
+162
+00:08:09,260 --> 00:08:11,080
+But, since that WaitGroup,
+
+163
+00:08:11,080 --> 00:08:15,940
+what that does is it forces a goroutine to wait for other goroutines.
+
+164
+00:08:15,940 --> 00:08:19,310
+So, WaitGroup is a basic group of you can think
+
+165
+00:08:19,310 --> 00:08:23,060
+of it as a group of goroutines that your goroutine is waiting on.
+
+166
+00:08:23,060 --> 00:08:26,830
+Your goroutine will not continue until all those ones
+
+167
+00:08:26,830 --> 00:08:30,790
+that are in the all goroutines in the WaitGroup until they've all finished.
+
+168
+00:08:30,790 --> 00:08:34,510
+So, this is what we need for the example that we had before,
+
+169
+00:08:34,510 --> 00:08:36,910
+remember that print a message and then I had
+
+170
+00:08:36,910 --> 00:08:39,750
+the new goroutine print the message and the new goroutines message never
+
+171
+00:08:39,750 --> 00:08:42,200
+got printed because the main goroutine executed and
+
+172
+00:08:42,200 --> 00:08:45,225
+completed before the new goroutine had a chance to execute.
+
+173
+00:08:45,225 --> 00:08:49,210
+Then I force the new goroutine to exit and it never got to finish.
+
+174
+00:08:49,210 --> 00:08:52,525
+Okay. So, what we want to do is make this main goroutine
+
+175
+00:08:52,525 --> 00:08:56,845
+wait until the new goroutine that has created until that finishes.
+
+176
+00:08:56,845 --> 00:08:59,775
+Until that exits, then the main routine can continue.
+
+177
+00:08:59,775 --> 00:09:01,070
+Okay. In that way,
+
+178
+00:09:01,070 --> 00:09:03,650
+we make sure that this new goroutine has
+
+179
+00:09:03,650 --> 00:09:07,035
+the chance to actually execute before the main goroutine completes.
+
+180
+00:09:07,035 --> 00:09:09,545
+So, that's what we want. We want to have a goroutine.
+
+181
+00:09:09,545 --> 00:09:11,195
+In this case, a main goroutine,
+
+182
+00:09:11,195 --> 00:09:13,490
+we want to wait on another goroutine.
+
+183
+00:09:13,490 --> 00:09:17,290
+Now, WaitGrouping is a general function, general set of methods,
+
+184
+00:09:17,290 --> 00:09:21,910
+general object with a set of methods associated with it.
+
+185
+00:09:21,910 --> 00:09:27,245
+You can wait on a lot of different goroutines if you want to.
+
+186
+00:09:27,245 --> 00:09:29,060
+So, you can have one goroutine waiting on
+
+187
+00:09:29,060 --> 00:09:31,345
+10 different goroutines and wait till they all complete.
+
+188
+00:09:31,345 --> 00:09:33,485
+In our example, we're only going to wait on one,
+
+189
+00:09:33,485 --> 00:09:35,235
+but understand this is generalizable,
+
+190
+00:09:35,235 --> 00:09:37,850
+so you can wait on as many as you want.
+
+191
+00:09:37,850 --> 00:09:43,020
+This sync.WaitGroup object, it contains an internal counter often called
+
+192
+00:09:43,020 --> 00:09:47,760
+a counting semaphore but just think of it as a counter starts off at zero, okay?
+
+193
+00:09:47,760 --> 00:09:51,680
+You increment the counter for each goroutine you want to wait for.
+
+194
+00:09:51,680 --> 00:09:53,645
+So, if there are three goroutines you want to wait for,
+
+195
+00:09:53,645 --> 00:09:56,565
+you increment the counter three times, so make it three.
+
+196
+00:09:56,565 --> 00:10:01,335
+Then you decrement the counter when each goroutine completes.
+
+197
+00:10:01,335 --> 00:10:03,965
+The counter is up to three. You're waiting for three.
+
+198
+00:10:03,965 --> 00:10:05,380
+Every time a goroutine completes,
+
+199
+00:10:05,380 --> 00:10:07,945
+it goes down from three to two, two to one, one to zero.
+
+200
+00:10:07,945 --> 00:10:10,690
+Now, the waiting goroutine is waiting for these three,
+
+201
+00:10:10,690 --> 00:10:14,900
+it can't continue until the counter is down to zero,
+
+202
+00:10:14,900 --> 00:10:19,135
+which means that all the different goroutines have all completed.
+
+203
+00:10:19,135 --> 00:10:24,195
+That's the idea of how the sync.WaitGroup object works.
+
+204
+00:10:24,195 --> 00:10:28,370
+It got a set of methods associated with it that allow this to happen,
+
+205
+00:10:28,370 --> 00:10:32,030
+so let's take a look at something like what it does.
+
+206
+00:10:32,030 --> 00:10:34,440
+In this case, I'm sure,
+
+207
+00:10:34,440 --> 00:10:35,860
+I'm trying to depict two things.
+
+208
+00:10:35,860 --> 00:10:37,810
+On the left column there,
+
+209
+00:10:37,810 --> 00:10:39,135
+label there Main thread.
+
+210
+00:10:39,135 --> 00:10:44,290
+That blue vertical set of lines that's the main thread and then the right
+
+211
+00:10:44,290 --> 00:10:49,680
+is this Foo thread which is the new goroutine that the main goroutine has created.
+
+212
+00:10:49,680 --> 00:10:53,185
+Okay. So, I'm just showing a little bit of the code execution.
+
+213
+00:10:53,185 --> 00:10:56,000
+Actually, first, let me go down to the bottom and name
+
+214
+00:10:56,000 --> 00:10:59,105
+these methods that are associated with WaitGroup,
+
+215
+00:10:59,105 --> 00:11:00,475
+so we understand what they do.
+
+216
+00:11:00,475 --> 00:11:02,025
+There's an Add method,
+
+217
+00:11:02,025 --> 00:11:04,480
+a Done method, and a Wait method.
+
+218
+00:11:04,480 --> 00:11:06,605
+Add method increments the counter.
+
+219
+00:11:06,605 --> 00:11:10,110
+Okay. Remember, I said there's this counter and you increment it for once for
+
+220
+00:11:10,110 --> 00:11:14,120
+every goroutine that you want to wait for. So, Add does that.
+
+221
+00:11:14,120 --> 00:11:16,135
+So you can say, add pass in an argument three,
+
+222
+00:11:16,135 --> 00:11:18,045
+it'll add three to the counter.
+
+223
+00:11:18,045 --> 00:11:20,585
+Now, Done decrements the counter.
+
+224
+00:11:20,585 --> 00:11:24,615
+Okay. So, Done is what's executed at the end of each goroutine,
+
+225
+00:11:24,615 --> 00:11:28,265
+each one of these goroutines that the main goroutine is waiting on,
+
+226
+00:11:28,265 --> 00:11:32,730
+they need to execute a Done at the end to decrements that counter back down.
+
+227
+00:11:32,730 --> 00:11:35,995
+Then once all of them have decrements the counter down to zero,
+
+228
+00:11:35,995 --> 00:11:39,630
+then the Wait will continue.
+
+229
+00:11:39,630 --> 00:11:41,630
+So the Wait is called inside the main.
+
+230
+00:11:41,630 --> 00:11:46,800
+Okay. What will happen is that Wait will block until the counter is equal to zero.
+
+231
+00:11:46,800 --> 00:11:49,575
+So, if the count is equal to one or anything greater than zero,
+
+232
+00:11:49,575 --> 00:11:53,225
+that means that some of these goroutines that you're waiting on are still executing,
+
+233
+00:11:53,225 --> 00:11:54,640
+which means you have to wait.
+
+234
+00:11:54,640 --> 00:11:59,155
+So, it'll just block until that counter eventually gets down to zero because finally,
+
+235
+00:11:59,155 --> 00:12:01,565
+all the goroutines have executed the Done.
+
+236
+00:12:01,565 --> 00:12:03,360
+Then once it gets down to zero,
+
+237
+00:12:03,360 --> 00:12:05,445
+the Main will continue,
+
+238
+00:12:05,445 --> 00:12:06,530
+it'll go pass the Wait,
+
+239
+00:12:06,530 --> 00:12:08,905
+the Wait will complete and you can continue.
+
+240
+00:12:08,905 --> 00:12:11,045
+If we look at the picture now,
+
+241
+00:12:11,045 --> 00:12:12,740
+I'm just showing a sketch,
+
+242
+00:12:12,740 --> 00:12:15,210
+trying to highlight the important parts of the routine,
+
+243
+00:12:15,210 --> 00:12:17,760
+of the Main thread for instance and the Foo thread.
+
+244
+00:12:17,760 --> 00:12:21,515
+So, in the Main, first line-up there, I'm saying,
+
+245
+00:12:21,515 --> 00:12:24,130
+I'm creating a WG,
+
+246
+00:12:24,130 --> 00:12:26,540
+a variable called WG and it's a WaitGroup.
+
+247
+00:12:26,540 --> 00:12:30,055
+Then first thing I do with it you see highlighted in red, I say WaitGroup,
+
+248
+00:12:30,055 --> 00:12:32,350
+wg.Add one, because I
+
+249
+00:12:32,350 --> 00:12:35,935
+know that I want my Main thread to wait for one goroutine, so I add one.
+
+250
+00:12:35,935 --> 00:12:37,860
+Then, I create the goroutine,
+
+251
+00:12:37,860 --> 00:12:39,710
+gofoo and I pass it.
+
+252
+00:12:39,710 --> 00:12:42,015
+In this case, I pass it the WaitGroup.
+
+253
+00:12:42,015 --> 00:12:45,535
+That needs the WaitGroup because remember that the Foo thread,
+
+254
+00:12:45,535 --> 00:12:47,130
+the new thread that I'm creating,
+
+255
+00:12:47,130 --> 00:12:52,885
+it's going to call Done on that WaitGroup to signify that it is complete.
+
+256
+00:12:52,885 --> 00:12:55,705
+But let's stick with the main thread for a second.
+
+257
+00:12:55,705 --> 00:12:56,850
+So, the Main thread,
+
+258
+00:12:56,850 --> 00:12:58,435
+it creates the Foo,
+
+259
+00:12:58,435 --> 00:13:01,720
+the new thread goFoo and then it calls Wait.
+
+260
+00:13:01,720 --> 00:13:03,525
+So, it says wg.Wait.
+
+261
+00:13:03,525 --> 00:13:06,940
+Now that point, it's going to block on
+
+262
+00:13:06,940 --> 00:13:10,825
+that line until this Foo thread that we're waiting on actually completes.
+
+263
+00:13:10,825 --> 00:13:13,155
+Now, then go over to the right, the Foo thread.
+
+264
+00:13:13,155 --> 00:13:17,445
+It is created, you can see when goFoo is called,
+
+265
+00:13:17,445 --> 00:13:21,615
+it creates a new thread, so you see that red vertical line that's the new Foo thread.
+
+266
+00:13:21,615 --> 00:13:23,730
+So, the Foo thread does whatever it's supposed to do,
+
+267
+00:13:23,730 --> 00:13:25,775
+I don't know what code it has and it doesn't really matter.
+
+268
+00:13:25,775 --> 00:13:27,425
+But the end, whenever it's done,
+
+269
+00:13:27,425 --> 00:13:32,790
+it calls wg.Done and that will decrement the WaitGroup,
+
+270
+00:13:32,790 --> 00:13:34,420
+the counter inside the WaitGroup.
+
+271
+00:13:34,420 --> 00:13:36,240
+Now, like in this example,
+
+272
+00:13:36,240 --> 00:13:37,520
+I added one to the counter,
+
+273
+00:13:37,520 --> 00:13:39,615
+so the count is equal to one, I added that in the Main.
+
+274
+00:13:39,615 --> 00:13:41,425
+In the Foo thread, once it's done,
+
+275
+00:13:41,425 --> 00:13:43,295
+it decrements instead by calling down.
+
+276
+00:13:43,295 --> 00:13:45,195
+So, at that point, when it calls down,
+
+277
+00:13:45,195 --> 00:13:48,840
+the counter in the WaitGroup should be equal to zero and then the Wait,
+
+278
+00:13:48,840 --> 00:13:53,040
+the wg.Wait function call that was called inside the main thread that will continue,
+
+279
+00:13:53,040 --> 00:13:55,340
+that will complete and the main thread that can
+
+280
+00:13:55,340 --> 00:13:58,535
+continue with whatever code it has to execute after that Wait.
+
+281
+00:13:58,535 --> 00:14:00,945
+So, this an example of how WaitGroups use.
+
+282
+00:14:00,945 --> 00:14:04,060
+In this case, we're only waiting on one thread,
+
+283
+00:14:04,060 --> 00:14:06,040
+this Foo thread that one goroutine,
+
+284
+00:14:06,040 --> 00:14:09,360
+but we could wait on any number if we wanted to just by adding.
+
+285
+00:14:09,360 --> 00:14:10,490
+If we want to wait on 10,
+
+286
+00:14:10,490 --> 00:14:12,320
+we'd add 10. All right and then each one.
+
+287
+00:14:12,320 --> 00:14:13,540
+Now, remember as a program,
+
+288
+00:14:13,540 --> 00:14:16,540
+you've got to make sure to use these methods correctly.
+
+289
+00:14:16,540 --> 00:14:22,390
+You got to put the wg.Add in your Main or in your goroutine before you want
+
+290
+00:14:22,390 --> 00:14:24,550
+to wait and it has to be incremented to
+
+291
+00:14:24,550 --> 00:14:27,835
+the value of which is the number of goroutines you want to wait for.
+
+292
+00:14:27,835 --> 00:14:32,060
+You've also got to make sure that each one of these new threads that you're waiting on,
+
+293
+00:14:32,060 --> 00:14:33,740
+they all call Done,
+
+294
+00:14:33,740 --> 00:14:36,310
+the Done method on this WaitGroup at
+
+295
+00:14:36,310 --> 00:14:39,140
+the end when they are finished and they going to wait till they've finished.
+
+296
+00:14:39,140 --> 00:14:41,800
+It can't do it early. A lot of times people will
+
+297
+00:14:41,800 --> 00:14:44,870
+use a defer to make sure that it happens at the end.
+
+298
+00:14:44,870 --> 00:14:48,080
+Then you've got to make sure as a programmer that in your Main
+
+299
+00:14:48,080 --> 00:14:50,910
+or whatever the waiting goroutine is.
+
+300
+00:14:50,910 --> 00:14:55,550
+Like in this case, it's a Main, but whatever the waiting goroutine is, you call wg.Wait.
+
+301
+00:14:55,550 --> 00:14:58,055
+If you don't call Wait then none of this will happen.
+
+302
+00:14:58,055 --> 00:14:59,760
+There won't be any waiting going on.
+
+303
+00:14:59,760 --> 00:15:02,620
+It's up to the programmer to inject the Add,
+
+304
+00:15:02,620 --> 00:15:06,585
+the Done in the Wait at the right places to make this whole mechanism work.
+
+305
+00:15:06,585 --> 00:15:13,610
+So, here's a slightly modified example of that print problem that I had,
+
+306
+00:15:13,610 --> 00:15:16,610
+the prints assignment where I wanted the simple version.
+
+307
+00:15:16,610 --> 00:15:22,545
+I just said, the Main create the Foo is actually you can see it here.
+
+308
+00:15:22,545 --> 00:15:25,050
+If you look at the Main function in the middle of it,
+
+309
+00:15:25,050 --> 00:15:26,270
+it says go foo.
+
+310
+00:15:26,270 --> 00:15:29,415
+Right. So, it creates a new goroutine that executes Foo,
+
+311
+00:15:29,415 --> 00:15:30,915
+but I've added some code.
+
+312
+00:15:30,915 --> 00:15:32,840
+So after that, it's supposed to print
+
+313
+00:15:32,840 --> 00:15:36,605
+the Main routine and the Foo is supposed to print new routine.
+
+314
+00:15:36,605 --> 00:15:38,110
+So, I've added a few things,
+
+315
+00:15:38,110 --> 00:15:41,055
+if I look at Foo, it prints new routine.
+
+316
+00:15:41,055 --> 00:15:44,730
+But I add this line says wg.Done, so it has to call Done
+
+317
+00:15:44,730 --> 00:15:46,110
+that was the thing that I had to add.
+
+318
+00:15:46,110 --> 00:15:48,340
+So, I add that. Also in the Main,
+
+319
+00:15:48,340 --> 00:15:49,530
+things that I've added are,
+
+320
+00:15:49,530 --> 00:15:52,590
+I define the WaitGroup or wg Sync.WaitGroup.
+
+321
+00:15:52,590 --> 00:15:54,915
+Then I say, wg.Add one,
+
+322
+00:15:54,915 --> 00:15:57,115
+before I create the goroutine,
+
+323
+00:15:57,115 --> 00:15:59,390
+I add one to the WaitGroup
+
+324
+00:15:59,390 --> 00:16:02,575
+because they know there's going to be a new one goroutine that I'm waiting for.
+
+325
+00:16:02,575 --> 00:16:08,160
+Then I create the goroutine with that go foo and then I call wg.Wait after that
+
+326
+00:16:08,160 --> 00:16:12,325
+so that my Main will actually wait on the goroutine to complete.
+
+327
+00:16:12,325 --> 00:16:16,240
+Only after that the Foo goroutine has completed,
+
+328
+00:16:16,240 --> 00:16:18,245
+will it continue on and print Main routine.
+
+329
+00:16:18,245 --> 00:16:21,265
+So in this way, my Main won't just end
+
+330
+00:16:21,265 --> 00:16:25,835
+early and cause the Foo goroutine to never complete.
+
+331
+00:16:25,835 --> 00:16:28,890
+Right. Now, the Main it won't print,
+
+332
+00:16:28,890 --> 00:16:31,985
+it won't exit and won't print Main routine until after
+
+333
+00:16:31,985 --> 00:16:34,550
+the Foo goroutine has already completed and done
+
+334
+00:16:34,550 --> 00:16:38,130
+his job and printed new routine. Thank you.

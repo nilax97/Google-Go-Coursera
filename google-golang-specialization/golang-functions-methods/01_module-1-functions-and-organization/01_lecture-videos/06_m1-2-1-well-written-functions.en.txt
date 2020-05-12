@@ -1,0 +1,110 @@
+Module 1, Functions and Organization. Topic 2.1, Well-written Functions. So we're going to talk a little bit
+about how you should write functions. Now, this isn't actually
+necessarily specific to Go. But this is more good way
+to construct your code so that your code is well-organized and
+easy to understand, okay? And understandability, I'm highlighting
+this idea of understandability. It is important to be able to
+understand your own code for many, many reasons, okay? Mostly for debugging but also maintenance,
+other people interacting with your code, it needs to be understandable. And the way you write your functions, the way you define your functions
+really impacts understandability. So if we look at a block of code,
+we could roughly say that a block of code is a bunch
+of functions and a bunch of data. So a bunch of functions that are the
+operations that you can perform and the data that you're going to
+perform the operations on, okay? So you can see really any block of code,
+any program as a pile of functions and a pile of data somehow organized together. So when I say understandability, when I say, this program is
+understandable, here's what I mean. I mean that If you're asked to find
+a feature, you can find it quickly. So as an example,
+where's the function that blurs the image? Let's say your writing
+some graphics program, where is the function
+that blurs the image? You can locate that. Now, you might be asking that yourself,
+right? Because you found a bug, something is not working,
+you need to find that piece of code. Or that could be some kind
+of code review meeting or you're dealing with other
+people you're working with. And they need to understand
+how your code works and they ask you this type of question. Maybe it's your boss, right? Your boss is like, look,
+where's the code that does this? And you will look like an idiot
+if you can't answer that. It's your code, you wrote it,
+you should know it, right? So you need to understand
+the organization of your own code. Now, a lot of this is memorization, but
+it's also a matter of organization. If you organize it well,
+it is much easier to find things. So where's the function that does
+this operation, blurring your image? Or where do you compute the average score, whatever the question is where
+is the code that does this? Where is the code that does that? You need to be able to find that, okay? And that's an understandable piece of code
+if you could find that pretty easily and even better if somebody else can find it. So if you write the code and you give it to somebody else because
+you're probably working on a team, right? And that other person can find
+where the image is blurred or where the average scores computed. If they can find it quickly, that's
+a real measure of understanablity, right? And remember this too,
+I know a lot of students in my classes, they underrate how important this is,
+right? They think, look, it's my code, of course,
+I know how to understand my code, right? So believe me, if you write
+a complicated piece of code and you walk away from that code for a month. You come back, you will lose track
+of what the heck that code did, you will not understand your own code,
+okay? So you really want to construct in such
+a way that it is easy to figure out where these features are located
+inside your code. Now, another aspect of understandability
+is finding where data is used, because often you'll get some kind of problem
+where this data is incorrect, okay? Or this data is not just used. Actually, I said, where data is used,
+also where data is used and where it's defined, right? So this data is incorrect,
+how did it get incorrect? What part of your code
+actually affected that data? That type of question you
+want to be able to ask. So you want to be able
+to trace through data. You'll say this data, where is it used? Where is it defined?
+So where do you modify the record list,
+right? So you got some record list,
+you realize that record list, the contents of that list are wrong,
+right, while you're debugging. Where did you modify that? You've gotta find that so
+you can find where the bug is, right? Where did you access the file? Maybe the file has the wrong data and you want to know what code
+that's affecting, right? So where did you access that file? Where did you access these
+different pieces of data? So this is what I mean by
+understandability, you need to be able to find a feature, find the code dedicated
+to a particular feature, find it quickly. Also data that could be wrong, where is
+that data used and where is it written to? So where is it used and
+where is it modified, you need to be able to find it quickly. And an organization, writing a code,
+writing a function and organize where it really
+helps you with that. So very basic debugging principles and there are a million debugging principles
+but I'm going to just be really basic now. So say you run your code,
+the code crashes. And it crashes inside some
+functions somewhere, right? So some function you wrote, it crashes
+on line 100, right, some function. So I can broadly say that there are only
+two ways that this could go wrong, two options for any kind of bug, okay? It could be that the function that
+failed is written incorrectly, okay? It just did the wrong thing, okay? So maybe as an example,
+it's supposed to sort a slice, and it sorts it in the wrong order. Okay, it did the wrong thing, right? So the function could do the wrong thing
+or maybe the function is written perfectly well but the data that
+the function uses is incorrect. So maybe this function is,
+it sorts the slice just fine but the slice has wrong data in it, right? So somehow the data that it got is wrong
+so when it does a sort, of course, this result is going to be wrong, right? Because the original data was wrong. So the function that you're working on,
+it could be messed up or its inputs could be messed up. Now, its inputs, remember,
+can come from the parameters, right? So they could be, or even sit past to it. But these inputs don't
+have to come from there. They could come from maybe a file or
+some user input or something like that. So you gotta think of all these inputs. So this is just my sort of high
+level debugging principle. And notice how I'm dividing this,
+I'm saying look, either function is written incorrectly,
+or it's the data is at fault. So it's the function written wrong or
+the data is at fault. Now, of course, when you trace that back,
+you'll see the data is probably incorrect because some function
+wrote it incorrectly. But locally, you can say, look,
+either this function is wrong or the data that it's working on is wrong. So, in order to support debugging,
+when you run into a bug like this, first thing you've gotta be able to do
+is understand your own function, okay? So functions need to be understandable. So when you look at that function,
+look at the code, you gotta be able to look through it and
+manually say look, is this right? Is it doing what I think it's doing? It's actual behavior, does it match
+what I want, desired behavior? So your function needs to be
+written in understandable way so you can determine that
+without too much difficulty. The next thing though is
+the data needs to be traceable. So what that means is, is maybe your
+function is perfectly fine, but there's some input data that it got past that
+somehow it access that was wrong, okay? So you need to be able to figure
+out where that data come from, so you can follow back to where the
+original fault actually happens, right? Now, this could be easy, it could be hard. Global variables for one complicate this. Because one thing about having no
+global variables is that the inputs to the function come straight
+from the parameters. So you know where every piece of data came
+from, it came from the caller, right? But if you use global variables, then they can come from whoever
+wrote to the global variable. And since these variables are global,
+anybody could have written to it. So it's much harder to trace back
+which function is at fault for writing the wrong data to a variable. That's exactly why global variables
+you should be careful about. And I'm not going to say never use them. People use them, and there are reasons,
+I use them sometimes, but just understand that they
+add this complication. They make it hard to debug just because
+you know this data is incorrect, you don't know what
+the source of that was. And then you've gotta do something
+more complicated to figure that out. Thank you.

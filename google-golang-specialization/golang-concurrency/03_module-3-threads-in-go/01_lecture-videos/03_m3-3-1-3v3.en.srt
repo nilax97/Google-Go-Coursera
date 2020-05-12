@@ -1,0 +1,2059 @@
+1
+00:00:00,000 --> 00:00:02,305
+Module three. Threads in Go.
+
+2
+00:00:02,305 --> 00:00:05,220
+Topic 3.1: Communication.
+
+3
+00:00:05,300 --> 00:00:09,430
+So far, we've been talking about creating goroutines,
+
+4
+00:00:09,430 --> 00:00:11,130
+a little bit of synchronization.
+
+5
+00:00:11,130 --> 00:00:13,630
+So, waiting on goroutines to exit.
+
+6
+00:00:13,630 --> 00:00:16,530
+But goroutines also communicate sometimes.
+
+7
+00:00:16,530 --> 00:00:20,845
+Generally, goroutines work together to perform a bigger task.
+
+8
+00:00:20,845 --> 00:00:24,725
+These goroutines are not completely independent, typically.
+
+9
+00:00:24,725 --> 00:00:29,640
+So, typically, you're making a bigger program that has sort of semi-independent pieces,
+
+10
+00:00:29,640 --> 00:00:32,885
+each goroutine does one of these semi-independent pieces,
+
+11
+00:00:32,885 --> 00:00:34,375
+but they're not completely independent.
+
+12
+00:00:34,375 --> 00:00:37,135
+If they are completely independent, they will be entirely different programs.
+
+13
+00:00:37,135 --> 00:00:38,945
+You wouldn't even call them the same program.
+
+14
+00:00:38,945 --> 00:00:40,290
+You just have a different program.
+
+15
+00:00:40,290 --> 00:00:43,420
+But, they're usually doing a smaller piece of a bigger task.
+
+16
+00:00:43,420 --> 00:00:46,640
+Just as an example of something where you might use goroutines.
+
+17
+00:00:46,640 --> 00:00:48,615
+Say, you're making a web server.
+
+18
+00:00:48,615 --> 00:00:54,380
+Web server, it's very common to make them multi-threaded because what happens is,
+
+19
+00:00:54,380 --> 00:00:56,325
+this web server, it might be handling,
+
+20
+00:00:56,325 --> 00:00:59,450
+you never know how many people are going to connect to the web server at a time.
+
+21
+00:00:59,450 --> 00:01:03,125
+So, for each person that connects to the web server, there's an interaction.
+
+22
+00:01:03,125 --> 00:01:06,025
+Each person, meaning each browser that connects,
+
+23
+00:01:06,025 --> 00:01:07,390
+you got to communicate with it,
+
+24
+00:01:07,390 --> 00:01:09,840
+receive this message, respond to this message and so on.
+
+25
+00:01:09,840 --> 00:01:13,580
+There's basically a conversation that the server has with
+
+26
+00:01:13,580 --> 00:01:17,880
+each different browser that connects to it.
+
+27
+00:01:17,880 --> 00:01:22,330
+So, it's nice to make it multi-threaded because what can happen is,
+
+28
+00:01:22,330 --> 00:01:23,490
+maybe there's a thousand people,
+
+29
+00:01:23,490 --> 00:01:26,595
+a thousand different browsers connected to this web server at the same time,
+
+30
+00:01:26,595 --> 00:01:29,080
+looking at different pages, different pieces of the page.
+
+31
+00:01:29,080 --> 00:01:32,865
+It's nice, since they're all doing the same basic type of interaction,
+
+32
+00:01:32,865 --> 00:01:35,225
+they are all talking HTTP,
+
+33
+00:01:35,225 --> 00:01:37,395
+keep sending HTTP message back and forth,
+
+34
+00:01:37,395 --> 00:01:39,840
+it makes sense to have a multi-threaded program,
+
+35
+00:01:39,840 --> 00:01:42,820
+so every time a new connection is made, a new browser connects,
+
+36
+00:01:42,820 --> 00:01:45,900
+you create a new thread for that to handle that connection,
+
+37
+00:01:45,900 --> 00:01:48,550
+to handle the communication back and forth between that browser.
+
+38
+00:01:48,550 --> 00:01:51,755
+Then, a new browser connects and you make another thread to handle that.
+
+39
+00:01:51,755 --> 00:01:54,530
+It's a nice, it's a convenient way to keep
+
+40
+00:01:54,530 --> 00:01:57,050
+the state separate because the state of the communication
+
+41
+00:01:57,050 --> 00:01:59,150
+with one browser can be completely separate or
+
+42
+00:01:59,150 --> 00:02:02,010
+largely separate than the state of communication with another browser.
+
+43
+00:02:02,010 --> 00:02:04,585
+So, you want to be able to separate them into different threads.
+
+44
+00:02:04,585 --> 00:02:07,280
+But, remember that they are not completely independent.
+
+45
+00:02:07,280 --> 00:02:10,480
+Remember that, like with this web browser idea,
+
+46
+00:02:10,480 --> 00:02:13,485
+all these thousand connections that are made,
+
+47
+00:02:13,485 --> 00:02:15,010
+these thousands different threads that are running,
+
+48
+00:02:15,010 --> 00:02:18,090
+they're all serving the same set of pages.
+
+49
+00:02:18,090 --> 00:02:20,085
+Say, this is UCI's web server.
+
+50
+00:02:20,085 --> 00:02:22,060
+So, a UCI's webpage they're serving.
+
+51
+00:02:22,060 --> 00:02:23,450
+So, they're sharing data.
+
+52
+00:02:23,450 --> 00:02:26,775
+The base of the UCI web page data, they're sharing that.
+
+53
+00:02:26,775 --> 00:02:30,350
+Say, one browser might post
+
+54
+00:02:30,350 --> 00:02:33,540
+some data to a web page and then another browser should be able to view that.
+
+55
+00:02:33,540 --> 00:02:35,920
+So, there's interactions between these threads
+
+56
+00:02:35,920 --> 00:02:38,710
+since they're all sharing this webpage data.
+
+57
+00:02:38,710 --> 00:02:42,215
+So, this is sort of a typical scenario where these goroutines,
+
+58
+00:02:42,215 --> 00:02:43,850
+they're not completely independent,
+
+59
+00:02:43,850 --> 00:02:46,800
+they work together periodically to form some bigger tasks,
+
+60
+00:02:46,800 --> 00:02:48,370
+they have to trade information.
+
+61
+00:02:48,370 --> 00:02:52,650
+So, they need to send data and receive data in order to collaborate.
+
+62
+00:02:52,650 --> 00:02:55,390
+I'll give you just a sort of a toy example.
+
+63
+00:02:55,390 --> 00:02:57,430
+So, rather than the big web server example,
+
+64
+00:02:57,430 --> 00:03:00,455
+I'm going to work with something small just to sort of get the point across.
+
+65
+00:03:00,455 --> 00:03:02,590
+Say, you got this problem.
+
+66
+00:03:02,590 --> 00:03:04,650
+You want to find the product of four integers,
+
+67
+00:03:04,650 --> 00:03:07,680
+and you decide, "I want to do this with two goroutines.
+
+68
+00:03:07,680 --> 00:03:10,800
+I'm going to have two goroutines multiplied two of the integers."
+
+69
+00:03:10,800 --> 00:03:13,655
+Then, sorry, one goroutine multiply two integers,
+
+70
+00:03:13,655 --> 00:03:15,865
+the other goroutine multiply the other two integers.
+
+71
+00:03:15,865 --> 00:03:20,930
+Then, both of those two goroutines will send their results back to the main goroutine and
+
+72
+00:03:20,930 --> 00:03:22,765
+the main goroutine will multiply
+
+73
+00:03:22,765 --> 00:03:26,740
+their results and the final result will be the product of all four integers.
+
+74
+00:03:26,740 --> 00:03:29,860
+In this case, I've really got three goroutines, the main goroutine,
+
+75
+00:03:29,860 --> 00:03:33,570
+plus I'm going to make two more goroutines that are going to do sub-problems.
+
+76
+00:03:33,570 --> 00:03:38,515
+Multiply two, multiply the other two and the main goroutine combines them.
+
+77
+00:03:38,515 --> 00:03:42,530
+In order to do this, you're going to need to send data,
+
+78
+00:03:42,530 --> 00:03:46,255
+specifically integers, from the main routine to the two subroutines.
+
+79
+00:03:46,255 --> 00:03:48,980
+So, these two new goroutines that you created,
+
+80
+00:03:48,980 --> 00:03:51,820
+you got to give them the two numbers that you want them to multiply.
+
+81
+00:03:51,820 --> 00:03:54,425
+So, data has to go from the main routines,
+
+82
+00:03:54,425 --> 00:03:58,470
+main goroutine to the sub-routines, sub-goroutines.
+
+83
+00:03:58,470 --> 00:04:00,810
+Then, the results of these goroutines and
+
+84
+00:04:00,810 --> 00:04:03,230
+these sub-goroutines have to come back to the main routine
+
+85
+00:04:03,230 --> 00:04:05,410
+because main has to get those pieces of
+
+86
+00:04:05,410 --> 00:04:07,770
+data and multiply them together to get the final result.
+
+87
+00:04:07,770 --> 00:04:11,614
+So, you can see the data transfer that's going on between these goroutines,
+
+88
+00:04:11,614 --> 00:04:13,315
+and this is pretty straightforward.
+
+89
+00:04:13,315 --> 00:04:15,370
+This data communication that we're talking about is
+
+90
+00:04:15,370 --> 00:04:17,110
+sort of the most straightforward kind,
+
+91
+00:04:17,110 --> 00:04:19,150
+where the data communication is going on at
+
+92
+00:04:19,150 --> 00:04:22,320
+the beginning of the executed institution of goroutine and at the end.
+
+93
+00:04:22,320 --> 00:04:25,925
+Meaning, with these subroutines, these sub-goroutines,
+
+94
+00:04:25,925 --> 00:04:28,710
+they get data right at the start, the initial data,
+
+95
+00:04:28,710 --> 00:04:30,290
+the integers they want to multiply,
+
+96
+00:04:30,290 --> 00:04:32,235
+and then they send results back at the end.
+
+97
+00:04:32,235 --> 00:04:35,270
+So, this is sort of the simplest type of communication,
+
+98
+00:04:35,270 --> 00:04:37,360
+but note that the communication doesn't just
+
+99
+00:04:37,360 --> 00:04:39,595
+have to happen at the start and the end of a goroutine.
+
+100
+00:04:39,595 --> 00:04:41,055
+They can happen right in the middle.
+
+101
+00:04:41,055 --> 00:04:43,720
+So, in the middle of one of these goroutines,
+
+102
+00:04:43,720 --> 00:04:47,885
+it might decide to send some data back to the main routine in a more complicated example.
+
+103
+00:04:47,885 --> 00:04:50,275
+Right now, we're just dealing with a sort of simple version.
+
+104
+00:04:50,275 --> 00:04:52,880
+The beginning, you're sending the separate the goroutines data
+
+105
+00:04:52,880 --> 00:04:54,270
+and in the end you get some back.
+
+106
+00:04:54,270 --> 00:04:58,450
+You need communication to be able to do something like what I'm saying here.
+
+107
+00:04:58,450 --> 00:05:03,155
+So, communication between goroutines is done using channels.
+
+108
+00:05:03,155 --> 00:05:09,060
+Channels are used to transfer data between goroutines and channels are typed.
+
+109
+00:05:09,060 --> 00:05:11,095
+When you create a channel,
+
+110
+00:05:11,095 --> 00:05:12,350
+you create it with a certain type.
+
+111
+00:05:12,350 --> 00:05:14,300
+So, maybe this channel handles integers,
+
+112
+00:05:14,300 --> 00:05:16,260
+this one channel handles strings,
+
+113
+00:05:16,260 --> 00:05:18,755
+this one shells the structure of a certain type and so on.
+
+114
+00:05:18,755 --> 00:05:21,485
+So, they're typed and they transfer typed data.
+
+115
+00:05:21,485 --> 00:05:24,660
+So, you use make to create a channel.
+
+116
+00:05:24,660 --> 00:05:29,000
+An example here, I'm making a channel called c. I say c equals make chan int.
+
+117
+00:05:29,000 --> 00:05:31,925
+So, that just creates a channel of type int,
+
+118
+00:05:31,925 --> 00:05:34,315
+which transfers integer information.
+
+119
+00:05:34,315 --> 00:05:36,930
+Now, once you got this channel c,
+
+120
+00:05:36,930 --> 00:05:41,040
+you can send and receive data using this arrow operator.
+
+121
+00:05:41,040 --> 00:05:44,370
+When I say arrow, it's literally a less than and a dash,
+
+122
+00:05:44,370 --> 00:05:46,025
+which looks sort of like an arrow.
+
+123
+00:05:46,025 --> 00:05:48,505
+So, you use this arrow operator to
+
+124
+00:05:48,505 --> 00:05:51,130
+send data on the channel and to receive data from the channel.
+
+125
+00:05:51,130 --> 00:05:54,040
+So, on both ends, you send and receive using this operator.
+
+126
+00:05:54,040 --> 00:05:56,860
+An example here, send data on a channel.
+
+127
+00:05:56,860 --> 00:05:58,605
+Say, I got my channel c I just made.
+
+128
+00:05:58,605 --> 00:06:00,235
+I want to send the integer three,
+
+129
+00:06:00,235 --> 00:06:02,925
+so I write c arrow three.
+
+130
+00:06:02,925 --> 00:06:06,260
+The three is, if you follow the arrow direction,
+
+131
+00:06:06,260 --> 00:06:07,490
+it goes into the c. So,
+
+132
+00:06:07,490 --> 00:06:10,680
+this thing on the right is going into the channel c. So,
+
+133
+00:06:10,680 --> 00:06:12,310
+that's how you would send data on channel,
+
+134
+00:06:12,310 --> 00:06:14,245
+and you can receive data from a channel.
+
+135
+00:06:14,245 --> 00:06:17,040
+You can see that here. In this case,
+
+136
+00:06:17,040 --> 00:06:19,015
+the arrow is actually leaving the channel.
+
+137
+00:06:19,015 --> 00:06:21,890
+So, x equals, colon equal in this case,
+
+138
+00:06:21,890 --> 00:06:24,070
+x equals arrow c. So,
+
+139
+00:06:24,070 --> 00:06:26,215
+the data comes out of the channel c,
+
+140
+00:06:26,215 --> 00:06:28,320
+the arrow sends it into the x.
+
+141
+00:06:28,320 --> 00:06:31,850
+So, that's how you read it. So, you can send data on a channel and receive
+
+142
+00:06:31,850 --> 00:06:35,465
+data from a channel using this same arrow operator.
+
+143
+00:06:35,465 --> 00:06:39,170
+So, here's a little example of that code that I just
+
+144
+00:06:39,170 --> 00:06:43,635
+explained where I want to do this multiplication of four numbers.
+
+145
+00:06:43,635 --> 00:06:46,350
+To do it, I'm going make these two goroutines.
+
+146
+00:06:46,350 --> 00:06:48,965
+Each goroutine is going to just multiply a pair
+
+147
+00:06:48,965 --> 00:06:51,540
+of numbers and I'm going to start those two.
+
+148
+00:06:51,540 --> 00:06:53,150
+So, the main routine will start those two,
+
+149
+00:06:53,150 --> 00:06:54,300
+have them multiply pairs,
+
+150
+00:06:54,300 --> 00:06:58,210
+then the main routine will take their results and multiply those together and print it.
+
+151
+00:06:58,210 --> 00:07:00,360
+Let's see.
+
+152
+00:07:00,360 --> 00:07:03,405
+Let's start with the function prod, for product.
+
+153
+00:07:03,405 --> 00:07:06,775
+Basically, that just takes two integers v1 v2,
+
+154
+00:07:06,775 --> 00:07:09,500
+and it computes their product.
+
+155
+00:07:09,500 --> 00:07:13,160
+Now, the third thing that it takes is the channel that we want to communicate on.
+
+156
+00:07:13,160 --> 00:07:16,860
+So, it takes that as an argument and then what it does is,
+
+157
+00:07:16,860 --> 00:07:18,965
+it computes v1 times v2,
+
+158
+00:07:18,965 --> 00:07:21,535
+computes the product and then sends it on to the channel.
+
+159
+00:07:21,535 --> 00:07:23,570
+So now we look at the main,
+
+160
+00:07:23,570 --> 00:07:26,425
+the main will create the channel c,
+
+161
+00:07:26,425 --> 00:07:29,345
+then it starts to two Go routines.
+
+162
+00:07:29,345 --> 00:07:31,275
+So go prod, go prod,
+
+163
+00:07:31,275 --> 00:07:33,310
+packing a different hard-coded numbers in there,
+
+164
+00:07:33,310 --> 00:07:36,880
+it doesn't matter but hard-coded one and two to the first Go routine,
+
+165
+00:07:36,880 --> 00:07:38,405
+and a three and four to the second.
+
+166
+00:07:38,405 --> 00:07:40,640
+Notice that they're both getting the same channel in this case.
+
+167
+00:07:40,640 --> 00:07:42,600
+They're both communicating on the same channel.
+
+168
+00:07:42,600 --> 00:07:44,960
+So it starts to two Go routines,
+
+169
+00:07:44,960 --> 00:07:48,060
+then the next two instructions just
+
+170
+00:07:48,060 --> 00:07:51,300
+receive the results from those two Go routines on the channel.
+
+171
+00:07:51,300 --> 00:07:58,510
+So a equals arrow c and b equals arrow c. So a gets whatever comes on the channel,
+
+172
+00:07:58,510 --> 00:07:59,780
+the first thing that comes on the channel and
+
+173
+00:07:59,780 --> 00:08:01,640
+b gets a second thing that comes on the channel,
+
+174
+00:08:01,640 --> 00:08:06,685
+and then the main Go routine just prints the product, a times b.
+
+175
+00:08:06,685 --> 00:08:11,955
+So this is a set of simple example of how you use channels to communicate.
+
+176
+00:08:11,955 --> 00:08:13,740
+Now, one thing before I go on is,
+
+177
+00:08:13,740 --> 00:08:15,500
+I said that channels are used to communicate,
+
+178
+00:08:15,500 --> 00:08:21,305
+to send data back and forth between Go routines and that's true and we're using it here.
+
+179
+00:08:21,305 --> 00:08:26,540
+But there's another way to send data between Go routines,
+
+180
+00:08:26,540 --> 00:08:29,475
+certainly when you create the Go routine.
+
+181
+00:08:29,475 --> 00:08:34,200
+So here, where I say go prod one comma two comma c,
+
+182
+00:08:34,200 --> 00:08:39,200
+go prod three comma four comma c. I am sending those to Go routines the data,
+
+183
+00:08:39,200 --> 00:08:40,910
+which are the arguments to the function.
+
+184
+00:08:40,910 --> 00:08:46,260
+So go prod one comma two comma c. I'm sending that Go routine through those arguments,
+
+185
+00:08:46,260 --> 00:08:48,735
+the one and the two and the c, the channel.
+
+186
+00:08:48,735 --> 00:08:52,960
+So that's another way that you send data to a Go routine,
+
+187
+00:08:52,960 --> 00:08:54,820
+and that's just works when you start it.
+
+188
+00:08:54,820 --> 00:08:57,040
+When you pass arguments to its function,
+
+189
+00:08:57,040 --> 00:08:59,565
+those arguments are passed to the Go routine, okay?
+
+190
+00:08:59,565 --> 00:09:01,585
+So I'm sending data,
+
+191
+00:09:01,585 --> 00:09:04,110
+say with the go prod one comma two comma c,
+
+192
+00:09:04,110 --> 00:09:06,670
+I'm sending one and two and c to the new Go routine
+
+193
+00:09:06,670 --> 00:09:09,300
+I'm creating and I'm not using a channel, okay?
+
+194
+00:09:09,300 --> 00:09:12,605
+So that's another way to send data and that's common.
+
+195
+00:09:12,605 --> 00:09:13,805
+But that's just initial,
+
+196
+00:09:13,805 --> 00:09:16,190
+anytime after the starting of the Go routine,
+
+197
+00:09:16,190 --> 00:09:17,490
+if you're going to send data back and forth,
+
+198
+00:09:17,490 --> 00:09:19,195
+you have to use a channel like we do here,
+
+199
+00:09:19,195 --> 00:09:21,900
+where we receive the results on this channel.
+
+200
+00:09:21,900 --> 00:09:27,745
+Thank you. Module Three: Threads in Go.
+
+201
+00:09:27,745 --> 00:09:31,030
+Topic 3.2: Blocking on Channels.
+
+202
+00:09:31,030 --> 00:09:34,620
+So by default, a channel is called Unbuffered.
+
+203
+00:09:34,620 --> 00:09:36,425
+When you create a channel, it's unbuffered,
+
+204
+00:09:36,425 --> 00:09:39,315
+and unbuffered channels cannot hold data in transit.
+
+205
+00:09:39,315 --> 00:09:40,600
+So the default is unbuffered.
+
+206
+00:09:40,600 --> 00:09:44,385
+So when we call make and we say,
+
+207
+00:09:44,385 --> 00:09:49,155
+make a [inaudible] say chain int and we don't pass in any other arguments,
+
+208
+00:09:49,155 --> 00:09:53,030
+then we're making a channel that holds integers, but it's unbuffered.
+
+209
+00:09:53,030 --> 00:09:54,865
+So it can't hold data in transit.
+
+210
+00:09:54,865 --> 00:09:57,555
+So the implications are that,
+
+211
+00:09:57,555 --> 00:09:59,990
+since we don't want to lose data,
+
+212
+00:09:59,990 --> 00:10:03,685
+the transmission or sending has to block,
+
+213
+00:10:03,685 --> 00:10:07,950
+sending instruction has to block until the data is received on the receiving end,
+
+214
+00:10:07,950 --> 00:10:12,905
+and the receiving instruction has to block until the data is sent.
+
+215
+00:10:12,905 --> 00:10:14,810
+So here's what I mean by this,
+
+216
+00:10:14,810 --> 00:10:17,205
+say I got two tasks, Task one, Task two.
+
+217
+00:10:17,205 --> 00:10:20,635
+Task one is going to send three onto this channel,
+
+218
+00:10:20,635 --> 00:10:23,350
+and Task two is going to read whatever comes on the channel,
+
+219
+00:10:23,350 --> 00:10:25,890
+and put it into variable x and you can see that there.
+
+220
+00:10:25,890 --> 00:10:29,260
+So since, say Task one hits its send first.
+
+221
+00:10:29,260 --> 00:10:31,670
+It reaches send, it tries to send three on the channel.
+
+222
+00:10:31,670 --> 00:10:37,285
+It will block, it will sit there until Task two reaches its receive instruction.
+
+223
+00:10:37,285 --> 00:10:40,335
+So one hour later, however long later,
+
+224
+00:10:40,335 --> 00:10:44,095
+Task one will sit there for an hour or however long it takes,
+
+225
+00:10:44,095 --> 00:10:49,420
+until Task two reaches that read instruction, the receiving instruction.
+
+226
+00:10:49,420 --> 00:10:51,245
+Then once it does,
+
+227
+00:10:51,245 --> 00:10:53,980
+then the data can be transmitted from
+
+228
+00:10:53,980 --> 00:10:57,170
+Task one to Task two and Task one can then continue.
+
+229
+00:10:57,170 --> 00:10:59,750
+But Task one doesn't want data to be lost in transit,
+
+230
+00:10:59,750 --> 00:11:01,445
+because remember this channel,
+
+231
+00:11:01,445 --> 00:11:02,945
+it can't hold any data.
+
+232
+00:11:02,945 --> 00:11:05,590
+Right? So Task one were to continue,
+
+233
+00:11:05,590 --> 00:11:07,925
+and Task two weren't there to receive the data,
+
+234
+00:11:07,925 --> 00:11:09,295
+then the data would go away.
+
+235
+00:11:09,295 --> 00:11:10,560
+Right? That can't happen.
+
+236
+00:11:10,560 --> 00:11:15,325
+So Task one, if it reaches its sending instruction first,
+
+237
+00:11:15,325 --> 00:11:19,355
+it has to block and wait for Task two to receive.
+
+238
+00:11:19,355 --> 00:11:21,040
+I didn't show this example here,
+
+239
+00:11:21,040 --> 00:11:25,375
+but same thing happens if Task two hits its receive first.
+
+240
+00:11:25,375 --> 00:11:26,580
+If they're ordering was switched.
+
+241
+00:11:26,580 --> 00:11:28,690
+So let's say Task two hits the receive first,
+
+242
+00:11:28,690 --> 00:11:30,400
+there's nothing to receive.
+
+243
+00:11:30,400 --> 00:11:31,510
+Right? It just blocks.
+
+244
+00:11:31,510 --> 00:11:34,750
+Task two will block there until an hour later say,
+
+245
+00:11:34,750 --> 00:11:37,300
+Task two finally sends three under the Channel.
+
+246
+00:11:37,300 --> 00:11:39,985
+When that happens, then Task two can continue.
+
+247
+00:11:39,985 --> 00:11:43,140
+Okay? But, either way sending these two instructions,
+
+248
+00:11:43,140 --> 00:11:46,075
+send and receive, they are blocking instructions.
+
+249
+00:11:46,075 --> 00:11:48,005
+So if it's on buffered channel,
+
+250
+00:11:48,005 --> 00:11:50,810
+the send will block until the receipt happens,
+
+251
+00:11:50,810 --> 00:11:53,330
+until they receive instruction happens in the other thread
+
+252
+00:11:53,330 --> 00:11:56,390
+and the receive will happen until the send instruction.
+
+253
+00:11:56,390 --> 00:12:00,190
+The receive will block until a send instruction happens, so either way.
+
+254
+00:12:00,190 --> 00:12:01,585
+It has to do this,
+
+255
+00:12:01,585 --> 00:12:04,325
+because there's no buffering or by default.
+
+256
+00:12:04,325 --> 00:12:05,630
+Now, we'll talk about that in a second.
+
+257
+00:12:05,630 --> 00:12:07,230
+But by default, there's no buffering.
+
+258
+00:12:07,230 --> 00:12:11,725
+So you have to wait so that you don't lose the data.
+
+259
+00:12:11,725 --> 00:12:15,690
+So note that when use a channel in this way,
+
+260
+00:12:15,690 --> 00:12:17,845
+the channel is allowing you to communicate,
+
+261
+00:12:17,845 --> 00:12:20,045
+allowing you to send data between two different threads,
+
+262
+00:12:20,045 --> 00:12:23,880
+two different Go routines, but it's also doing synchronization, right?
+
+263
+00:12:23,880 --> 00:12:27,275
+Because Task one has to wait for
+
+264
+00:12:27,275 --> 00:12:31,095
+Task two to receive or Task two has to wait for Task one to send, right?
+
+265
+00:12:31,095 --> 00:12:33,555
+So it is also doing synchronization.
+
+266
+00:12:33,555 --> 00:12:36,550
+Just like the wait, Remember we talked about wait groups, right?
+
+267
+00:12:36,550 --> 00:12:41,835
+I said, "Oh, I want my main routine to wait for this Go routine to complete first."
+
+268
+00:12:41,835 --> 00:12:43,515
+I made this wait group.
+
+269
+00:12:43,515 --> 00:12:45,570
+So this is doing a similar thing,
+
+270
+00:12:45,570 --> 00:12:50,420
+it's another way to do the same thing because Task two has to wait for
+
+271
+00:12:50,420 --> 00:12:52,235
+Task one to get to reach
+
+272
+00:12:52,235 --> 00:12:55,380
+its send instruction before Task two receive can continue, right?
+
+273
+00:12:55,380 --> 00:12:57,320
+So there's also waiting going on here.
+
+274
+00:12:57,320 --> 00:12:59,770
+So the communication with channels is
+
+275
+00:12:59,770 --> 00:13:02,740
+also synchronous and its synchronization is built in.
+
+276
+00:13:02,740 --> 00:13:05,415
+So what that also means,
+
+277
+00:13:05,415 --> 00:13:09,610
+is that you can use this channel communication
+
+278
+00:13:09,610 --> 00:13:14,640
+for just the synchronization and throw away the results, the received result.
+
+279
+00:13:14,640 --> 00:13:17,730
+So here's the example I got here, Task one, Task two.
+
+280
+00:13:17,730 --> 00:13:20,625
+Task one, sends a number three onto the channel, okay?
+
+281
+00:13:20,625 --> 00:13:23,250
+Task two, notice that what it's got,
+
+282
+00:13:23,250 --> 00:13:24,855
+it's got the arrow and then the c,
+
+283
+00:13:24,855 --> 00:13:26,980
+which means to receive something from channel
+
+284
+00:13:26,980 --> 00:13:29,490
+c. But it's not assigning it to any variables.
+
+285
+00:13:29,490 --> 00:13:34,710
+It's not saying x equals arrow c. It just says arrow c. So in this case,
+
+286
+00:13:34,710 --> 00:13:37,535
+Task two is receiving something off the channel,
+
+287
+00:13:37,535 --> 00:13:38,900
+but it's not using the data.
+
+288
+00:13:38,900 --> 00:13:41,640
+It's basically throwing away the data that it receives.
+
+289
+00:13:41,640 --> 00:13:43,560
+So in a situation like this,
+
+290
+00:13:43,560 --> 00:13:44,890
+since you're wasting the data,
+
+291
+00:13:44,890 --> 00:13:48,175
+all you're really doing is synchronizing the two tasks.
+
+292
+00:13:48,175 --> 00:13:51,630
+So Task two has to wait for Task one to do the send.
+
+293
+00:13:51,630 --> 00:13:53,230
+So this is like a wait,
+
+294
+00:13:53,230 --> 00:13:54,460
+like a wait with the wait group.
+
+295
+00:13:54,460 --> 00:13:56,875
+This is like another way to implement a wait.
+
+296
+00:13:56,875 --> 00:14:00,800
+Because Task two, even though it's thrown away the data that it receives,
+
+297
+00:14:00,800 --> 00:14:03,410
+it still has to wait for Task one to do the send.
+
+298
+00:14:03,410 --> 00:14:07,075
+So you're you're waiting for an event just like you would do with a wait group.
+
+299
+00:14:07,075 --> 00:14:11,120
+So it's something about the channel communication that
+
+300
+00:14:11,120 --> 00:14:15,859
+is also synchronization built into the communication constructs.
+
+301
+00:14:15,859 --> 00:14:21,075
+Thank you. Module three: Threads in Go.
+
+302
+00:14:21,075 --> 00:14:24,370
+Topic 3.3: Buffered Channels.
+
+303
+00:14:24,370 --> 00:14:28,070
+So, the channels that we talked about so far,
+
+304
+00:14:28,070 --> 00:14:30,190
+are the default channels.
+
+305
+00:14:30,190 --> 00:14:33,860
+They have no capacity to hold data in transit,
+
+306
+00:14:33,860 --> 00:14:36,740
+but channels can have some capacity,
+
+307
+00:14:36,740 --> 00:14:40,370
+so channels can contain a limited number of objects in transit if you want.
+
+308
+00:14:40,370 --> 00:14:44,890
+Now, default size, default capacity for a channel is zero,
+
+309
+00:14:44,890 --> 00:14:48,175
+so it's unbuffered, but you can make what are called buffered channels,
+
+310
+00:14:48,175 --> 00:14:51,155
+which actually have some capacity to hold data in transit.
+
+311
+00:14:51,155 --> 00:14:55,735
+So, the capacity of a channel is the number of objects it can hold in transit.
+
+312
+00:14:55,735 --> 00:15:00,700
+The way you define this as an optional argument to the make function.
+
+313
+00:15:00,700 --> 00:15:02,880
+When you create the channel,
+
+314
+00:15:02,880 --> 00:15:04,510
+you can set its capacity.
+
+315
+00:15:04,510 --> 00:15:06,080
+So in this example, I say,
+
+316
+00:15:06,080 --> 00:15:08,740
+"C equals make chan int, three".
+
+317
+00:15:08,740 --> 00:15:12,190
+I give it that second argument three which tells me that the buffer is size three.
+
+318
+00:15:12,190 --> 00:15:15,120
+Now, note default size is zero.
+
+319
+00:15:15,120 --> 00:15:16,740
+So default, when you don't give
+
+320
+00:15:16,740 --> 00:15:20,085
+that second argument is that if you made second argument equal to zero,
+
+321
+00:15:20,085 --> 00:15:22,180
+to say, ''look I can't hold anything in transit. ''
+
+322
+00:15:22,180 --> 00:15:23,690
+But in this case, I'm saying, "Okay, three.
+
+323
+00:15:23,690 --> 00:15:25,145
+I got a buffer size three."
+
+324
+00:15:25,145 --> 00:15:28,690
+Now, when you have a channel with a certain amount of capacity,
+
+325
+00:15:28,690 --> 00:15:32,705
+the blocking, the send and receives block under different conditions.
+
+326
+00:15:32,705 --> 00:15:35,360
+Not really different, but they seems different.
+
+327
+00:15:35,360 --> 00:15:37,050
+So what I mean is,
+
+328
+00:15:37,050 --> 00:15:39,585
+sending only blocks if the buffer is full,
+
+329
+00:15:39,585 --> 00:15:43,695
+so that means is [inaudible] channel size of capacity three.
+
+330
+00:15:43,695 --> 00:15:48,065
+I can do $0.03 cents without blocking,
+
+331
+00:15:48,065 --> 00:15:51,510
+so I can do $0.03 cents with no receipts.
+
+332
+00:15:51,510 --> 00:15:54,630
+Say Goroutine one, is sending to Goroutine two.
+
+333
+00:15:54,630 --> 00:15:57,340
+Say, Goroutine two has not done any receives,
+
+334
+00:15:57,340 --> 00:15:59,605
+it doesn't do receive for a long time.
+
+335
+00:15:59,605 --> 00:16:02,150
+Goroutine one can do three sends,
+
+336
+00:16:02,150 --> 00:16:03,685
+and still not block.
+
+337
+00:16:03,685 --> 00:16:06,335
+Because what happens is,
+
+338
+00:16:06,335 --> 00:16:07,505
+when it does this for a send,
+
+339
+00:16:07,505 --> 00:16:09,415
+even though the receiver is not there to receive it,
+
+340
+00:16:09,415 --> 00:16:11,955
+the buffer since it has capacity three can hold it
+
+341
+00:16:11,955 --> 00:16:15,760
+temporarily and allow the Goroutine one to continue its execution.
+
+342
+00:16:15,760 --> 00:16:19,245
+This can happen up to three times into the capacity of the buffer, right?
+
+343
+00:16:19,245 --> 00:16:21,825
+Now eventually, once I get to that fourth send.
+
+344
+00:16:21,825 --> 00:16:23,875
+If that receiver hasn't done receive,
+
+345
+00:16:23,875 --> 00:16:26,610
+then if I couldn't write the fourth thing into the buffer,
+
+346
+00:16:26,610 --> 00:16:27,765
+it only has capacity three.
+
+347
+00:16:27,765 --> 00:16:30,340
+So at that point, it blocks.
+
+348
+00:16:30,340 --> 00:16:33,275
+So sending only blocks if the buffer is full.
+
+349
+00:16:33,275 --> 00:16:38,080
+But you have some sending that you can do without actually having to
+
+350
+00:16:38,080 --> 00:16:43,350
+block on the side of the writing Goroutine, which is good, right?
+
+351
+00:16:43,350 --> 00:16:45,550
+Because blocking is generally a bad thing,
+
+352
+00:16:45,550 --> 00:16:47,015
+for the most part is a bad thing.
+
+353
+00:16:47,015 --> 00:16:49,140
+Because blocking reduces your concurrency, right?
+
+354
+00:16:49,140 --> 00:16:51,600
+If you block, that means you can't execute which means you
+
+355
+00:16:51,600 --> 00:16:54,390
+might be wasting processor resources.
+
+356
+00:16:54,390 --> 00:16:56,010
+So, you don't generally want to block,
+
+357
+00:16:56,010 --> 00:16:58,275
+you would like to be able to do a send.
+
+358
+00:16:58,275 --> 00:17:00,950
+Then, whether or not the receiver is there,
+
+359
+00:17:00,950 --> 00:17:03,610
+you just continue on your merry way and keep executing.
+
+360
+00:17:03,610 --> 00:17:08,000
+So, having a channel capacity allows that to happen to some extent.
+
+361
+00:17:08,000 --> 00:17:10,450
+Now it's limited, because memory is finite,
+
+362
+00:17:10,450 --> 00:17:12,075
+the buffer can only have a finite size,
+
+363
+00:17:12,075 --> 00:17:17,000
+but you can continue for more time without blocking,
+
+364
+00:17:17,000 --> 00:17:19,320
+and so it can help you sometimes.
+
+365
+00:17:19,320 --> 00:17:22,180
+Also, receiving, same thing happens on the receive end.
+
+366
+00:17:22,180 --> 00:17:24,880
+Receiving only blocks if the buffer is empty.
+
+367
+00:17:24,880 --> 00:17:26,650
+So, if the buffer is full,
+
+368
+00:17:26,650 --> 00:17:27,800
+it has three objects in it,
+
+369
+00:17:27,800 --> 00:17:29,760
+you can do three receives without
+
+370
+00:17:29,760 --> 00:17:33,760
+any send because it can receive those three things that are in the buffer.
+
+371
+00:17:33,760 --> 00:17:35,135
+Now on the fourth receive,
+
+372
+00:17:35,135 --> 00:17:36,525
+once the buffer is actually empty,
+
+373
+00:17:36,525 --> 00:17:38,950
+then that receive will have to block, okay?
+
+374
+00:17:38,950 --> 00:17:42,530
+So, this is what it means to give a channel capacity,
+
+375
+00:17:42,530 --> 00:17:43,970
+you make it a buffered channel,
+
+376
+00:17:43,970 --> 00:17:45,560
+you can give it a size, right?
+
+377
+00:17:45,560 --> 00:17:49,790
+The size means that the channel is basically storing data in transit,
+
+378
+00:17:49,790 --> 00:17:52,580
+so the sender and receiver don't have to block as often,
+
+379
+00:17:52,580 --> 00:17:56,650
+well because they can use the buffer as a holding space.
+
+380
+00:17:56,750 --> 00:18:00,135
+So, to give any little example,
+
+381
+00:18:00,135 --> 00:18:02,400
+I got my channel with capacity one,
+
+382
+00:18:02,400 --> 00:18:03,980
+so I got two task,
+
+383
+00:18:03,980 --> 00:18:07,545
+two threads: T1, T2 or to Goroutines.
+
+384
+00:18:07,545 --> 00:18:10,060
+In between there is a channel and it's just one,
+
+385
+00:18:10,060 --> 00:18:12,605
+it's capacity one, so it's one space, right?
+
+386
+00:18:12,605 --> 00:18:14,580
+If you look at T1,
+
+387
+00:18:14,580 --> 00:18:16,950
+it's doing the sending, T2 is doing the receiving.
+
+388
+00:18:16,950 --> 00:18:20,730
+T1 is writing an integer in their C,
+
+389
+00:18:20,730 --> 00:18:23,210
+into the big channel.
+
+390
+00:18:23,210 --> 00:18:27,380
+Then T2, is going to read two things out of the channel.
+
+391
+00:18:27,380 --> 00:18:32,000
+Now first note, that can't happen, right?
+
+392
+00:18:32,000 --> 00:18:33,900
+You can't send one thing and receive two.
+
+393
+00:18:33,900 --> 00:18:39,275
+So what happens exactly depends on which executes first,
+
+394
+00:18:39,275 --> 00:18:41,805
+which send or receive executes first.
+
+395
+00:18:41,805 --> 00:18:44,170
+But, the first receive,
+
+396
+00:18:44,170 --> 00:18:46,620
+has the block until the send occurs.
+
+397
+00:18:46,620 --> 00:18:48,365
+So if T2 is executing faster,
+
+398
+00:18:48,365 --> 00:18:50,555
+it hits its first receive.
+
+399
+00:18:50,555 --> 00:18:52,660
+Before T1 has issued the send,
+
+400
+00:18:52,660 --> 00:18:54,370
+then T2 is going to block,
+
+401
+00:18:54,370 --> 00:18:56,635
+because the buffer is empty, okay?
+
+402
+00:18:56,635 --> 00:18:59,480
+But once the buffer gets filled,
+
+403
+00:18:59,480 --> 00:19:01,960
+so once T1 executes and fills that buffer,
+
+404
+00:19:01,960 --> 00:19:04,385
+then the first receive can continue.
+
+405
+00:19:04,385 --> 00:19:07,980
+Now, the second receive in this scenario blocks forever.
+
+406
+00:19:07,980 --> 00:19:09,575
+Now, I'm assuming that T1,
+
+407
+00:19:09,575 --> 00:19:11,065
+it doesn't do any more rights,
+
+408
+00:19:11,065 --> 00:19:12,550
+okay? So, this would be an error.
+
+409
+00:19:12,550 --> 00:19:14,735
+If T1 just writes one thing into the buffer,
+
+410
+00:19:14,735 --> 00:19:16,420
+and T2 tries to read two things,
+
+411
+00:19:16,420 --> 00:19:18,635
+the second one has to block, right?
+
+412
+00:19:18,635 --> 00:19:20,270
+So, this would be an error right here.
+
+413
+00:19:20,270 --> 00:19:24,400
+In fact, it would probably throw an error as soon as you run it.
+
+414
+00:19:24,660 --> 00:19:26,980
+In this case, this is a problem.
+
+415
+00:19:26,980 --> 00:19:28,795
+T1 is just going to block forever,
+
+416
+00:19:28,795 --> 00:19:33,490
+because T2 will block, is waiting on T1.
+
+417
+00:19:33,490 --> 00:19:36,770
+Now, we can see a similar thing happening in the other direction.
+
+418
+00:19:36,770 --> 00:19:39,650
+This time, T1 is actually writing two things,
+
+419
+00:19:39,650 --> 00:19:41,490
+three and four is writing as the channel,
+
+420
+00:19:41,490 --> 00:19:44,070
+T2 is going to receive.
+
+421
+00:19:44,070 --> 00:19:49,290
+So, the second send is going to block until the receive is done.
+
+422
+00:19:49,290 --> 00:19:55,600
+So, the first send it won't block it'll just put something into the buffer.
+
+423
+00:19:55,600 --> 00:19:58,045
+Eventually, the receiver will receive that at the buffer.
+
+424
+00:19:58,045 --> 00:20:04,290
+The second send, if the receive has happened,
+
+425
+00:20:04,290 --> 00:20:05,495
+then the buffer is empty,
+
+426
+00:20:05,495 --> 00:20:08,520
+so the second send can write something into the buffer and then continue.
+
+427
+00:20:08,520 --> 00:20:11,165
+But if the receive has not happened,
+
+428
+00:20:11,165 --> 00:20:13,320
+then the second send is going to block because
+
+429
+00:20:13,320 --> 00:20:16,620
+the first send has filled up the buffer and this buffer is only size one,
+
+430
+00:20:16,620 --> 00:20:21,880
+so the second send will have to block until the receive happens.
+
+431
+00:20:22,110 --> 00:20:24,985
+So, why use buffering?
+
+432
+00:20:24,985 --> 00:20:27,130
+The main reason to use buffering,
+
+433
+00:20:27,130 --> 00:20:32,440
+is so the sender and the receiver don't need to operate at exactly the same speed.
+
+434
+00:20:32,440 --> 00:20:35,000
+So, what I mean by that is,
+
+435
+00:20:35,000 --> 00:20:36,465
+if you don't have a buffer,
+
+436
+00:20:36,465 --> 00:20:38,150
+if you use an unbuffered channel,
+
+437
+00:20:38,150 --> 00:20:41,605
+then the sender and the receiver have to be in lockstep.
+
+438
+00:20:41,605 --> 00:20:45,695
+Meaning, the sender has to block until the receive happens,
+
+439
+00:20:45,695 --> 00:20:47,565
+the receive blocks until the send happens.
+
+440
+00:20:47,565 --> 00:20:49,180
+So, they have to be in lockstep,
+
+441
+00:20:49,180 --> 00:20:52,170
+which reduces the amount of concurrency that you can have.
+
+442
+00:20:52,170 --> 00:20:55,700
+Buffering, will allow you to do like in this case,
+
+443
+00:20:55,700 --> 00:20:58,540
+say you got an empty buffer, the producer, okay,
+
+444
+00:20:58,540 --> 00:20:59,590
+so I'm defining this,
+
+445
+00:20:59,590 --> 00:21:02,170
+this is sort of a classic problem producer consumer.
+
+446
+00:21:02,170 --> 00:21:05,235
+It's a concurrent example,
+
+447
+00:21:05,235 --> 00:21:07,355
+where you've got two different threads,
+
+448
+00:21:07,355 --> 00:21:09,550
+there's one referred to as a producer,
+
+449
+00:21:09,550 --> 00:21:11,040
+one referred to as a consumer.
+
+450
+00:21:11,040 --> 00:21:14,870
+Now, the producer is basically generating data.
+
+451
+00:21:14,870 --> 00:21:16,895
+We don't know how it's generating data,
+
+452
+00:21:16,895 --> 00:21:19,100
+maybe it's reading data from sensors,
+
+453
+00:21:19,100 --> 00:21:22,520
+reading temperatures from sensors and sending them to the consumer to be processed,
+
+454
+00:21:22,520 --> 00:21:23,610
+okay? Something like that.
+
+455
+00:21:23,610 --> 00:21:25,845
+But it's generating data on a regular basis,
+
+456
+00:21:25,845 --> 00:21:28,120
+maybe as a common thing,
+
+457
+00:21:28,120 --> 00:21:32,805
+is maybe your T1 is connected to a microphone,
+
+458
+00:21:32,805 --> 00:21:34,340
+and you're sampling the sound.
+
+459
+00:21:34,340 --> 00:21:37,865
+So periodically, you have to record a sample, store a sample,
+
+460
+00:21:37,865 --> 00:21:39,930
+and so the producer maybe is just talk
+
+461
+00:21:39,930 --> 00:21:42,285
+into the microphone, grabbing samples periodically.
+
+462
+00:21:42,285 --> 00:21:43,980
+Then, it sends them to the consumer,
+
+463
+00:21:43,980 --> 00:21:46,810
+and the consumer is doing some kind of audio processing task.
+
+464
+00:21:46,810 --> 00:21:48,980
+It takes the samples and it-. Who knows?
+
+465
+00:21:48,980 --> 00:21:51,830
+It does the [inaudible] transform something like this, okay?
+
+466
+00:21:51,830 --> 00:21:56,090
+But the general idea is you got a producer that is producing data from some source,
+
+467
+00:21:56,090 --> 00:21:57,775
+over and over and over again,
+
+468
+00:21:57,775 --> 00:22:00,630
+over a long period of time, and the consumer is consuming
+
+469
+00:22:00,630 --> 00:22:04,645
+data over and over again and over a long period time and doing something with it.
+
+470
+00:22:04,645 --> 00:22:07,980
+Now, a buffer is useful in this situation.
+
+471
+00:22:07,980 --> 00:22:09,975
+Because, let's say sometimes,
+
+472
+00:22:09,975 --> 00:22:14,105
+the producer is a little fast to produce its data right?
+
+473
+00:22:14,105 --> 00:22:16,660
+Maybe the consumer is consuming a certain rate,
+
+474
+00:22:16,660 --> 00:22:18,850
+but it produces a little faster in producing.
+
+475
+00:22:18,850 --> 00:22:22,060
+In that situation, if you had no buffer,
+
+476
+00:22:22,060 --> 00:22:23,360
+the producer would have to block.
+
+477
+00:22:23,360 --> 00:22:27,175
+If it tries to produce something before the consumer is ready to receive it,
+
+478
+00:22:27,175 --> 00:22:29,005
+then the producer blocks, right?
+
+479
+00:22:29,005 --> 00:22:32,005
+Until the consumer reaches this receive and then they can continue.
+
+480
+00:22:32,005 --> 00:22:34,720
+So, the producer has to get slowed down to
+
+481
+00:22:34,720 --> 00:22:37,675
+match the speed of the consumer, and vice versa.
+
+482
+00:22:37,675 --> 00:22:39,680
+If you're consuming too fast,
+
+483
+00:22:39,680 --> 00:22:41,235
+faster than the producer,
+
+484
+00:22:41,235 --> 00:22:42,790
+then the consumer has to get blocked,
+
+485
+00:22:42,790 --> 00:22:44,010
+its receive has to get blocked,
+
+486
+00:22:44,010 --> 00:22:46,480
+to slow down to the rate of the producer, right?
+
+487
+00:22:46,480 --> 00:22:49,675
+So, the rate, if these producer and consumer wants a little faster than the other,
+
+488
+00:22:49,675 --> 00:22:53,845
+their rate is forced to be slowed down when you don't have any buffer.
+
+489
+00:22:53,845 --> 00:22:56,295
+Now, if you have a buffer,
+
+490
+00:22:56,295 --> 00:22:57,740
+then a speed mismatch or
+
+491
+00:22:57,740 --> 00:23:01,965
+at least a temporary speed mismatch between the producer and consumer is acceptable.
+
+492
+00:23:01,965 --> 00:23:03,410
+Because what will happen is,
+
+493
+00:23:03,410 --> 00:23:05,140
+that the producer is a little bit too fast,
+
+494
+00:23:05,140 --> 00:23:06,825
+then it'll just fill up the buffer.
+
+495
+00:23:06,825 --> 00:23:08,595
+If the consumer is a little bit too fast,
+
+496
+00:23:08,595 --> 00:23:10,515
+it'll just draw data from the buffer.
+
+497
+00:23:10,515 --> 00:23:13,175
+Now this, since the buffer is finite size,
+
+498
+00:23:13,175 --> 00:23:14,750
+this can't happen forever.
+
+499
+00:23:14,750 --> 00:23:17,200
+Now, if the producer is forever too fast,
+
+500
+00:23:17,200 --> 00:23:20,575
+then it will fill up the buffer and then it'll still have to block.
+
+501
+00:23:20,575 --> 00:23:23,250
+But, when you have a scenario where the producer and
+
+502
+00:23:23,250 --> 00:23:26,740
+the consumer on average there at the same speed,
+
+503
+00:23:26,740 --> 00:23:28,730
+but sometimes they speed up and slow down,
+
+504
+00:23:28,730 --> 00:23:30,715
+and this certainly happens in a lot of scenarios,
+
+505
+00:23:30,715 --> 00:23:32,405
+where they're exactly lockstep,
+
+506
+00:23:32,405 --> 00:23:33,770
+sometimes produces a little faster,
+
+507
+00:23:33,770 --> 00:23:35,625
+sometimes a little slower and so on,
+
+508
+00:23:35,625 --> 00:23:37,590
+then a buffer is really helpful.
+
+509
+00:23:37,590 --> 00:23:40,285
+Because then this buffer as long as you don't fill up the buffer,
+
+510
+00:23:40,285 --> 00:23:43,425
+can allow you to continue executing without blocking,
+
+511
+00:23:43,425 --> 00:23:45,330
+continue sending and receiving without having to
+
+512
+00:23:45,330 --> 00:23:47,955
+block because you've got this buffer in between.
+
+513
+00:23:47,955 --> 00:23:49,310
+But still, on average,
+
+514
+00:23:49,310 --> 00:23:50,460
+the speeds have to match.
+
+515
+00:23:50,460 --> 00:23:55,750
+Otherwise, the buffer will overflow or become empty. Thank you.
